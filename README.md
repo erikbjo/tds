@@ -41,6 +41,8 @@ root
 │   │   │               ├── model
 │   │   │               │   ├── Departure.java
 │   │   │               │   ├── Train.java
+│   │   │               │   ├── TrainBuilder.java
+│   │   │               │   ├── WagonType.java
 │   │   │               │   └── Wagon.java
 │   │   │               └── TdsApplication.java
 │   │   └── resources
