@@ -7,38 +7,59 @@ STUDENT ID = erbj
 
 ## Project description
 
-Train Dispatch System is bing bong
+Train Dispatch System is a system for dispatching trains. It only shows the trains connected with Oslo S.
 
 ## Project structure
 ```
-tds
+root
 ├── src
 │   ├── main
 │   │   ├── java
 │   │   │   └── no
 │   │   │       └── ntnu
 │   │   │           └── tds
-│   │   │               ├── TdsApplication.java
 │   │   │               ├── dao
-│   │   │               │   └── Dao.java
-│   │   │               ├──gui
-│   │   │               │   ├── Controller.java
-│   │   │               │   └── Main.java
+│   │   │               │   ├──Dao.java
+│   │   │               │   ├──DepartureDao.java
+│   │   │               │   ├──TrainDao.java
+│   │   │               │   └──WagonDao.java
+│   │   │               ├──ui
+│   │   │               │   ├── cli
+│   │   │               │   │   ├── utilities
+│   │   │               │   │   │   └── TdsLogger.java
+│   │   │               │   │   ├── placeholder
+│   │   │               │   │   └── placeholder
+│   │   │               │   └── gui
+│   │   │               │       ├── controllers
+│   │   │               │       │   ├── Controller.java
+│   │   │               │       │   └──  MainMenuController.java
+│   │   │               │       ├── view
+│   │   │               │       │   ├── View.java
+│   │   │               │       │   └──  MainMenuView.java
+│   │   │               │       └── utilities
+│   │   │               │           └── empty
 │   │   │               ├── model
+│   │   │               │   ├── Departure.java
 │   │   │               │   ├── Train.java
 │   │   │               │   └── Wagon.java
-│   │   │               └── cli
-│   │   │                   └── Cli.java
+│   │   │               └── TdsApplication.java
 │   │   └── resources
+│   │       ├── logback.xml
 │   │       └── application.properties
 │   └── test
 │       └── java
 │           └── no
 │               └── ntnu
 │                   └── tds
-│                       └── TdsApplicationTests.java
+│                       └── model
+│                           ├── DepartureTest.java
+│                           ├── TrainTest.java
+│                           └── WagonTest.java
 ├── pom.xml
 ├── README.md
+├── LICENSE
+├── mvnw
+├── mvnw.cmd
 ├── HELP.md (to be removed)
 └── .gitignore
 ```
