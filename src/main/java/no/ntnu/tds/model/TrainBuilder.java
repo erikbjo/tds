@@ -8,14 +8,18 @@ public class TrainBuilder {
   ArrayList<Wagon> wagons;
 
   public TrainBuilder setType(String type) {
-    if (type == null) throw new IllegalArgumentException("Type cannot be null");
+    if (type == null) {
+      throw new IllegalArgumentException("Type cannot be null");
+    }
 
     this.type = type;
     return this;
   }
 
   public TrainBuilder setWagons(List<Wagon> wagons) {
-    if (wagons == null) throw new IllegalArgumentException("Wagons cannot be null");
+    if (wagons == null) {
+      throw new IllegalArgumentException("Wagons cannot be null");
+    }
 
     this.wagons = (ArrayList<Wagon>) wagons;
     return this;

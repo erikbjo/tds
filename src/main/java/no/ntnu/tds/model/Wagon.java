@@ -1,5 +1,6 @@
 package no.ntnu.tds.model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,6 +14,7 @@ import jakarta.persistence.Id;
  * @see Train
  * @author Erik Bjørnsen
  */
+@Entity
 public class Wagon {
   private WagonType wagonType;
 
@@ -30,13 +32,15 @@ public class Wagon {
    * @throws IllegalArgumentException if a wagon type is null
    */
   public Wagon(WagonType wagonType) {
-    if (wagonType == null) throw new IllegalArgumentException("Wagon type cannot be null");
+    if (wagonType == null) {
+      throw new IllegalArgumentException("Wagon type cannot be null");
+    }
     this.wagonType = wagonType;
     this.openSeats = wagonType.getSeats();
     this.reservedSeats = 0;
   }
 
-  /** Used by DB */
+  /** Used by DB. */
   public Wagon() {}
 
   /**

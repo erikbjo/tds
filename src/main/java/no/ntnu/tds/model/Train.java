@@ -1,9 +1,6 @@
 package no.ntnu.tds.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import java.util.ArrayList;
+import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so * is used
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -16,7 +13,7 @@ import java.util.NoSuchElementException;
  *   <li>wagons: The wagons of the train
  * </ul>
  *
- * The class also has getters and setters for all the attributes. The class has a builder class,
+ * <p>The class also has getters and setters for all the attributes. The class has a builder class,
  * which is used to create a train object.
  *
  * @version 1.0
@@ -24,25 +21,36 @@ import java.util.NoSuchElementException;
  * @see TrainBuilder
  * @author Erik Bjørnsen
  */
+@Entity
 public class Train {
-  private final String type;
-  private final ArrayList<Wagon> wagons;
+  @OneToMany(cascade = CascadeType.ALL)
+  private List<Wagon> wagons;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   public Train(TrainBuilder builder) {
-    this.type = builder.type;
     this.wagons = builder.wagons;
   }
 
+  /** Used by DB. */
+  public Train() {
+    // Empty constructor for JPA
+  }
+
+  /**
+   * Gets the id of the train.
+   *
+   * @return the id of the trainxw
+   */
   public Long getId() {
     return id;
   }
 
   /**
-   * Makes a reservation in a wagon of the requested type.
+   * NOTE: This method is maybe useless, depending on the task. It is not used in the current
+   * implementation. Makes a reservation in a wagon of the requested type.
    *
    * @param wagonType type of wagon to reserve seats in
    * @param numberOfSeats number of seats to reserve
@@ -52,8 +60,12 @@ public class Train {
    *     not enough available seats in the wagons of the requested type
    */
   public void makeReservation(WagonType wagonType, int numberOfSeats) {
-    if (wagonType == null) throw new IllegalArgumentException("Wagon type cannot be null");
-    if (numberOfSeats <= 0) throw new IllegalArgumentException("Number of seats must be positive");
+    if (wagonType == null) {
+      throw new IllegalArgumentException("Wagon type cannot be null");
+    }
+    if (numberOfSeats <= 0) {
+      throw new IllegalArgumentException("Number of seats must be positive");
+    }
 
     List<Wagon> filteredWagons =
         wagons.stream().filter(wagon -> wagon.getWagonType().equals(wagonType)).toList();
