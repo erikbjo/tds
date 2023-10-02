@@ -1,9 +1,6 @@
 package no.ntnu.tds.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so using * is ok
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -20,16 +17,19 @@ import java.time.format.DateTimeParseException;
  */
 @Entity
 public class Departure {
-  private LocalTime departureTime;
-  private String line;
-  private String destination;
-  private Train train;
-  private int track;
-  private LocalTime delay;
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  private Train train;
+
+  private LocalTime departureTime;
+  private String line;
+  private String destination;
+
+  private int track;
+  private LocalTime delay;
 
   /**
    * Constructor for the Departure class.
@@ -46,7 +46,7 @@ public class Departure {
   }
 
   /** Used by DB. */
-  private Departure() {
+  public Departure() {
     // Empty constructor for JPA
   }
 
