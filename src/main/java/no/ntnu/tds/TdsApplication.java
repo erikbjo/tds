@@ -1,17 +1,31 @@
 package no.ntnu.tds;
 
 import java.util.Scanner;
-
 import no.ntnu.tds.ui.cli.utilities.TdsLogger;
 import no.ntnu.tds.ui.gui.GuiLauncher;
-import org.jline.terminal.Terminal;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * The main class of the application. This class is responsible for starting the application.
+ *
+ * <p>The application can be started in two different modes: CLI and GUI. The user is prompted to
+ * choose which mode to start the application in. The user can also choose to exit the application.
+ *
+ * @see GuiLauncher
+ * @version 1.0
+ * @author Erik Bjørnsen
+ */
 @SpringBootApplication
 public class TdsApplication {
 
+  /**
+   * The main method of the application. This method is responsible for starting the application.
+   * The user is prompted to choose which mode to start the application in. The user can also choose
+   * to exit the application.
+   *
+   * @param args The command line arguments.
+   */
   public static void main(String[] args) {
     TdsLogger logger = TdsLogger.getInstance();
 
@@ -34,6 +48,7 @@ public class TdsApplication {
       case "3":
         logger.info("Exiting...");
         System.exit(0);
+        break; // Not necessary, but good practice and prevents a warning
       default:
         logger.warn("Invalid choice. \n");
         // Restart the application
@@ -41,11 +56,14 @@ public class TdsApplication {
     }
   }
 
+  /**
+   * Launches the GUI.
+   *
+   * @see GuiLauncher
+   * @param args The command line arguments.
+   */
   public static void launchGui(String[] args) {
-    // Your JavaFX application launch code here
-    System.out.println("Launching GUI...");
-    // For instance, if you have a separate JavaFX main class:
-    // Application.launch(YourJavaFXMainClass.class);
+    TdsLogger.getInstance().info("Launching GUI...");
     GuiLauncher.launch(args);
   }
 }
