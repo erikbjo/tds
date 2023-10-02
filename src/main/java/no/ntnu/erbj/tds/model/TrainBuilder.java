@@ -1,4 +1,4 @@
-package no.ntnu.tds.model;
+package no.ntnu.erbj.tds.model;
 
 import java.util.ArrayList;
 import java.util.List;

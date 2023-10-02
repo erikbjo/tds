@@ -1,4 +1,4 @@
-package no.ntnu.tds.model;
+package no.ntnu.erbj.tds.model;
 
 /**
  * Enum for the different types of wagons. Each wagon type has a number of seats.

@@ -1,4 +1,4 @@
-package no.ntnu.tds.ui.gui.views;
+package no.ntnu.erbj.tds.ui.gui.views;
 
 public interface View {
     void updateLanguage();

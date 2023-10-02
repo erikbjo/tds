@@ -20,16 +20,18 @@ root
 │   │   │       └── ntnu
 │   │   │           └── tds
 │   │   │               ├── dao
-│   │   │               │   ├──Dao.java
-│   │   │               │   ├──DepartureDao.java
-│   │   │               │   ├──TrainDao.java
-│   │   │               │   └──WagonDao.java
+│   │   │               │   ├──DAO.java
+│   │   │               │   ├──StationDAO.java
+│   │   │               │   ├──DepartureDAO.java
+│   │   │               │   ├──TrainDAO.java
+│   │   │               │   └──WagonDAO.java
 │   │   │               ├──ui
 │   │   │               │   ├── cli
 │   │   │               │   │   ├── utilities
 │   │   │               │   │   │   └── TdsLogger.java
 │   │   │               │   │   ├── placeholder
 │   │   │               │   │   └── placeholder
+│   │   │               │   │
 │   │   │               │   └── gui
 │   │   │               │       ├── controllers
 │   │   │               │       │   ├── Controller.java
@@ -40,12 +42,14 @@ root
 │   │   │               │       └── utilities
 │   │   │               │           └── empty
 │   │   │               ├── model
+│   │   │               │   ├── Station.java
 │   │   │               │   ├── Departure.java
 │   │   │               │   ├── DepartureBuilder.java
 │   │   │               │   ├── Train.java
 │   │   │               │   ├── TrainBuilder.java (maybe to be removed)
 │   │   │               │   ├── WagonType.java
 │   │   │               │   └── Wagon.java
+│   │   │               │
 │   │   │               └── TdsApplication.java
 │   │   └── resources
 │   │       ├── logback.xml
@@ -55,7 +59,14 @@ root
 │           └── no
 │               └── ntnu
 │                   └── tds
+│                       ├── dao
+│                       │   ├── StationDAOTest.java
+│                       │   ├── DepartureDAOTest.java
+│                       │   ├── TrainDAOTest.java
+│                       │   └── WagonDAOTest.java
+│                       │
 │                       └── model
+│                           ├── StationTest.java
 │                           ├── DepartureTest.java
 │                           ├── TrainTest.java
 │                           └── WagonTest.java

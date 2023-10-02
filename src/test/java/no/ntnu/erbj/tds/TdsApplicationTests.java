@@ -1,4 +1,4 @@
-package no.ntnu.tds;
+package no.ntnu.erbj.tds;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

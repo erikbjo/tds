@@ -1,4 +1,4 @@
-package no.ntnu.tds.model;
+package no.ntnu.erbj.tds.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

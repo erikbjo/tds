@@ -1,4 +1,4 @@
-package no.ntnu.tds.ui.gui.views;
+package no.ntnu.erbj.tds.ui.gui.views;
 
 import java.io.IOException;
 import javafx.application.Platform;
@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import no.ntnu.tds.ui.gui.controllers.MainMenuController;
+import no.ntnu.erbj.tds.ui.gui.controllers.MainMenuController;
 
 public class MainMenuView implements View {
   private final MainMenuController controller;

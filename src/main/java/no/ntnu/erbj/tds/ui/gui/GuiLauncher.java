@@ -1,9 +1,9 @@
-package no.ntnu.tds.ui.gui;
+package no.ntnu.erbj.tds.ui.gui;
 
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import no.ntnu.tds.ui.gui.controllers.MainMenuController;
+import no.ntnu.erbj.tds.ui.gui.controllers.MainMenuController;
 
 public class GuiLauncher extends Application {
   public static void launch(String[] args) {

@@ -1,4 +1,4 @@
-package no.ntnu.tds.dao;
+package no.ntnu.erbj.tds.dao;
 
 import java.util.Iterator;
 import java.util.List;

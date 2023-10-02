@@ -1,10 +1,10 @@
-package no.ntnu.tds.ui.gui.controllers;
+package no.ntnu.erbj.tds.ui.gui.controllers;
 
 import java.io.IOException;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import no.ntnu.tds.ui.gui.views.MainMenuView;
+import no.ntnu.erbj.tds.ui.gui.views.MainMenuView;
 
 public class MainMenuController implements Controller {
     private final Stage stage;

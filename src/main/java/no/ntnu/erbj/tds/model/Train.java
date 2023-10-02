@@ -1,4 +1,4 @@
-package no.ntnu.tds.model;
+package no.ntnu.erbj.tds.model;
 
 import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so * is used
 import java.util.List;

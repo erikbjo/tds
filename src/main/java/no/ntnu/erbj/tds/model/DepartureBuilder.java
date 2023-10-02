@@ -1,4 +1,4 @@
-package no.ntnu.tds.model;
+package no.ntnu.erbj.tds.model;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
