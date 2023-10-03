@@ -81,21 +81,9 @@ root
 
 ## Link to repository
 
-TODO
+[GitHub Classroom](https://github.com/NTNU-BIDATA-IDATG1003-2023/mappe-idatg1003-traindispatchsystem-erikbjo)
 
 ## How to run the project
-
-[//]: # (TODO: Describe how to run your project here. What is the main class? What is the main method?
-What is the input and output of the program? What is the expected behaviour of the program?)
-
-## How to run the tests
-
-[//]: # (TODO: Describe how to run the tests here.)
-
-## References
-
-[//]: # (TODO: Include references here, if any. For example, if you have used code from the course book, include a reference to the chapter.
-Or if you have used code from a website or other source, include a link to the source.)
 
 1. Clone the repository
 2. Compile the program with:
