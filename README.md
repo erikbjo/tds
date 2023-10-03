@@ -10,6 +10,7 @@ STUDENT ID = erbj
 Train Dispatch System is a system for dispatching trains. It only shows the trains connected with Oslo S.
 
 ## Project structure
+
 ```
 root
 ├── src
@@ -40,8 +41,9 @@ root
 │   │   │               │           └── empty
 │   │   │               ├── model
 │   │   │               │   ├── Departure.java
+│   │   │               │   ├── DepartureBuilder.java
 │   │   │               │   ├── Train.java
-│   │   │               │   ├── TrainBuilder.java
+│   │   │               │   ├── TrainBuilder.java (maybe to be removed)
 │   │   │               │   ├── WagonType.java
 │   │   │               │   └── Wagon.java
 │   │   │               └── TdsApplication.java
@@ -69,13 +71,11 @@ root
 ## Link to repository
 
 TODO
->>>>>>> 9747026 (init commit, added cli and gui solution)
 
 ## How to run the project
 
 [//]: # (TODO: Describe how to run your project here. What is the main class? What is the main method?
 What is the input and output of the program? What is the expected behaviour of the program?)
-<<<<<<< HEAD
 
 ## How to run the tests
 
@@ -85,15 +85,18 @@ What is the input and output of the program? What is the expected behaviour of t
 
 [//]: # (TODO: Include references here, if any. For example, if you have used code from the course book, include a reference to the chapter.
 Or if you have used code from a website or other source, include a link to the source.)
-=======
+
 1. Clone the repository
 2. Compile the program with:
-```bash
 
-```
-3. Run the program with:
 ```bash
-java -jar TrainDispatchSystem.jar
+mvn clean package
+```
+
+3. Run the program with:
+
+```bash
+java -jar target/tds-1.0-SNAPSHOT.jar
 ```
 
 or
@@ -105,6 +108,7 @@ or
 
 1. Clone the repository
 2. Run the tests with:
+
 ```bash
 mvn test
 ```
