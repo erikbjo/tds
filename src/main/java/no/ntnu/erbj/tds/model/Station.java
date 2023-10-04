@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +29,8 @@ public class Station {
   // TODO: TBD if a builder is needed for this class
 
   /**
-   * Constructor for the Station class.
+   * Constructor for the Station class. <br>
+   * Overloaded constructor w/o departures: {@link Station#Station(String, String, int)}
    *
    * @param name the name of the station
    * @param location the location of the station
@@ -57,7 +59,37 @@ public class Station {
     this.platforms = platforms;
   }
 
-  /** Used by DB. */
+  /**
+   * Overloaded constructor for the Station class. <br>
+   * See: {@link Station#Station(String, String, java.util.List, int)}
+   *
+   * @param name the name of the station
+   * @param location the location of the station
+   * @param platforms the number of platforms at the station
+   * @throws IllegalArgumentException if the name or location is null, empty or blank. Also, if the
+   *     number of platforms is less than 1.
+   */
+  public Station(String name, String location, int platforms) {
+    if (name == null || name.isEmpty() || name.isBlank()) {
+      throw new IllegalArgumentException("Name cannot be null, empty or blank");
+    }
+    if (location == null || location.isEmpty() || location.isBlank()) {
+      throw new IllegalArgumentException("Location cannot be null, empty or blank");
+    }
+    if (platforms < 1) {
+      throw new IllegalArgumentException("Number of platforms cannot be less than 1");
+    }
+
+    this.name = name;
+    this.location = location;
+    this.departures = new ArrayList<>();
+    this.platforms = platforms;
+  }
+
+  /**
+   * Used by DB. <br>
+   * See: {@link Station#Station(String, String, java.util.List, int)}
+   */
   public Station() {
     // Empty constructor for JPA
   }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Use this file to configure logging for the application, before the spring cli is initialized -->
+<!-- Using this file to configure logging for the application, before the spring cli is initialized -->
 <configuration>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

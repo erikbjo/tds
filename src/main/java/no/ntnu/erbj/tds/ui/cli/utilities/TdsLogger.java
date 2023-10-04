@@ -3,6 +3,9 @@ package no.ntnu.erbj.tds.ui.cli.utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A singleton class that provides logging functionality.
+ */
 public class TdsLogger {
 
   private static final Logger logger = LoggerFactory.getLogger(TdsLogger.class);

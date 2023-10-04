@@ -16,10 +16,20 @@ public enum WagonType {
 
   private final int seats;
 
+  /**
+   * Constructor for the WagonType enum.
+   *
+   * @param seats the number of seats for the wagon type
+   */
   WagonType(int seats) {
     this.seats = seats;
   }
 
+  /**
+   * Gets the number of seats for the wagon type.
+   *
+   * @return the number of seats
+   */
   public int getSeats() {
     return seats;
   }

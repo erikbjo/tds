@@ -9,80 +9,6 @@ STUDENT ID = erbj
 
 Train Dispatch System is a system for dispatching trains. It only shows the trains connected with Oslo S.
 
-## Project structure
-
-```
-root
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── no
-│   │   │       └── ntnu
-│   │   │           └── tds
-│   │   │               ├── dao
-│   │   │               │   ├──DAO.java
-│   │   │               │   ├──StationDAO.java
-│   │   │               │   ├──DepartureDAO.java
-│   │   │               │   ├──TrainDAO.java
-│   │   │               │   └──WagonDAO.java
-│   │   │               ├──ui
-│   │   │               │   ├── cli
-│   │   │               │   │   ├── utilities
-│   │   │               │   │   │   └── TdsLogger.java
-│   │   │               │   │   ├── placeholder
-│   │   │               │   │   └── placeholder
-│   │   │               │   │
-│   │   │               │   └── gui
-│   │   │               │       ├── controllers
-│   │   │               │       │   ├── Controller.java
-│   │   │               │       │   └──  MainMenuController.java
-│   │   │               │       ├── view
-│   │   │               │       │   ├── View.java
-│   │   │               │       │   └──  MainMenuView.java
-│   │   │               │       └── utilities
-│   │   │               │           └── empty
-│   │   │               ├── model
-│   │   │               │   ├── Station.java
-│   │   │               │   ├── Departure.java
-│   │   │               │   ├── DepartureBuilder.java
-│   │   │               │   ├── Train.java
-│   │   │               │   ├── TrainBuilder.java (maybe to be removed)
-│   │   │               │   ├── WagonType.java
-│   │   │               │   └── Wagon.java
-│   │   │               │
-│   │   │               └── TdsApplication.java
-│   │   └── resources
-│   │       ├── logback.xml
-│   │       └── application.properties
-│   └── test
-│       └── java
-│           └── no
-│               └── ntnu
-│                   └── tds
-│                       ├── dao
-│                       │   ├── StationDAOTest.java
-│                       │   ├── DepartureDAOTest.java
-│                       │   ├── TrainDAOTest.java
-│                       │   └── WagonDAOTest.java
-│                       │
-│                       └── model
-│                           ├── StationTest.java
-│                           ├── DepartureTest.java
-│                           ├── TrainTest.java
-│                           └── WagonTest.java
-├── pom.xml
-├── README.md
-├── LICENSE
-├── mvnw
-├── mvnw.cmd
-├── HELP.md (to be removed)
-└── .gitignore
-```
-
-## Link to repository
-
-[GitHub Classroom](https://github.com/NTNU-BIDATA-IDATG1003-2023/mappe-idatg1003-traindispatchsystem-erikbjo)
-
 ## How to run the project
 
 1. Clone the repository
@@ -111,5 +37,84 @@ or
 ```bash
 mvn test
 ```
+
+## Project structure
+
+```
+root
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── no
+│   │   │       └── ntnu
+│   │   │           └── erbj
+│   │   │               └── tds
+│   │   │                   ├── dao
+│   │   │                   │   ├──DAO.java
+│   │   │                   │   ├──StationDAO.java
+│   │   │                   │   ├──DepartureDAO.java
+│   │   │                   │   ├──TrainDAO.java
+│   │   │                   │   └──WagonDAO.java
+│   │   │                   ├──ui
+│   │   │                   │   ├── cli
+│   │   │                   │   │   ├── utilities
+│   │   │                   │   │   │   └── TdsLogger.java
+│   │   │                   │   │   ├── commands
+│   │   │                   │   │   │   ├── Command.java
+│   │   │                   │   │   └── placeholder
+│   │   │                   │   │
+│   │   │                   │   └── gui
+│   │   │                   │       ├── controllers
+│   │   │                   │       │   ├── Controller.java
+│   │   │                   │       │   └──  MainMenuController.java
+│   │   │                   │       ├── view
+│   │   │                   │       │   ├── View.java
+│   │   │                   │       │   └──  MainMenuView.java
+│   │   │                   │       └── utilities
+│   │   │                   │           └── empty
+│   │   │                   ├── model
+│   │   │                   │   ├── Station.java
+│   │   │                   │   ├── Departure.java
+│   │   │                   │   ├── DepartureBuilder.java
+│   │   │                   │   ├── Train.java
+│   │   │                   │   ├── TrainBuilder.java (maybe to be removed)
+│   │   │                   │   ├── WagonType.java
+│   │   │                   │   └── Wagon.java
+│   │   │                   │
+│   │   │                   └── TdsApplication.java (main class)
+│   │   └── resources
+│   │       ├── logback.xml
+│   │       └── application.properties
+│   └── test
+│       └── java
+│           └── no
+│               └── ntnu
+│                   └── erbj   
+│                       └── tds
+│                           ├── dao
+│                           │   ├── StationDAOTest.java
+│                           │   ├── DepartureDAOTest.java
+│                           │   ├── TrainDAOTest.java
+│                           │   └── WagonDAOTest.java
+│                           │
+│                           └── model
+│                               ├── StationTest.java
+│                               ├── DepartureTest.java
+│                               ├── DepartureBuilderTest.java
+│                               ├── TrainTest.java
+│                               └── WagonTest.java
+├── pom.xml
+├── README.md
+├── LICENSE
+├── mvnw
+├── mvnw.cmd
+├── HELP.md (to be removed)
+└── .gitignore
+```
+
+## Link to repository
+
+[GitHub Classroom](https://github.com/NTNU-BIDATA-IDATG1003-2023/mappe-idatg1003-traindispatchsystem-erikbjo)
+
 
 ## References

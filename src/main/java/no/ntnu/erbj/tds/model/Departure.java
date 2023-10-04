@@ -34,14 +34,24 @@ public class Departure {
   /**
    * Constructor for the Departure class.
    *
-   * @param builder the builder to build the departure
+   * @param builder the builder to build the departure {@link DepartureBuilder}
    */
   public Departure(DepartureBuilder builder) {
-    this.departureTime = builder.getDepartureTime();
+    if (builder.getDelay() == null) {
+      this.delay = LocalTime.of(0, 0);
+    } else {
+      this.delay = builder.getDelay();
+    }
+
+    if (builder.getDepartureTime() == null) {
+      this.departureTime = LocalTime.of(0, 0);
+    } else {
+      this.departureTime = builder.getDepartureTime();
+    }
+
     this.line = builder.getLine();
     this.destination = builder.getDestination();
     this.track = builder.getTrack();
-    this.delay = builder.getDelay();
     this.train = builder.getTrain();
   }
 

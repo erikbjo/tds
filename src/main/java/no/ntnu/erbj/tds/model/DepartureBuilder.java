@@ -5,7 +5,16 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * A builder class for the departure class.
+ * A builder class for the departure class. Can have these parameters:
+ *
+ * <ul>
+ *   <li>departureTime
+ *   <li>line
+ *   <li>destination
+ *   <li>track
+ *   <li>delay
+ *   <li>train
+ * </ul>
  *
  * @version 1.0
  * @see Departure
