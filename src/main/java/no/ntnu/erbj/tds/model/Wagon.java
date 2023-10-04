@@ -84,9 +84,12 @@ public class Wagon {
    *
    * @param seats the number of seats to reserve
    * @throws IllegalArgumentException if the number of seats to reserve is greater than the number
-   *     of open seats
+   *     of open seats, or if the number of seats to reserve is less than 0
    */
   public void reserveSeats(int seats) {
+    if (seats < 0) {
+      throw new IllegalArgumentException("Number of seats cannot be less than 0");
+    }
     if (seats > openSeats) {
       throw new IllegalArgumentException("Not enough seats available");
     }
@@ -99,12 +102,16 @@ public class Wagon {
    *
    * @param seats the number of seats to cancel
    * @throws IllegalArgumentException if the number of seats to cancel is greater than the number of
-   *     reserved seats
+   *     reserved seats, or if the number of seats to cancel is less than 0
    */
   public void cancelReservation(int seats) {
+    if (seats < 0) {
+      throw new IllegalArgumentException("Number of seats cannot be less than 0");
+    }
     if (seats > reservedSeats) {
       throw new IllegalArgumentException("Not enough seats reserved");
     }
+
     openSeats += seats;
     reservedSeats -= seats;
   }
