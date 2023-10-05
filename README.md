@@ -21,7 +21,7 @@ mvn clean package
 3. Run the program with:
 
 ```bash
-java -jar target/tds-1.0-SNAPSHOT.jar
+java -jar target/tds-2.0.jar
 ```
 
 or

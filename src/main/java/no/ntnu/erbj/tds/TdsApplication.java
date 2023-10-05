@@ -1,16 +1,12 @@
 package no.ntnu.erbj.tds;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
-import no.ntnu.erbj.tds.ui.cli.commands.TestCommand;
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
 import no.ntnu.erbj.tds.ui.gui.GuiLauncher;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.shell.command.annotation.CommandScan;
-import org.springframework.shell.command.annotation.EnableCommand;
 
 /**
  * The main class of the application. This class is responsible for starting the application.
