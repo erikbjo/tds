@@ -29,6 +29,7 @@
             <artifactId>spring-shell-starter</artifactId>
         </dependency>
 
+        <!-- Database dependencies -->
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
@@ -38,6 +39,11 @@
             <groupId>org.apache.derby</groupId>
             <artifactId>derbytools</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>4.0.1</version>
         </dependency>
 
         <!-- Test dependencies -->

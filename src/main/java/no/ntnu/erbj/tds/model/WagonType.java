@@ -33,4 +33,23 @@ public enum WagonType {
   public int getSeats() {
     return seats;
   }
+
+  /**
+   * Gets the wagon type from a string.
+   *
+   * @param wagonType the wagon type as a string
+   * @return the wagon type
+   * @throws IllegalArgumentException if the wagon type is invalid
+   */
+  public static WagonType getWagonTypeByString(String wagonType) {
+    return switch (wagonType.trim().toUpperCase()) {
+      case "PASSENGER" -> PASSENGER;
+      case "SILENT_PASSENGER" -> SILENT_PASSENGER;
+      case "FREIGHT" -> FREIGHT;
+      case "FAMILY" -> FAMILY;
+      case "SLEEPING" -> SLEEPING;
+      case "CAFETERIA" -> CAFETERIA;
+      default -> throw new IllegalArgumentException("Invalid wagon type: " + wagonType);
+    };
+  }
 }
