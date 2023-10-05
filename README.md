@@ -56,6 +56,11 @@ root
 │   │   │                   │   ├──TrainDAO.java
 │   │   │                   │   └──WagonDAO.java
 │   │   │                   ├──ui
+│   │   │                   │   ├── shared
+│   │   │                   │   │   ├── TimeController.java
+│   │   │                   │   │   │   
+│   │   │                   │   │   └── functions
+│   │   │                   │   │       ├── // to be added
 │   │   │                   │   ├── cli
 │   │   │                   │   │   ├── utilities
 │   │   │                   │   │   │   └── TdsLogger.java
@@ -115,6 +120,5 @@ root
 ## Link to repository
 
 [GitHub Classroom](https://github.com/NTNU-BIDATA-IDATG1003-2023/mappe-idatg1003-traindispatchsystem-erikbjo)
-
 
 ## References
