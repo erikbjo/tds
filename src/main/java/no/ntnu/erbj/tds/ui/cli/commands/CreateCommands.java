@@ -1,8 +1,9 @@
 package no.ntnu.erbj.tds.ui.cli.commands;
 
 import java.util.Scanner;
-
+import no.ntnu.erbj.tds.dao.TrainDAO;
 import no.ntnu.erbj.tds.dao.WagonDAO;
+import no.ntnu.erbj.tds.model.Train;
 import no.ntnu.erbj.tds.model.Wagon;
 import no.ntnu.erbj.tds.model.WagonType;
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
@@ -49,7 +50,28 @@ public class CreateCommands {
 
   @ShellMethod(value = "Start sequence to create a train.", key = "create-train")
   public void createTrain() {
-    // TODO: Implement, decide if train needs builder class or not
+    Scanner scanner = new Scanner(System.in);
+    TdsLogger logger = TdsLogger.getInstance();
+    logger.info("Do you want to create train? (y/exit): ");
+    String answer = scanner.nextLine();
+
+    if ("exit".equalsIgnoreCase(answer)) {
+      TdsLogger.getInstance().info("Exiting object creation.");
+      return;
+	} else if (!"y".equalsIgnoreCase(answer)) {
+      TdsLogger.getInstance().info("Invalid input.");
+      createTrain();
+	}
+
+    Train train = new Train();
+    TdsLogger.getInstance().info("Train created: " + train);
+
+    TdsLogger.getInstance().info("Trying to enter into DB");
+    try {
+      TrainDAO.getInstance().add(train);
+    } catch (Exception e) {
+      TdsLogger.getInstance().warn(e.getMessage());
+    }
   }
 
   @ShellMethod(value = "Start sequence to create a departure.", key = "create-departure")
