@@ -1,6 +1,8 @@
 package no.ntnu.erbj.tds.model;
 
 import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so * is used
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -18,7 +20,6 @@ import java.util.NoSuchElementException;
  *
  * @version 1.0
  * @see Wagon
- * @see TrainBuilder
  * @author Erik Bjørnsen
  */
 @Entity
@@ -30,12 +31,26 @@ public class Train {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  public Train(TrainBuilder builder) {
-    this.wagons = builder.wagons;
+  //   public Train(TrainBuilder builder) {
+  //     this.wagons = builder.wagons;
+  //   }
+
+  /**
+   * Constructor for the Train class.
+   *
+   * @param wagons the wagons of the train
+   * @throws IllegalArgumentException if the wagons are null
+   */
+  public Train(List<Wagon> wagons) {
+    if (wagons == null) {
+      throw new IllegalArgumentException("Wagons cannot be null");
+    }
+    this.wagons = wagons;
   }
 
-  /** Used by DB. */
+  /** Overloaded constructor for the Train class. */
   public Train() {
+    wagons = new ArrayList<>();
     // Empty constructor for JPA
   }
 
