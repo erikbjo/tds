@@ -1,7 +1,9 @@
 package no.ntnu.erbj.tds;
 
+import java.util.ArrayList;
 import java.util.Scanner;
-
+import no.ntnu.erbj.tds.dao.StationDAO;
+import no.ntnu.erbj.tds.model.Station;
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
 import no.ntnu.erbj.tds.ui.gui.GuiLauncher;
 import org.springframework.boot.SpringApplication;
@@ -41,6 +43,8 @@ public class TdsApplication {
     Scanner scanner = new Scanner(System.in);
     String choice = scanner.nextLine();
 
+    createOsloS();
+
     switch (choice) {
       case "1":
         SpringApplication.run(TdsApplication.class, args);
@@ -68,5 +72,22 @@ public class TdsApplication {
   public static void launchGui(String[] args) {
     TdsLogger.getInstance().info("Launching GUI...");
     GuiLauncher.launch(args);
+  }
+
+  /**
+   * Creates the Oslo S station if it does not already exist in the database. This is used for
+   * testing and because the task description is to only have one station.
+   *
+   * @see Station
+   */
+  private static void createOsloS() {
+    for (Station station : StationDAO.getInstance().getAll()) {
+      if (station.getName().equals("Oslo S")) {
+        return;
+      }
+    }
+
+    Station osloS = new Station("Oslo S", "Oslo", new ArrayList<>(), 10);
+    StationDAO.getInstance().add(osloS);
   }
 }
