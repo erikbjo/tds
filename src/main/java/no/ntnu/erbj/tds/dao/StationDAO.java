@@ -1,38 +1,19 @@
 package no.ntnu.erbj.tds.dao;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import no.ntnu.erbj.tds.model.Station;
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
+@Transactional
 public class StationDAO implements DAO<Station> {
-  private static final StationDAO instance = new StationDAO();
-  private final EntityManagerFactory emf;
-  private final EntityManager em;
-
-  /**
-   * Constructor for the StationDAO class.
-   *
-   * <p>Initializes the EntityManagerFactory and EntityManager.
-   */
-  private StationDAO() {
-    this.emf = Persistence.createEntityManagerFactory("tdsDB");
-    this.em = this.emf.createEntityManager();
-  }
-
-  /**
-   * Returns the instance of the StationDAO class.
-   *
-   * @return the instance of the StationDAO class
-   */
-  public static StationDAO getInstance() {
-    return instance;
-  }
+  @PersistenceContext
+  private EntityManager em;
 
   /**
    * Adds a new instance of an entity to the database.
@@ -41,7 +22,7 @@ public class StationDAO implements DAO<Station> {
    */
   @Override
   public void add(Station station) {
-    if (getInstance().getAll().contains(station)) {
+    if (getAll().contains(station)) {
       throw new IllegalArgumentException("Instance of station already exists in the database.");
     } else {
       this.em.getTransaction().begin();
@@ -121,9 +102,6 @@ public class StationDAO implements DAO<Station> {
   public void close() {
     if (em.isOpen()) {
       this.em.close();
-    }
-    if (emf.isOpen()) {
-      this.emf.close();
     }
   }
 }

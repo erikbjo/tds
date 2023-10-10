@@ -6,9 +6,11 @@ import no.ntnu.erbj.tds.dao.StationDAO;
 import no.ntnu.erbj.tds.model.Station;
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
 import no.ntnu.erbj.tds.ui.gui.GuiLauncher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.shell.command.annotation.CommandScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * The main class of the application. This class is responsible for starting the application.
@@ -21,6 +23,7 @@ import org.springframework.shell.command.annotation.CommandScan;
  * @author Erik Bjørnsen
  */
 @SpringBootApplication
+@EnableTransactionManagement
 @CommandScan(basePackages = "no.ntnu.erbj.tds.ui.cli.commands")
 public class TdsApplication {
 
@@ -43,7 +46,6 @@ public class TdsApplication {
     Scanner scanner = new Scanner(System.in);
     String choice = scanner.nextLine();
 
-    createOsloS();
 
     switch (choice) {
       case "1":
@@ -72,22 +74,5 @@ public class TdsApplication {
   public static void launchGui(String[] args) {
     TdsLogger.getInstance().info("Launching GUI...");
     GuiLauncher.launch(args);
-  }
-
-  /**
-   * Creates the Oslo S station if it does not already exist in the database. This is used for
-   * testing and because the task description is to only have one station.
-   *
-   * @see Station
-   */
-  private static void createOsloS() {
-    for (Station station : StationDAO.getInstance().getAll()) {
-      if (station.getName().equals("Oslo S")) {
-        return;
-      }
-    }
-
-    Station osloS = new Station("Oslo S", "Oslo", new ArrayList<>(), 10);
-    StationDAO.getInstance().add(osloS);
   }
 }

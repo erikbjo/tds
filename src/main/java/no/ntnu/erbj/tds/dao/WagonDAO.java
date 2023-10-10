@@ -1,38 +1,20 @@
 package no.ntnu.erbj.tds.dao;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import no.ntnu.erbj.tds.model.Wagon;
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
+@Transactional
 public class WagonDAO implements DAO<Wagon> {
-  private static final WagonDAO instance = new WagonDAO();
-  private final EntityManagerFactory emf;
-  private final EntityManager em;
-
-  /**
-   * Constructor for the WagonDAO class.
-   *
-   * <p>Initializes the EntityManagerFactory and EntityManager.
-   */
-  private WagonDAO() {
-    this.emf = Persistence.createEntityManagerFactory("tdsDB");
-    this.em = this.emf.createEntityManager();
-  }
-
-  /**
-   * Returns the instance of the WagonDAO class.
-   *
-   * @return the instance of the WagonDAO class
-   */
-  public static WagonDAO getInstance() {
-    return instance;
-  }
+  @PersistenceContext
+  private EntityManager em;
 
   /**
    * Adds a new instance of an entity to the database.
@@ -41,12 +23,12 @@ public class WagonDAO implements DAO<Wagon> {
    */
   @Override
   public void add(Wagon wagon) {
-    if (getInstance().getAll().contains(wagon)) {
+    if (getAll().contains(wagon)) {
       throw new IllegalArgumentException("Instance of wagon already exists in the database.");
     } else {
-      this.em.getTransaction().begin();
+//      this.em.getTransaction().begin();
       this.em.persist(wagon);
-      this.em.getTransaction().commit();
+//      this.em.getTransaction().commit();
     }
   }
 
@@ -122,9 +104,6 @@ public class WagonDAO implements DAO<Wagon> {
   public void close() {
     if (em.isOpen()) {
       this.em.close();
-    }
-    if (emf.isOpen()) {
-      this.emf.close();
     }
   }
 }

@@ -1,38 +1,18 @@
 package no.ntnu.erbj.tds.dao;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import no.ntnu.erbj.tds.model.Train;
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
+@Transactional
 public class TrainDAO implements DAO<Train> {
-  private static final TrainDAO instance = new TrainDAO();
-  private final EntityManagerFactory emf;
-  private final EntityManager em;
-
-  /**
-   * Constructor for the TrainDAO class.
-   *
-   * <p>Initializes the EntityManagerFactory and EntityManager.
-   */
-  private TrainDAO() {
-    this.emf = Persistence.createEntityManagerFactory("tdsDB");
-    this.em = this.emf.createEntityManager();
-  }
-
-  /**
-   * Returns the instance of the TrainDAO class.
-   *
-   * @return the instance of the TrainDAO class
-   */
-  public static TrainDAO getInstance() {
-    return instance;
-  }
+  @PersistenceContext private EntityManager em;
 
   /**
    * Adds a new instance of an entity to the database.
@@ -41,7 +21,7 @@ public class TrainDAO implements DAO<Train> {
    */
   @Override
   public void add(Train train) {
-    if (getInstance().getAll().contains(train)) {
+    if (getAll().contains(train)) {
       throw new IllegalArgumentException("Instance of train already exists in the database.");
     } else {
       this.em.getTransaction().begin();
@@ -112,8 +92,7 @@ public class TrainDAO implements DAO<Train> {
   public void printAllDetails() {
     List<Train> trainList = getAll();
     for (Train train : trainList) {
-      TdsLogger.getInstance()
-          .info("Train Details" + " :: " + train.getId());
+      TdsLogger.getInstance().info("Train Details" + " :: " + train.getId());
     }
   }
 
@@ -122,9 +101,6 @@ public class TrainDAO implements DAO<Train> {
   public void close() {
     if (em.isOpen()) {
       this.em.close();
-    }
-    if (emf.isOpen()) {
-      this.emf.close();
     }
   }
 }

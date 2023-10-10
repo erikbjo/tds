@@ -1,38 +1,19 @@
 package no.ntnu.erbj.tds.dao;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import no.ntnu.erbj.tds.model.Departure;
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
+@Transactional
 public class DepartureDAO implements DAO<Departure> {
-  private static final DepartureDAO instance = new DepartureDAO();
-  private final EntityManagerFactory emf;
-  private final EntityManager em;
-
-  /**
-   * Constructor for the DepartureDAO class.
-   *
-   * <p>Initializes the EntityManagerFactory and EntityManager.
-   */
-  private DepartureDAO() {
-    this.emf = Persistence.createEntityManagerFactory("tdsDB");
-    this.em = this.emf.createEntityManager();
-  }
-
-  /**
-   * Returns the instance of the DepartureDAO class.
-   *
-   * @return the instance of the DepartureDAO class
-   */
-  public static DepartureDAO getInstance() {
-    return instance;
-  }
+  @PersistenceContext private EntityManager em;
 
   /**
    * Adds a new instance of an entity to the database.
@@ -41,7 +22,7 @@ public class DepartureDAO implements DAO<Departure> {
    */
   @Override
   public void add(Departure departure) {
-    if (getInstance().getAll().contains(departure)) {
+    if (getAll().contains(departure)) {
       throw new IllegalArgumentException("Instance of departure already exists in the database.");
     } else {
       this.em.getTransaction().begin();
@@ -122,8 +103,8 @@ public class DepartureDAO implements DAO<Departure> {
     if (em.isOpen()) {
       this.em.close();
     }
-    if (emf.isOpen()) {
-      this.emf.close();
-    }
+    // if (emf.isOpen()) {
+    //  this.emf.close();
+    // }
   }
 }
