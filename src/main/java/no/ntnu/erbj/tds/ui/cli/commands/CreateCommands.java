@@ -112,7 +112,7 @@ public class CreateCommands {
     String trainIdString;
     boolean isTrainIdValid;
 
-    trainDAO.printAllDetails();
+    trainDAO.printAllUnoccupiedTrains();
     do {
       logger.info("Enter train id: ");
       trainIdString = scanner.nextLine();
@@ -121,8 +121,7 @@ public class CreateCommands {
         String finalTrainIdString = trainIdString; // IDE warning fix
         isTrainIdValid =
             trainDAO.find(Long.parseLong(trainIdString)).isPresent()
-                && departureDAO.getAll().stream()
-                    .noneMatch(dep -> dep.getTrain().getId() == Long.parseLong(finalTrainIdString));
+                && trainDAO.trainIsValid(Long.parseLong(trainIdString));
       } catch (NumberFormatException e) {
         isTrainIdValid = false;
       }
@@ -159,9 +158,15 @@ public class CreateCommands {
     builder.setDelay(delay);
 
     Departure departure = builder.build();
-    departure.setTrain(trainDAO.find(Long.parseLong(trainIdString)).get());
+
     try {
       departureDAO.add(departure);
+
+      trainDAO.find(Long.parseLong(trainIdString)).ifPresent(train -> {
+        Train managedTrain = trainDAO.merge(train);
+        departure.setTrain(managedTrain);
+        departureDAO.update(departure);
+      });
     } catch (Exception e) {
       TdsLogger.getInstance().warn(e.getMessage());
     }
