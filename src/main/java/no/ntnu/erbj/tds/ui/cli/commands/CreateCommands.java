@@ -27,7 +27,7 @@ public class CreateCommands {
   @Autowired private WagonDAO wagonDAO;
 
   /** Start sequence to create a wagon. */
-  @ShellMethod(value = "Start sequence to create a wagon.", key = "create-wagon")
+  @ShellMethod(value = "Start sequence to create a wagon.", key = "crwagon")
   public void createWagon() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
@@ -63,7 +63,7 @@ public class CreateCommands {
   }
 
   /** Start sequence to create a train. */
-  @ShellMethod(value = "Start sequence to create a train.", key = "create-train")
+  @ShellMethod(value = "Start sequence to create a train.", key = "crtrain")
   public void createTrain() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
@@ -90,7 +90,7 @@ public class CreateCommands {
   }
 
   /** Start sequence to create a departure. */
-  @ShellMethod(value = "Start sequence to create a departure.", key = "create-departure")
+  @ShellMethod(value = "Start sequence to create a departure.", key = "crdeparture")
   public void createDeparture() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
@@ -173,7 +173,7 @@ public class CreateCommands {
   }
 
   /** Start sequence to create a reservation. Note: This is not implemented yet */
-  @ShellMethod(value = "Start sequence to create a reservation.", key = "create-reservation")
+  @ShellMethod(value = "Start sequence to create a reservation.", key = "crreservation")
   public void createReservation() {
     // TODO: Implement, need implementation of departure first
   }
