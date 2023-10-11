@@ -5,6 +5,7 @@ import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
 import no.ntnu.erbj.tds.ui.gui.GuiLauncher;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.shell.command.annotation.CommandScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableTransactionManagement
 @CommandScan(basePackages = "no.ntnu.erbj.tds.ui.cli.commands")
+@EntityScan(basePackages = "no.ntnu.erbj.tds.model")
 public class TdsApplication {
 
   /**
