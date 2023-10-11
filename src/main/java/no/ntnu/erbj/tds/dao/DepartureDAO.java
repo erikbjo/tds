@@ -17,37 +17,32 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Erik
  */
 @Repository
-@Transactional
 public class DepartureDAO implements DAO<Departure> {
   @PersistenceContext private EntityManager em;
 
   /** {@inheritDoc} */
   @Override
+  @Transactional
   public void add(Departure departure) {
     if (getAll().contains(departure)) {
       throw new IllegalArgumentException("Instance of departure already exists in the database.");
     } else {
-      this.em.getTransaction().begin();
       this.em.persist(departure);
-      this.em.getTransaction().commit();
     }
   }
 
   /** {@inheritDoc} */
   @Override
+  @Transactional
   public void remove(Departure departure) {
-    em.getTransaction().begin();
     em.remove(em.contains(departure) ? departure : em.merge(departure));
-    em.getTransaction().commit();
   }
 
   /** {@inheritDoc} */
   @Override
+  @Transactional
   public void update(Departure departure) {
-    em.getTransaction().begin();
     em.merge(departure);
-    em.flush();
-    em.getTransaction().commit();
   }
 
   /** {@inheritDoc} */
@@ -75,14 +70,6 @@ public class DepartureDAO implements DAO<Departure> {
     List<Departure> departureList = getAll();
     for (Departure departure : departureList) {
       TdsLogger.getInstance().info("Departure Details" + " :: " + departure.getId());
-    }
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void close() {
-    if (em.isOpen()) {
-      this.em.close();
     }
   }
 }

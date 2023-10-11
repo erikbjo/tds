@@ -10,45 +10,40 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * This class is a Data Access Object (DAO) for the Wagon class. It provides methods for
- * accessing the database.
+ * This class is a Data Access Object (DAO) for the Wagon class. It provides methods for accessing
+ * the database.
  *
  * @version 1.1
  * @author Erik
  */
 @Repository
-@Transactional
 public class WagonDAO implements DAO<Wagon> {
-  @PersistenceContext
-  private EntityManager em;
+  @PersistenceContext private EntityManager em;
 
   /** {@inheritDoc} */
+  @Transactional
   @Override
   public void add(Wagon wagon) {
     if (getAll().contains(wagon)) {
       throw new IllegalArgumentException("Instance of wagon already exists in the database.");
     } else {
-//      this.em.getTransaction().begin();
       this.em.persist(wagon);
-//      this.em.getTransaction().commit();
     }
   }
 
   /** {@inheritDoc} */
+  @Transactional
   @Override
   public void remove(Wagon wagon) {
-    em.getTransaction().begin();
-    em.remove(em.contains(wagon) ? wagon : em.merge(wagon));
-    em.getTransaction().commit();
+    Wagon managedWagon = em.contains(wagon) ? wagon : em.merge(wagon);
+    em.remove(managedWagon);
   }
 
   /** {@inheritDoc} */
+  @Transactional
   @Override
   public void update(Wagon wagon) {
-    em.getTransaction().begin();
     em.merge(wagon);
-    em.flush();
-    em.getTransaction().commit();
   }
 
   /** {@inheritDoc} */
@@ -77,14 +72,6 @@ public class WagonDAO implements DAO<Wagon> {
     for (Wagon wagon : wagonList) {
       TdsLogger.getInstance()
           .info("Wagon Details" + " :: " + wagon.getId() + " :: " + wagon.getWagonType());
-    }
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void close() {
-    if (em.isOpen()) {
-      this.em.close();
     }
   }
 }

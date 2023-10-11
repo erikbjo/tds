@@ -17,37 +17,32 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Erik
  */
 @Repository
-@Transactional
 public class TrainDAO implements DAO<Train> {
   @PersistenceContext private EntityManager em;
 
   /** {@inheritDoc} */
   @Override
+  @Transactional
   public void add(Train train) {
     if (getAll().contains(train)) {
       throw new IllegalArgumentException("Instance of train already exists in the database.");
     } else {
-      this.em.getTransaction().begin();
       this.em.persist(train);
-      this.em.getTransaction().commit();
     }
   }
 
   /** {@inheritDoc} */
   @Override
+  @Transactional
   public void remove(Train train) {
-    em.getTransaction().begin();
     em.remove(em.contains(train) ? train : em.merge(train));
-    em.getTransaction().commit();
   }
 
   /** {@inheritDoc} */
   @Override
+  @Transactional
   public void update(Train train) {
-    em.getTransaction().begin();
     em.merge(train);
-    em.flush();
-    em.getTransaction().commit();
   }
 
   /** {@inheritDoc} */
@@ -75,14 +70,6 @@ public class TrainDAO implements DAO<Train> {
     List<Train> trainList = getAll();
     for (Train train : trainList) {
       TdsLogger.getInstance().info("Train Details" + " :: " + train.getId());
-    }
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void close() {
-    if (em.isOpen()) {
-      this.em.close();
     }
   }
 }
