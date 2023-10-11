@@ -1,12 +1,8 @@
 package no.ntnu.erbj.tds;
 
-import java.util.ArrayList;
 import java.util.Scanner;
-import no.ntnu.erbj.tds.dao.StationDAO;
-import no.ntnu.erbj.tds.model.Station;
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
 import no.ntnu.erbj.tds.ui.gui.GuiLauncher;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.shell.command.annotation.CommandScan;

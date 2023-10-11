@@ -9,17 +9,19 @@ import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * This class is a Data Access Object (DAO) for the Station class. It provides methods for
+ * accessing the database.
+ *
+ * @version 1.1
+ * @author Erik
+ */
 @Repository
 @Transactional
 public class StationDAO implements DAO<Station> {
-  @PersistenceContext
-  private EntityManager em;
+  @PersistenceContext private EntityManager em;
 
-  /**
-   * Adds a new instance of an entity to the database.
-   *
-   * @param station The entity to be added.
-   */
+  /** {@inheritDoc} */
   @Override
   public void add(Station station) {
     if (getAll().contains(station)) {
@@ -31,11 +33,7 @@ public class StationDAO implements DAO<Station> {
     }
   }
 
-  /**
-   * Removes an instance of an entity from the database.
-   *
-   * @param station The entity to be removed.
-   */
+  /** {@inheritDoc} */
   @Override
   public void remove(Station station) {
     em.getTransaction().begin();
@@ -43,11 +41,7 @@ public class StationDAO implements DAO<Station> {
     em.getTransaction().commit();
   }
 
-  /**
-   * Updates all fields of an entity in the database.
-   *
-   * @param station The entity to be updated.
-   */
+  /** {@inheritDoc} */
   @Override
   public void update(Station station) {
     em.getTransaction().begin();
@@ -56,39 +50,26 @@ public class StationDAO implements DAO<Station> {
     em.getTransaction().commit();
   }
 
-  /**
-   * Returns an iterator of all entity instances in the database.
-   *
-   * @return An iterator of all entities in the database.
-   */
+  /** {@inheritDoc} */
   @Override
   public Iterator<Station> iterator() {
     TypedQuery<Station> query = this.em.createQuery("SELECT s FROM Station s", Station.class);
     return query.getResultList().iterator();
   }
 
-  /**
-   * Finds a specific entity instance by using the entity's id.
-   *
-   * @param id The id as a String.
-   * @return The entity instance found.
-   */
+  /** {@inheritDoc} */
   @Override
   public Optional<Station> find(Long id) {
     return Optional.ofNullable(em.find(Station.class, id));
   }
 
-  /**
-   * Returns a List of all entity instances in the database.
-   *
-   * @return All entity instances in the database as a List.
-   */
+  /** {@inheritDoc} */
   @Override
   public List<Station> getAll() {
     return em.createQuery("SELECT s FROM Station s", Station.class).getResultList();
   }
 
-  /** Prints entity-specific details of all the entity instances in the database. */
+  /** {@inheritDoc} */
   @Override
   public void printAllDetails() {
     List<Station> stationList = getAll();
@@ -97,7 +78,7 @@ public class StationDAO implements DAO<Station> {
     }
   }
 
-  /** Closes the EntityManagerFactory and the EntityManager. */
+  /** {@inheritDoc} */
   @Override
   public void close() {
     if (em.isOpen()) {

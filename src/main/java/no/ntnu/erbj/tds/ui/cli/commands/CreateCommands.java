@@ -11,18 +11,22 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * Commands for creating objects.
+ *
+ * @author Erik
+ * @version 1.1
+ */
 @ShellComponent
 @EnableTransactionManagement
 public class CreateCommands {
-  @Autowired
-  private DepartureDAO departureDAO;
+  @Autowired private DepartureDAO departureDAO;
 
-  @Autowired
-  private TrainDAO trainDAO;
+  @Autowired private TrainDAO trainDAO;
 
-  @Autowired
-  private WagonDAO wagonDAO;
+  @Autowired private WagonDAO wagonDAO;
 
+  /** Start sequence to create a wagon. */
   @ShellMethod(value = "Start sequence to create a wagon.", key = "create-wagon")
   public void createWagon() {
     Scanner scanner = new Scanner(System.in);
@@ -58,6 +62,7 @@ public class CreateCommands {
     }
   }
 
+  /** Start sequence to create a train. */
   @ShellMethod(value = "Start sequence to create a train.", key = "create-train")
   public void createTrain() {
     Scanner scanner = new Scanner(System.in);
@@ -84,6 +89,7 @@ public class CreateCommands {
     }
   }
 
+  /** Start sequence to create a departure. */
   @ShellMethod(value = "Start sequence to create a departure.", key = "create-departure")
   public void createDeparture() {
     Scanner scanner = new Scanner(System.in);
@@ -122,7 +128,8 @@ public class CreateCommands {
     logger.info("Enter train id: ");
     trainDAO.printAllDetails();
     Long trainId = scanner.nextLong();
-    builder.setTrain(trainDAO.find(trainId).get());
+
+    trainDAO.find(trainId).ifPresent(builder::setTrain);
 
     Departure departure = builder.build();
     try {
@@ -132,6 +139,7 @@ public class CreateCommands {
     }
   }
 
+  /** Start sequence to create a reservation. Note: This is not implemented yet */
   @ShellMethod(value = "Start sequence to create a reservation.", key = "create-reservation")
   public void createReservation() {
     // TODO: Implement, need implementation of departure first

@@ -6,7 +6,12 @@ import no.ntnu.erbj.tds.ui.shared.TimeController;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
-/** Commands for manipulating the current time. */
+/**
+ * Commands for manipulating the current time.
+ *
+ * @author Erik
+ * @version 1.0
+ */
 @ShellComponent
 public class TimeCommands {
 
