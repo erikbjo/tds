@@ -1,12 +1,13 @@
 package no.ntnu.erbj.tds;
 
 import java.util.Scanner;
-
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
 import no.ntnu.erbj.tds.ui.gui.GuiLauncher;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.shell.command.annotation.CommandScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * The main class of the application. This class is responsible for starting the application.
@@ -19,7 +20,9 @@ import org.springframework.shell.command.annotation.CommandScan;
  * @author Erik Bjørnsen
  */
 @SpringBootApplication
+@EnableTransactionManagement
 @CommandScan(basePackages = "no.ntnu.erbj.tds.ui.cli.commands")
+@EntityScan(basePackages = "no.ntnu.erbj.tds.model")
 public class TdsApplication {
 
   /**
@@ -40,6 +43,7 @@ public class TdsApplication {
 
     Scanner scanner = new Scanner(System.in);
     String choice = scanner.nextLine();
+
 
     switch (choice) {
       case "1":

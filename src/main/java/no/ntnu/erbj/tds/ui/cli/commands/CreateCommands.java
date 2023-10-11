@@ -1,19 +1,33 @@
 package no.ntnu.erbj.tds.ui.cli.commands;
 
 import java.util.Scanner;
+import no.ntnu.erbj.tds.dao.DepartureDAO;
 import no.ntnu.erbj.tds.dao.TrainDAO;
 import no.ntnu.erbj.tds.dao.WagonDAO;
-import no.ntnu.erbj.tds.model.Train;
-import no.ntnu.erbj.tds.model.Wagon;
-import no.ntnu.erbj.tds.model.WagonType;
+import no.ntnu.erbj.tds.model.*;
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * Commands for creating objects.
+ *
+ * @author Erik
+ * @version 1.1
+ */
 @ShellComponent
+@EnableTransactionManagement
 public class CreateCommands {
+  @Autowired private DepartureDAO departureDAO;
 
-  @ShellMethod(value = "Start sequence to create a wagon.", key = "create-wagon")
+  @Autowired private TrainDAO trainDAO;
+
+  @Autowired private WagonDAO wagonDAO;
+
+  /** Start sequence to create a wagon. */
+  @ShellMethod(value = "Start sequence to create a wagon.", key = "crwagon")
   public void createWagon() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
@@ -42,13 +56,14 @@ public class CreateCommands {
 
     TdsLogger.getInstance().info("Trying to enter into DB");
     try {
-      WagonDAO.getInstance().add(wagon);
+      wagonDAO.add(wagon);
     } catch (Exception e) {
       TdsLogger.getInstance().warn(e.getMessage());
     }
   }
 
-  @ShellMethod(value = "Start sequence to create a train.", key = "create-train")
+  /** Start sequence to create a train. */
+  @ShellMethod(value = "Start sequence to create a train.", key = "crtrain")
   public void createTrain() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
@@ -58,28 +73,107 @@ public class CreateCommands {
     if ("exit".equalsIgnoreCase(answer)) {
       TdsLogger.getInstance().info("Exiting object creation.");
       return;
-	} else if (!"y".equalsIgnoreCase(answer)) {
+    } else if (!"y".equalsIgnoreCase(answer)) {
       TdsLogger.getInstance().info("Invalid input.");
       createTrain();
-	}
+    }
 
     Train train = new Train();
     TdsLogger.getInstance().info("Train created: " + train);
 
     TdsLogger.getInstance().info("Trying to enter into DB");
     try {
-      TrainDAO.getInstance().add(train);
+      trainDAO.add(train);
     } catch (Exception e) {
       TdsLogger.getInstance().warn(e.getMessage());
     }
   }
 
-  @ShellMethod(value = "Start sequence to create a departure.", key = "create-departure")
+  /** Start sequence to create a departure. */
+  @ShellMethod(value = "Start sequence to create a departure.", key = "crdeparture")
   public void createDeparture() {
-    // TODO: Implement, need implementation of train first
+    Scanner scanner = new Scanner(System.in);
+    TdsLogger logger = TdsLogger.getInstance();
+    logger.info("Do you want to create departure? (y/exit): ");
+    String answer = scanner.nextLine();
+
+    if ("exit".equalsIgnoreCase(answer)) {
+      TdsLogger.getInstance().info("Exiting object creation.");
+    } else if (!"y".equalsIgnoreCase(answer)) {
+      TdsLogger.getInstance().info("Invalid input.");
+      createDeparture();
+    }
+
+    if (trainDAO.getAll().isEmpty()) {
+      TdsLogger.getInstance().info("No trains in database. Please create a train first.");
+      return;
+    }
+
+    String trainIdString;
+    boolean isTrainIdValid;
+
+    trainDAO.printAllUnoccupiedTrains();
+    do {
+      logger.info("Enter train id: ");
+      trainIdString = scanner.nextLine();
+
+      try {
+        String finalTrainIdString = trainIdString; // IDE warning fix
+        isTrainIdValid =
+            trainDAO.find(Long.parseLong(trainIdString)).isPresent()
+                && trainDAO.trainIsValid(Long.parseLong(trainIdString));
+      } catch (NumberFormatException e) {
+        isTrainIdValid = false;
+      }
+
+      if (trainIdString.equalsIgnoreCase("exit") || trainIdString.isEmpty()) {
+        logger.info("Exiting object creation.");
+        return;
+      } else if (!isTrainIdValid) {
+        logger.info("Invalid train id.");
+      }
+
+    } while (!isTrainIdValid);
+
+    DepartureBuilder builder = new DepartureBuilder();
+    logger.info("Enter departure time (HH:mm): ");
+    String departureTime = scanner.nextLine();
+    builder.setDepartureTime(departureTime);
+
+    logger.info("Enter line: ");
+    String line = scanner.nextLine();
+    builder.setLine(line);
+
+    logger.info("Enter destination: ");
+    String destination = scanner.nextLine();
+    builder.setDestination(destination);
+
+    logger.info("Enter track: ");
+    int track = scanner.nextInt();
+    builder.setTrack(track);
+
+    scanner.nextLine();
+    logger.info("Enter delay time (HH:mm): ");
+    String delay = scanner.nextLine();
+    builder.setDelay(delay);
+
+    Departure departure = builder.build();
+
+    try {
+      departureDAO.add(departure);
+
+      trainDAO.find(Long.parseLong(trainIdString)).ifPresent(train -> {
+        Train managedTrain = trainDAO.merge(train);
+        departure.setTrain(managedTrain);
+        departureDAO.update(departure);
+      });
+    } catch (Exception e) {
+      TdsLogger.getInstance().warn(e.getMessage());
+    }
   }
 
-  @ShellMethod(value = "Start sequence to create a reservation.", key = "create-reservation")
+  /** Start sequence to create a reservation. Note: This is not implemented yet */
+  @ShellMethod(value = "Start sequence to create a reservation.", key = "crreservation")
   public void createReservation() {
     // TODO: Implement, need implementation of departure first
   }

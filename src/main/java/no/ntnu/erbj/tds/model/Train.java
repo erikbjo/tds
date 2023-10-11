@@ -1,7 +1,6 @@
 package no.ntnu.erbj.tds.model;
 
 import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so * is used
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -25,6 +24,7 @@ import java.util.NoSuchElementException;
 @Entity
 public class Train {
   @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "train_id")
   private List<Wagon> wagons;
 
   @Id
@@ -50,8 +50,9 @@ public class Train {
 
   /** Overloaded constructor for the Train class. */
   public Train() {
-    wagons = new ArrayList<>();
-    // Empty constructor for JPA
+    if (wagons == null) {
+      wagons = new ArrayList<>(); // Got DB error when not checking for null
+    }                             // Even though the field should always be null (?)
   }
 
   /**
