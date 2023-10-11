@@ -42,17 +42,6 @@ public class TimeCommands {
     TimeController.setCurrentTime(LocalTime.parse(time));
   }
 
-  /** Increments the current time by one minute. */
-  @ShellMethod(value = "Increase minutes by the given amount.", key = "time-increase-minutes")
-  public void increaseMinutes(int minutes) {
-    TimeController.increaseMinutes(minutes);
-  }
-
-  /** Decreases the current time by the given amount of minutes. */
-  @ShellMethod(value = "Decrease minutes by the given amount.", key = "time-decrease-minutes")
-  public void decreaseMinutes(int minutes) {
-    TimeController.decreaseMinutes(minutes);
-  }
 
   /** Increments the current time by one minute. */
   @ShellMethod(
@@ -68,22 +57,6 @@ public class TimeCommands {
       key = {"m--", "time-decrement-minutes"})
   public void decrementMinutes() {
     TimeController.decrementMinutes();
-  }
-
-  /** Increments the current time by one minute. */
-  @ShellMethod(
-      value = "Increase hours by the given amount.",
-      key = {"time-increase-hours"})
-  public void increaseHours(int hours) {
-    TimeController.increaseHours(hours);
-  }
-
-  /** Decreases the current time by the given amount of hours. */
-  @ShellMethod(
-      value = "Decrease hours by the given amount.",
-      key = {"time-decrease-hours"})
-  public void decreaseHours(int hours) {
-    TimeController.decreaseHours(hours);
   }
 
   /** Increments the current time by one hour. */

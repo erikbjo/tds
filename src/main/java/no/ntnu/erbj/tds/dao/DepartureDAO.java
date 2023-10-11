@@ -26,9 +26,11 @@ public class DepartureDAO implements DAO<Departure> {
   public void add(Departure departure) {
     if (getAll().contains(departure)) {
       throw new IllegalArgumentException("Instance of departure already exists in the database.");
-    } else {
-      this.em.persist(departure);
+    } else if (getAll().stream().anyMatch(dep -> dep.getTrain().equals(departure.getTrain()))) {
+      throw new IllegalArgumentException("Train already has a departure.");
     }
+
+    this.em.persist(departure);
   }
 
   /** {@inheritDoc} */

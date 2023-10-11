@@ -104,6 +104,38 @@ public class CreateCommands {
       createDeparture();
     }
 
+    if (trainDAO.getAll().isEmpty()) {
+      TdsLogger.getInstance().info("No trains in database. Please create a train first.");
+      return;
+    }
+
+    String trainIdString;
+    boolean isTrainIdValid;
+
+    trainDAO.printAllDetails();
+    do {
+      logger.info("Enter train id: ");
+      trainIdString = scanner.nextLine();
+
+      try {
+        String finalTrainIdString = trainIdString; // IDE warning fix
+        isTrainIdValid =
+            trainDAO.find(Long.parseLong(trainIdString)).isPresent()
+                && departureDAO.getAll().stream()
+                    .noneMatch(dep -> dep.getTrain().getId() == Long.parseLong(finalTrainIdString));
+      } catch (NumberFormatException e) {
+        isTrainIdValid = false;
+      }
+
+      if (trainIdString.equalsIgnoreCase("exit") || trainIdString.isEmpty()) {
+        logger.info("Exiting object creation.");
+        return;
+      } else if (!isTrainIdValid) {
+        logger.info("Invalid train id.");
+      }
+
+    } while (!isTrainIdValid);
+
     DepartureBuilder builder = new DepartureBuilder();
     logger.info("Enter departure time (HH:mm): ");
     String departureTime = scanner.nextLine();
@@ -121,17 +153,13 @@ public class CreateCommands {
     int track = scanner.nextInt();
     builder.setTrack(track);
 
+    scanner.nextLine();
     logger.info("Enter delay time (HH:mm): ");
     String delay = scanner.nextLine();
     builder.setDelay(delay);
 
-    logger.info("Enter train id: ");
-    trainDAO.printAllDetails();
-    Long trainId = scanner.nextLong();
-
-    trainDAO.find(trainId).ifPresent(builder::setTrain);
-
     Departure departure = builder.build();
+    departure.setTrain(trainDAO.find(Long.parseLong(trainIdString)).get());
     try {
       departureDAO.add(departure);
     } catch (Exception e) {

@@ -147,6 +147,19 @@ public class Departure {
   }
 
   /**
+   * Sets the train of the departure.
+   *
+   * @param train the train of the departure.
+   * @throws IllegalArgumentException if the train is null.
+   */
+  public void setTrain(Train train) {
+    if (train == null) {
+      throw new IllegalArgumentException("Train cannot be null");
+    }
+    this.train = train;
+  }
+
+  /**
    * Gets the id of the departure.
    *
    * @return the id of the departure.
