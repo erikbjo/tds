@@ -5,6 +5,7 @@ import java.util.List;
 import no.ntnu.erbj.tds.dao.DepartureDAO;
 import no.ntnu.erbj.tds.model.Departure;
 import no.ntnu.erbj.tds.ui.cli.utilities.ANSIColors;
+import no.ntnu.erbj.tds.ui.cli.utilities.Colorize;
 import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
 import no.ntnu.erbj.tds.ui.shared.SortUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +51,10 @@ public class DepartureCommands {
             + "+------------------------------------------+";
 
 
-    String coloredFormat = ANSIColors.colorizeText(ANSIColors.BLUE, tableFormat);
-    String coloredDivider = ANSIColors.colorizeText(ANSIColors.BLUE, divider);
+    String coloredFormat = Colorize.colorizeText(ANSIColors.BLUE, tableFormat);
+    String coloredDivider = Colorize.colorizeText(ANSIColors.BLUE, divider);
 
-    logger.info(ANSIColors.colorizeBackground(ANSIColors.BG_BLUE, "Departures"));
+    logger.info(Colorize.colorizeBackground(ANSIColors.BG_BLUE, "Departures"));
     logger.info(coloredDivider);
     logger.info(
         String.format(coloredFormat, "Time", "Line", "Track", "Train number", "Destination"));
