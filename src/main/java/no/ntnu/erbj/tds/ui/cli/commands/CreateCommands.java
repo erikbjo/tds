@@ -65,27 +65,27 @@ public class CreateCommands {
   /** Start sequence to create a train. */
   @ShellMethod(value = "Start sequence to create a train.", key = "crtrain")
   public void createTrain() {
-    Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
-    logger.info("Do you want to create train? (y/exit): ");
-    String answer = scanner.nextLine();
-
-    if ("exit".equalsIgnoreCase(answer)) {
-      TdsLogger.getInstance().info("Exiting object creation.");
-      return;
-    } else if (!"y".equalsIgnoreCase(answer)) {
-      TdsLogger.getInstance().info("Invalid input.");
-      createTrain();
-    }
+    //    Scanner scanner = new Scanner(System.in);
+    //    logger.info("Do you want to create train? (y/exit): ");
+    //    String answer = scanner.nextLine();
+    //
+    //    if ("exit".equalsIgnoreCase(answer)) {
+    //      TdsLogger.getInstance().info("Exiting object creation.");
+    //      return;
+    //    } else if (!"y".equalsIgnoreCase(answer)) {
+    //      TdsLogger.getInstance().info("Invalid input.");
+    //      createTrain();
+    //    }
 
     Train train = new Train();
-    TdsLogger.getInstance().info("Train created: " + train);
+    logger.info("Train created: " + train);
 
-    TdsLogger.getInstance().info("Trying to enter into DB");
+    logger.info("Trying to enter into DB");
     try {
       trainDAO.add(train);
     } catch (Exception e) {
-      TdsLogger.getInstance().warn(e.getMessage());
+      logger.warn(e.getMessage());
     }
   }
 
@@ -162,11 +162,14 @@ public class CreateCommands {
     try {
       departureDAO.add(departure);
 
-      trainDAO.find(Long.parseLong(trainIdString)).ifPresent(train -> {
-        Train managedTrain = trainDAO.merge(train);
-        departure.setTrain(managedTrain);
-        departureDAO.update(departure);
-      });
+      trainDAO
+          .find(Long.parseLong(trainIdString))
+          .ifPresent(
+              train -> {
+                Train managedTrain = trainDAO.merge(train);
+                departure.setTrain(managedTrain);
+                departureDAO.update(departure);
+              });
     } catch (Exception e) {
       TdsLogger.getInstance().warn(e.getMessage());
     }
