@@ -42,7 +42,6 @@ public class TimeCommands {
     TimeController.setCurrentTime(LocalTime.parse(time));
   }
 
-
   /** Increments the current time by one minute. */
   @ShellMethod(
       value = "Increment minutes by one.",

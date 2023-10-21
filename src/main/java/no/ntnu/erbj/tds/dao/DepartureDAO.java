@@ -74,4 +74,13 @@ public class DepartureDAO implements DAO<Departure> {
       TdsLogger.getInstance().info("Departure Details" + " :: " + departure.getId());
     }
   }
+
+  /** Get a departure by train number. */
+  public Departure getByTrainNumber(Long trainNumber) {
+    TypedQuery<Departure> query =
+        this.em.createQuery(
+            "SELECT d FROM Departure d WHERE d.train.id = :trainNumber", Departure.class);
+    query.setParameter("trainNumber", trainNumber);
+    return query.getSingleResult();
+  }
 }
