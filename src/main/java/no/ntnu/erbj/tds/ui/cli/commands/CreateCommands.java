@@ -25,9 +25,10 @@ public class CreateCommands {
   @Autowired private TrainDAO trainDAO;
 
   @Autowired private WagonDAO wagonDAO;
+  private String exitString = "Exiting object creation."; // For SonarLint
 
   /** Start sequence to create a wagon. */
-  @ShellMethod(value = "Start sequence to create a wagon.", key = "crwagon")
+  @ShellMethod(value = "Start sequence to create a wagon.", key = "new wagon")
   public void createWagon() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
@@ -39,7 +40,7 @@ public class CreateCommands {
     String wagonType = scanner.nextLine();
 
     if ("exit".equalsIgnoreCase(wagonType)) {
-      TdsLogger.getInstance().info("Exiting object creation.");
+      TdsLogger.getInstance().info(exitString);
       return;
     }
 
@@ -63,7 +64,7 @@ public class CreateCommands {
   }
 
   /** Start sequence to create a train. */
-  @ShellMethod(value = "Start sequence to create a train.", key = "crtrain")
+  @ShellMethod(value = "Start sequence to create a train.", key = "new train")
   public void createTrain() {
     TdsLogger logger = TdsLogger.getInstance();
     //    Scanner scanner = new Scanner(System.in);
@@ -90,7 +91,7 @@ public class CreateCommands {
   }
 
   /** Start sequence to create a departure. */
-  @ShellMethod(value = "Start sequence to create a departure.", key = "crdeparture")
+  @ShellMethod(value = "Start sequence to create a departure.", key = "new departure")
   public void createDeparture() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
@@ -98,7 +99,7 @@ public class CreateCommands {
     String answer = scanner.nextLine();
 
     if ("exit".equalsIgnoreCase(answer)) {
-      TdsLogger.getInstance().info("Exiting object creation.");
+      TdsLogger.getInstance().info(exitString);
     } else if (!"y".equalsIgnoreCase(answer)) {
       TdsLogger.getInstance().info("Invalid input.");
       createDeparture();
@@ -118,7 +119,6 @@ public class CreateCommands {
       trainIdString = scanner.nextLine();
 
       try {
-        String finalTrainIdString = trainIdString; // IDE warning fix
         isTrainIdValid =
             trainDAO.find(Long.parseLong(trainIdString)).isPresent()
                 && trainDAO.trainIsValid(Long.parseLong(trainIdString));
@@ -127,7 +127,7 @@ public class CreateCommands {
       }
 
       if (trainIdString.equalsIgnoreCase("exit") || trainIdString.isEmpty()) {
-        logger.info("Exiting object creation.");
+        logger.info(exitString);
         return;
       } else if (!isTrainIdValid) {
         logger.info("Invalid train id.");
@@ -176,7 +176,7 @@ public class CreateCommands {
   }
 
   /** Start sequence to create a reservation. Note: This is not implemented yet */
-  @ShellMethod(value = "Start sequence to create a reservation.", key = "crreservation")
+  @ShellMethod(value = "Start sequence to create a reservation.", key = "new reservation")
   public void createReservation() {
     // TODO: Implement, need implementation of departure first
   }

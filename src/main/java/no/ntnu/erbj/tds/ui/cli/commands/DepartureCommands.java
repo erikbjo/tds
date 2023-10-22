@@ -41,14 +41,14 @@ public class DepartureCommands {
   }
 
   /** List all departures, sorted by departure time. */
-  @ShellMethod(value = "List all departures.", key = "d-list")
+  @ShellMethod(value = "List all departures.", key = "departure list")
   public void listDepartures() {
     SortUtility.sortBy(departureDAO.getAll(), Comparator.comparing(Departure::getDepartureTime))
         .forEach(departure -> TdsLogger.getInstance().info(departure.toString()));
   }
 
   /** Stylised table of all departures, sorted by departure time. */
-  @ShellMethod(value = "List all departures in a stylised table.", key = "d-table")
+  @ShellMethod(value = "List all departures in a stylised table.", key = "departure table")
   public void listDepartureTable() {
     TdsLogger logger = TdsLogger.getInstance();
 
@@ -78,7 +78,7 @@ public class DepartureCommands {
   }
 
   /** Set the track of a departure. */
-  @ShellMethod(value = "Set the track of a departure.", key = "d-set-track")
+  @ShellMethod(value = "Set the track of a departure.", key = "departure set track")
   public void setTrack() {
     listDepartureTable();
 
@@ -104,7 +104,7 @@ public class DepartureCommands {
   }
 
   /** Set the delay of a departure. */
-  @ShellMethod(value = "Set the delay of a departure.", key = "d-set-delay")
+  @ShellMethod(value = "Set the delay of a departure.", key = "departure set delay")
   public void setDelay() {
     listDepartureTable();
 
@@ -130,7 +130,10 @@ public class DepartureCommands {
   }
 
   /** Search for a departure by train number. */
-  @ShellMethod(value = "Search for a departure by train number.", key = "d-search-train-number")
+  @ShellMethod(
+      value =
+          "Search for a departure by train number. Takes an integer as parameter. ex: departure search train 1234",
+      key = "departure search train")
   public void searchByTrainNumber(long trainNumber) {
     TdsLogger logger = TdsLogger.getInstance();
 
@@ -163,7 +166,9 @@ public class DepartureCommands {
   }
 
   /** Search for a departure by destination. */
-  @ShellMethod(value = "Search for a departure by destination.", key = "d-search-destination")
+  @ShellMethod(
+      value = "Search for a departure by destination. Takes the search string as parameter. ex: departure search destination Oslo",
+      key = "departure search destination")
   public void searchByDestination(String destination) {
     TdsLogger logger = TdsLogger.getInstance();
 
@@ -197,18 +202,3 @@ public class DepartureCommands {
     }
   }
 }
-
-/*
-  X Legge inn en ny togavgang – det skal ikke være mulig å legge inn et tog med tognummer
-tilsvarende eksisterende tog i listen.
-
-  X Tildele spor til en togavgang – ved først å søke opp togavgang basert på tognummer, og så
-sette spor.
-
-  X Legg inn forsinkelse på en togavgang – ved å først søke etter en gitt togavgang basert på
-tognummer, og deretter legge til forsinkelse.
-
-  X Søke etter en togavgang basert på Tognummer
-
-  X Søke etter togavgang basert på destinasjon
- */

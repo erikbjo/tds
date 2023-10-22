@@ -16,13 +16,13 @@ import org.springframework.shell.standard.ShellMethod;
 public class TimeCommands {
 
   /** Gets the current time. */
-  @ShellMethod(value = "Get the current time.", key = "time-show")
+  @ShellMethod(value = "Get the current time.", key = "time show")
   public String getCurrentTime() {
     return TimeController.getCurrentTime().toString();
   }
 
   /** Sets the current time. */
-  @ShellMethod(value = "Set the current time. Format: HH:mm", key = "time-set")
+  @ShellMethod(value = "Set the current time. Takes a parameter in format: HH:mm", key = "time set")
   public void setCurrentTime(String time) {
     String[] timeSplit = time.split(":");
 
@@ -45,7 +45,7 @@ public class TimeCommands {
   /** Increments the current time by one minute. */
   @ShellMethod(
       value = "Increment minutes by one.",
-      key = {"m++", "time-increment-minutes"})
+      key = {"m++", "time increment minutes"})
   public void incrementMinutes() {
     TimeController.incrementMinutes();
   }
@@ -61,7 +61,7 @@ public class TimeCommands {
   /** Increments the current time by one hour. */
   @ShellMethod(
       value = "Increment hours by one.",
-      key = {"h++", "time-increment-hours"})
+      key = {"h++", "time increment hours"})
   public void incrementHours() {
     TimeController.incrementHours();
   }
@@ -69,13 +69,13 @@ public class TimeCommands {
   /** Decrements the current time by one hour. */
   @ShellMethod(
       value = "Decrement hours by one.",
-      key = {"h--", "time-decrement-hours"})
+      key = {"h--", "time decrement hours"})
   public void decrementHours() {
     TimeController.decrementHours();
   }
 
   /** Resets the current time to midnight. */
-  @ShellMethod(value = "Reset the current time to midnight.", key = "time-reset")
+  @ShellMethod(value = "Reset the current time to midnight.", key = "time reset")
   public void resetTime() {
     TimeController.resetTime();
   }

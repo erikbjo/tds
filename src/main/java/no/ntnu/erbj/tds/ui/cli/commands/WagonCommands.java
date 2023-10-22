@@ -16,16 +16,16 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ShellComponent
 @EnableTransactionManagement
 public class WagonCommands {
-    @Autowired private WagonDAO wagonDAO;
+  @Autowired private WagonDAO wagonDAO;
 
-    /** List all wagons. */
-    @ShellMethod(value = "List all wagons.", key = "wagon-list")
-    public void listWagons() {
-        wagonDAO
-                .getAll()
-                .forEach(
-                        wagon -> {
-                            TdsLogger.getInstance().info(wagon.toString());
-                        });
-    }
+  /** List all wagons. */
+  @ShellMethod(value = "List all wagons.", key = "wagon list")
+  public void listWagons() {
+    wagonDAO
+        .getAll()
+        .forEach(
+            wagon -> {
+              TdsLogger.getInstance().info(wagon.toString());
+            });
+  }
 }

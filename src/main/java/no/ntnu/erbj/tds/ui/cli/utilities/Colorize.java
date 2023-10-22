@@ -13,6 +13,15 @@ public class Colorize {
   public static final String RESET = "\u001B[0m";
 
   /**
+   * Private constructor to prevent instantiation.
+   *
+   * @see <a href="https://rules.sonarsource.com/java/RSPEC-1118">SonarLint rule</a>
+   */
+  private Colorize() {
+    // private constructor to hide the implicit public one
+  }
+
+  /**
    * Colorize a message with a text color.
    *
    * @param color The text color.

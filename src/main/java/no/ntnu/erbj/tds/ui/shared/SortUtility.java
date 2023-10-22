@@ -11,6 +11,15 @@ import java.util.List;
 public class SortUtility {
 
   /**
+   * Private constructor to prevent instantiation.
+   *
+   * @see <a href="https://rules.sonarsource.com/java/RSPEC-1118">SonarLint rule</a>
+   */
+  private SortUtility() {
+    // private constructor to hide the implicit public one
+  }
+
+  /**
    * Sorts a list of objects based on a specific comparator.
    *
    * @param <T> the type of objects in the list

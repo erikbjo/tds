@@ -15,6 +15,15 @@ public class TimeController {
   private static LocalTime currentTime = LocalTime.of(0, 0);
 
   /**
+   * Private constructor to prevent instantiation.
+   *
+   * @see <a href="https://rules.sonarsource.com/java/RSPEC-1118">SonarLint rule</a>
+   */
+  private TimeController() {
+    // private constructor to hide the implicit public one
+  }
+
+  /**
    * Get the current time.
    *
    * @return Current time.

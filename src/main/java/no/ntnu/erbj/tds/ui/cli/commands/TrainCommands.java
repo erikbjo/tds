@@ -19,7 +19,7 @@ public class TrainCommands {
   @Autowired private TrainDAO trainDAO;
 
   /** List all trains. */
-  @ShellMethod(value = "List all trains.", key = "train-list")
+  @ShellMethod(value = "List all trains.", key = "train list")
   public void listTrains() {
     trainDAO
         .getAll()
