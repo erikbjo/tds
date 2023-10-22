@@ -28,7 +28,7 @@ public class CreateCommands {
   private String exitString = "Exiting object creation."; // For SonarLint
 
   /** Start sequence to create a wagon. */
-  @ShellMethod(value = "Start sequence to create a wagon.", key = "crwagon")
+  @ShellMethod(value = "Start sequence to create a wagon.", key = "new wagon")
   public void createWagon() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
@@ -64,7 +64,7 @@ public class CreateCommands {
   }
 
   /** Start sequence to create a train. */
-  @ShellMethod(value = "Start sequence to create a train.", key = "crtrain")
+  @ShellMethod(value = "Start sequence to create a train.", key = "new train")
   public void createTrain() {
     TdsLogger logger = TdsLogger.getInstance();
     //    Scanner scanner = new Scanner(System.in);
@@ -91,7 +91,7 @@ public class CreateCommands {
   }
 
   /** Start sequence to create a departure. */
-  @ShellMethod(value = "Start sequence to create a departure.", key = "crdeparture")
+  @ShellMethod(value = "Start sequence to create a departure.", key = "new departure")
   public void createDeparture() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
@@ -176,7 +176,7 @@ public class CreateCommands {
   }
 
   /** Start sequence to create a reservation. Note: This is not implemented yet */
-  @ShellMethod(value = "Start sequence to create a reservation.", key = "crreservation")
+  @ShellMethod(value = "Start sequence to create a reservation.", key = "new reservation")
   public void createReservation() {
     // TODO: Implement, need implementation of departure first
   }
