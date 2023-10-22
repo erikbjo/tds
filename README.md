@@ -58,15 +58,21 @@ root
 │   │   │                   ├──ui
 │   │   │                   │   ├── shared
 │   │   │                   │   │   ├── TimeController.java
+│   │   │                   │   │   ├── SortUtility.java
 │   │   │                   │   │   │   
 │   │   │                   │   │   └── functions
 │   │   │                   │   │       ├── // to be added
 │   │   │                   │   ├── cli
-│   │   │                   │   │   ├── utilities
-│   │   │                   │   │   │   └── TdsLogger.java
 │   │   │                   │   │   ├── commands
-│   │   │                   │   │   │   ├── Command.java
-│   │   │                   │   │   └── placeholder
+│   │   │                   │   │   │   ├── CreateCommands.java
+│   │   │                   │   │   │   ├── DepartureCommands.java
+│   │   │                   │   │   │   ├── TimeCommands.java
+│   │   │                   │   │   │   ├── TrainCommands.java
+│   │   │                   │   │   │   └── WagonCommands.java
+│   │   │                   │   │   └── utilities
+│   │   │                   │   │       ├── ANSIColors.java
+│   │   │                   │   │       ├── Colorize.java
+│   │   │                   │   │       └── TdsLogger.java
 │   │   │                   │   │
 │   │   │                   │   └── gui
 │   │   │                   │       ├── controllers
