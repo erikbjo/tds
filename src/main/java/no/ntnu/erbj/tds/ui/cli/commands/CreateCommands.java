@@ -25,6 +25,7 @@ public class CreateCommands {
   @Autowired private TrainDAO trainDAO;
 
   @Autowired private WagonDAO wagonDAO;
+  private String exitString = "Exiting object creation."; // For SonarLint
 
   /** Start sequence to create a wagon. */
   @ShellMethod(value = "Start sequence to create a wagon.", key = "crwagon")
@@ -39,7 +40,7 @@ public class CreateCommands {
     String wagonType = scanner.nextLine();
 
     if ("exit".equalsIgnoreCase(wagonType)) {
-      TdsLogger.getInstance().info("Exiting object creation.");
+      TdsLogger.getInstance().info(exitString);
       return;
     }
 
@@ -98,7 +99,7 @@ public class CreateCommands {
     String answer = scanner.nextLine();
 
     if ("exit".equalsIgnoreCase(answer)) {
-      TdsLogger.getInstance().info("Exiting object creation.");
+      TdsLogger.getInstance().info(exitString);
     } else if (!"y".equalsIgnoreCase(answer)) {
       TdsLogger.getInstance().info("Invalid input.");
       createDeparture();
@@ -118,7 +119,6 @@ public class CreateCommands {
       trainIdString = scanner.nextLine();
 
       try {
-        String finalTrainIdString = trainIdString; // IDE warning fix
         isTrainIdValid =
             trainDAO.find(Long.parseLong(trainIdString)).isPresent()
                 && trainDAO.trainIsValid(Long.parseLong(trainIdString));
@@ -127,7 +127,7 @@ public class CreateCommands {
       }
 
       if (trainIdString.equalsIgnoreCase("exit") || trainIdString.isEmpty()) {
-        logger.info("Exiting object creation.");
+        logger.info(exitString);
         return;
       } else if (!isTrainIdValid) {
         logger.info("Invalid train id.");

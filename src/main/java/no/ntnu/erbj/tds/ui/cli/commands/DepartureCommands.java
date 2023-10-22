@@ -130,7 +130,9 @@ public class DepartureCommands {
   }
 
   /** Search for a departure by train number. */
-  @ShellMethod(value = "Search for a departure by train number.", key = "d-search-train-number")
+  @ShellMethod(
+      value = "Search for a departure by train number. Takes an integer as parameter.",
+      key = "d-search-train-number")
   public void searchByTrainNumber(long trainNumber) {
     TdsLogger logger = TdsLogger.getInstance();
 
@@ -163,7 +165,9 @@ public class DepartureCommands {
   }
 
   /** Search for a departure by destination. */
-  @ShellMethod(value = "Search for a departure by destination.", key = "d-search-destination")
+  @ShellMethod(
+      value = "Search for a departure by destination. Takes the search string as parameter.",
+      key = "d-search-destination")
   public void searchByDestination(String destination) {
     TdsLogger logger = TdsLogger.getInstance();
 
@@ -197,18 +201,3 @@ public class DepartureCommands {
     }
   }
 }
-
-/*
-  X Legge inn en ny togavgang – det skal ikke være mulig å legge inn et tog med tognummer
-tilsvarende eksisterende tog i listen.
-
-  X Tildele spor til en togavgang – ved først å søke opp togavgang basert på tognummer, og så
-sette spor.
-
-  X Legg inn forsinkelse på en togavgang – ved å først søke etter en gitt togavgang basert på
-tognummer, og deretter legge til forsinkelse.
-
-  X Søke etter en togavgang basert på Tognummer
-
-  X Søke etter togavgang basert på destinasjon
- */

@@ -31,9 +31,6 @@ public class Train {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  //   public Train(TrainBuilder builder) {
-  //     this.wagons = builder.wagons;
-  //   }
 
   /**
    * Constructor for the Train class.
