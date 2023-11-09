@@ -1,7 +1,7 @@
-package no.ntnu.erbj.tds.ui.cli.commands;
+package no.ntnu.erbj.tds.ui.commands;
 
 import no.ntnu.erbj.tds.dao.WagonDAO;
-import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
+import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;

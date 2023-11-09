@@ -1,4 +1,4 @@
-package no.ntnu.erbj.tds.ui.cli.utilities;
+package no.ntnu.erbj.tds.ui.utilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

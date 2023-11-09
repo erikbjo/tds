@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import no.ntnu.erbj.tds.model.Departure;
 import no.ntnu.erbj.tds.model.Train;
-import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
+import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

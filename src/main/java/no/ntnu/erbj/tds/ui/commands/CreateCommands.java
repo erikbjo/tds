@@ -1,11 +1,11 @@
-package no.ntnu.erbj.tds.ui.cli.commands;
+package no.ntnu.erbj.tds.ui.commands;
 
 import java.util.Scanner;
 import no.ntnu.erbj.tds.dao.DepartureDAO;
 import no.ntnu.erbj.tds.dao.TrainDAO;
 import no.ntnu.erbj.tds.dao.WagonDAO;
 import no.ntnu.erbj.tds.model.*;
-import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
+import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -25,7 +25,7 @@ public class CreateCommands {
   @Autowired private TrainDAO trainDAO;
 
   @Autowired private WagonDAO wagonDAO;
-  private String exitString = "Exiting object creation."; // For SonarLint
+  private final String exitString = "Exiting object creation."; // For SonarLint
 
   /** Start sequence to create a wagon. */
   @ShellMethod(value = "Start sequence to create a wagon.", key = "new wagon")

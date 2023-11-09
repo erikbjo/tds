@@ -55,34 +55,9 @@ root
 │   │   │                   │   ├──DepartureDAO.java
 │   │   │                   │   ├──TrainDAO.java
 │   │   │                   │   └──WagonDAO.java
-│   │   │                   ├──ui
-│   │   │                   │   ├── shared
-│   │   │                   │   │   ├── TimeController.java
-│   │   │                   │   │   ├── SortUtility.java
-│   │   │                   │   │   │   
-│   │   │                   │   │   └── functions
-│   │   │                   │   │       ├── // to be added
-│   │   │                   │   ├── cli
-│   │   │                   │   │   ├── commands
-│   │   │                   │   │   │   ├── CreateCommands.java
-│   │   │                   │   │   │   ├── DepartureCommands.java
-│   │   │                   │   │   │   ├── TimeCommands.java
-│   │   │                   │   │   │   ├── TrainCommands.java
-│   │   │                   │   │   │   └── WagonCommands.java
-│   │   │                   │   │   └── utilities
-│   │   │                   │   │       ├── ANSIColors.java
-│   │   │                   │   │       ├── Colorize.java
-│   │   │                   │   │       └── TdsLogger.java
-│   │   │                   │   │
-│   │   │                   │   └── gui
-│   │   │                   │       ├── controllers
-│   │   │                   │       │   ├── Controller.java
-│   │   │                   │       │   └──  MainMenuController.java
-│   │   │                   │       ├── view
-│   │   │                   │       │   ├── View.java
-│   │   │                   │       │   └──  MainMenuView.java
-│   │   │                   │       └── utilities
-│   │   │                   │           └── empty
+
+/* TODO: FIX THIS */
+
 │   │   │                   ├── model
 │   │   │                   │   ├── Station.java
 │   │   │                   │   ├── Departure.java

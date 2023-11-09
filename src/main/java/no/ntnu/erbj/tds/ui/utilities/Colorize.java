@@ -1,4 +1,4 @@
-package no.ntnu.erbj.tds.ui.cli.utilities;
+package no.ntnu.erbj.tds.ui.utilities;
 
 /**
  * A class that colorizes text in the terminal. Uses ANSI escape codes (see enum).
