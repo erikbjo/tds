@@ -25,7 +25,7 @@ public class CreateCommands {
   @Autowired private TrainDAO trainDAO;
 
   @Autowired private WagonDAO wagonDAO;
-  private String exitString = "Exiting object creation."; // For SonarLint
+  private final String exitString = "Exiting object creation."; // For SonarLint
 
   /** Start sequence to create a wagon. */
   @ShellMethod(value = "Start sequence to create a wagon.", key = "new wagon")

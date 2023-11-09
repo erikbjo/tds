@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
  * <p>The class also has getters and setters for all the attributes. The class has a builder class,
  * which is used to create a train object.
  *
- * @version 1.0
+ * @version 2.0
  * @see Wagon
  * @author Erik Bjørnsen
  */
@@ -31,6 +31,7 @@ public class Train {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  private String trainNumber;
 
   /**
    * Constructor for the Train class.
@@ -49,7 +50,48 @@ public class Train {
   public Train() {
     if (wagons == null) {
       wagons = new ArrayList<>(); // Got DB error when not checking for null
-    }                             // Even though the field should always be null (?)
+    } // Even though the field should always be null (?)
+  }
+
+  /**
+   * Overloaded constructor for the Train class. Train number is added as a parameter.
+   *
+   * @param wagons the wagons of the train
+   * @param trainNumber the train number
+   * @throws IllegalArgumentException if the wagons are null, or if the train number is null, blank
+   *     or empty
+   */
+  public Train(List<Wagon> wagons, String trainNumber) {
+    if (wagons == null) {
+      throw new IllegalArgumentException("Wagons cannot be null");
+    }
+    if (trainNumber == null) {
+      throw new IllegalArgumentException("Train number cannot be null");
+    }
+    trainNumber = trainNumber.trim();
+    if (trainNumber.isBlank() || trainNumber.isEmpty()) {
+      throw new IllegalArgumentException("Train number cannot be blank or empty");
+    }
+    this.wagons = wagons;
+    this.trainNumber = trainNumber;
+  }
+
+  /**
+   * Overloaded constructor for the Train class. Train number is added as a parameter.
+   *
+   * @param trainNumber the train number
+   * @throws IllegalArgumentException if the train number is null, blank or empty
+   */
+  public Train(String trainNumber) {
+    if (trainNumber == null) {
+      throw new IllegalArgumentException("Train number cannot be null");
+    }
+    trainNumber = trainNumber.trim();
+    if (trainNumber.isBlank() || trainNumber.isEmpty()) {
+      throw new IllegalArgumentException("Train number cannot be blank or empty");
+    }
+    this.trainNumber = trainNumber;
+    this.wagons = new ArrayList<>();
   }
 
   /**
