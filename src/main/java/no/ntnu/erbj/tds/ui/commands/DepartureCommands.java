@@ -1,14 +1,14 @@
-package no.ntnu.erbj.tds.ui.cli.commands;
+package no.ntnu.erbj.tds.ui.commands;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import no.ntnu.erbj.tds.dao.DepartureDAO;
 import no.ntnu.erbj.tds.model.Departure;
-import no.ntnu.erbj.tds.ui.cli.utilities.ANSIColors;
-import no.ntnu.erbj.tds.ui.cli.utilities.Colorize;
-import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
-import no.ntnu.erbj.tds.ui.shared.SortUtility;
+import no.ntnu.erbj.tds.ui.utilities.ANSIColors;
+import no.ntnu.erbj.tds.ui.utilities.Colorize;
+import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
+import no.ntnu.erbj.tds.ui.utilities.SortUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;

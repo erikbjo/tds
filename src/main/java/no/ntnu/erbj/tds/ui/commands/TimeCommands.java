@@ -1,8 +1,8 @@
-package no.ntnu.erbj.tds.ui.cli.commands;
+package no.ntnu.erbj.tds.ui.commands;
 
 import java.time.LocalTime;
-import no.ntnu.erbj.tds.ui.cli.utilities.TdsLogger;
-import no.ntnu.erbj.tds.ui.shared.TimeController;
+import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
+import no.ntnu.erbj.tds.ui.controllers.TimeController;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 

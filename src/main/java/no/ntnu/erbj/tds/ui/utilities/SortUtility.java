@@ -1,4 +1,4 @@
-package no.ntnu.erbj.tds.ui.shared;
+package no.ntnu.erbj.tds.ui.utilities;
 
 import java.util.Comparator;
 import java.util.List;

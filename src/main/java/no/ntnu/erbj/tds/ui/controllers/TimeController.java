@@ -1,4 +1,4 @@
-package no.ntnu.erbj.tds.ui.shared;
+package no.ntnu.erbj.tds.ui.controllers;
 
 import java.time.LocalTime;
 
