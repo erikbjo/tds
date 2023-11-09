@@ -1,5 +1,4 @@
 target/
-!.mvn/wrapper/maven-wrapper.jar
 tdsDB
 
 ### IntelliJ IDEA ###
@@ -9,14 +8,11 @@ tdsDB
 *.ipr
 
 ### Eclipse ###
-=======
 HELP.md
-.mvn
 !**/src/main/**/target/
 !**/src/test/**/target/
 
 ### STS ###
->>>>>>> 9747026 (init commit, added cli and gui solution)
 .apt_generated
 .classpath
 .factorypath

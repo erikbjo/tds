@@ -10,7 +10,7 @@
     </parent>
     <groupId>no.ntnu.erbj</groupId>
     <artifactId>tds</artifactId>
-    <version>0.0.1</version>
+    <version>1.1</version>
     <name>tds</name>
     <description>Train Dispatch System</description>
     <properties>
@@ -52,18 +52,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!-- JavaFX dependencies, for GUI -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>17.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-media</artifactId>
-            <version>17.0.1</version>
         </dependency>
 
         <!-- Logging dependencies -->
