@@ -7,9 +7,8 @@ import no.ntnu.erbj.tds.dao.DepartureDAO;
 import no.ntnu.erbj.tds.model.Departure;
 import no.ntnu.erbj.tds.ui.utilities.ANSIColors;
 import no.ntnu.erbj.tds.ui.utilities.Colorize;
-import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import no.ntnu.erbj.tds.ui.utilities.SortUtility;
-import org.springframework.beans.factory.annotation.Autowired;
+import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -18,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Commands for manipulating departure objects.
  *
  * @author Erik
- * @version 1.0
+ * @version 1.1
  */
 @ShellComponent
 @EnableTransactionManagement
@@ -30,7 +29,16 @@ public class DepartureCommands {
           + "+------------------------------------------+";
   private final String blueFormat = Colorize.colorizeText(ANSIColors.BLUE, TABLE_FORMAT);
   private final String blueDivider = Colorize.colorizeText(ANSIColors.BLUE, DIVIDER);
-  @Autowired private DepartureDAO departureDAO;
+  private final DepartureDAO departureDAO;
+
+  /**
+   * DepartureCommands constructor. Uses constructor injection to get the departureDAO object.
+   *
+   * @param departureDAO injects the departureDAO object.
+   */
+  public DepartureCommands(DepartureDAO departureDAO) {
+    this.departureDAO = departureDAO;
+  }
 
   /** Prints the table header for departure table. */
   private void printTableHeader() {
