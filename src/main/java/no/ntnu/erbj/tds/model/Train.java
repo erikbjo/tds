@@ -4,7 +4,6 @@ import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence,
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class represents a train. A train have the following attributes:

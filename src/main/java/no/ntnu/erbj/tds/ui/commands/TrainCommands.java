@@ -1,25 +1,22 @@
 package no.ntnu.erbj.tds.ui.commands;
 
+import java.util.Comparator;
+import java.util.List;
 import no.ntnu.erbj.tds.dao.TrainDAO;
-import no.ntnu.erbj.tds.model.Departure;
 import no.ntnu.erbj.tds.model.Train;
 import no.ntnu.erbj.tds.ui.utilities.ANSIColors;
 import no.ntnu.erbj.tds.ui.utilities.Colorize;
 import no.ntnu.erbj.tds.ui.utilities.SortUtility;
 import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * Commands for manipulating train objects.
  *
  * @author Erik
- * @version 1.0
+ * @version 1.1
  */
 @ShellComponent
 @EnableTransactionManagement
@@ -30,7 +27,16 @@ public class TrainCommands {
       "+-----------------+------------+------------------------------------------+";
   private final String blueFormat = Colorize.colorizeText(ANSIColors.BLUE, TABLE_FORMAT);
   private final String blueDivider = Colorize.colorizeText(ANSIColors.BLUE, DIVIDER);
-  @Autowired private TrainDAO trainDAO;
+  private final TrainDAO trainDAO;
+
+  /**
+   * TrainCommands constructor. Uses constructor injection to get the trainDAO object.
+   *
+   * @param trainDAO injects the trainDAO object.
+   */
+  public TrainCommands(TrainDAO trainDAO) {
+    this.trainDAO = trainDAO;
+  }
 
   private void printTableHeader() {
     TdsLogger logger = TdsLogger.getInstance();

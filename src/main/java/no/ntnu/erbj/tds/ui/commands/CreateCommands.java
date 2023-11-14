@@ -6,7 +6,6 @@ import no.ntnu.erbj.tds.dao.TrainDAO;
 import no.ntnu.erbj.tds.dao.WagonDAO;
 import no.ntnu.erbj.tds.model.*;
 import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -15,24 +14,31 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Commands for creating objects.
  *
  * @author Erik
- * @version 1.1
+ * @version 1.2
  */
 @ShellComponent
 @EnableTransactionManagement
 public class CreateCommands {
   private static final String EXIT_STRING = "Exiting object creation."; // For SonarLint
   private final TrainCommands trainCommands;
-  @Autowired private DepartureDAO departureDAO;
-  @Autowired private TrainDAO trainDAO;
-  @Autowired private WagonDAO wagonDAO;
+  private final DepartureDAO departureDAO;
+  private final TrainDAO trainDAO;
+  private final WagonDAO wagonDAO;
 
   /**
-   * CreateCommands constructor. Uses bean injection to get the trainCommands object.
+   * CreateCommands constructor. Uses constructor injection to get the trainCommands object.
    *
    * @param trainCommands injects the trainCommands object.
    */
-  public CreateCommands(TrainCommands trainCommands) {
+  public CreateCommands(
+      TrainCommands trainCommands,
+      DepartureDAO departureDAO,
+      TrainDAO trainDAO,
+      WagonDAO wagonDAO) {
     this.trainCommands = trainCommands;
+    this.departureDAO = departureDAO;
+    this.trainDAO = trainDAO;
+    this.wagonDAO = wagonDAO;
   }
 
   /** Start sequence to create a wagon. */
