@@ -76,17 +76,21 @@ public class TrainDAO implements DAO<Train> {
 
   /** Print all unoccupied trains. */
   public void printAllUnoccupiedTrains() {
+    List<Train> unoccupiedTrains = getAllUnoccupiedTrains();
+    for (Train train : unoccupiedTrains) {
+      TdsLogger.getInstance().info("Train Details" + " :: " + train.getId());
+    }
+  }
+
+  /** Gets all unoccupied trains. */
+  public List<Train> getAllUnoccupiedTrains() {
     List<Train> trainList = getAll();
     List<Train> occupiedTrains =
         em.createQuery("SELECT a FROM Departure a", Departure.class).getResultList().stream()
             .map(Departure::getTrain)
             .toList();
 
-    for (Train train : trainList) {
-      if (!occupiedTrains.contains(train)) {
-        TdsLogger.getInstance().info("Train Details" + " :: " + train.getId());
-      }
-    }
+    return trainList.stream().filter(train -> !occupiedTrains.contains(train)).toList();
   }
 
   /**

@@ -12,22 +12,36 @@ Train Dispatch System is a system for dispatching trains. It only shows the trai
 ## How to run the project
 
 1. Clone the repository
+
+```bash
+git clone git@github.com:NTNU-BIDATA-IDATG1003-2023/mappe-idatg1003-traindispatchsystem-erikbjo.git
+```
+
 2. Compile the program with:
 
 ```bash
-mvn clean package
+./mvnw clean install
 ```
 
 3. Run the program with:
 
 ```bash
-java -jar target/tds-2.0.jar
+java -jar target/tds-*version*.jar
 ```
 
 or
 
-1. Download the executable file
-2. Run the program
+1. Download the jar file from git or with this command:
+
+```bash
+wget https://github.com/NTNU-BIDATA-IDATG1003-2023/mappe-idatg1003-traindispatchsystem-erikbjo/releases/ *FIX THIS*
+```
+
+2. Run the program with:
+
+```bash
+java -jar tds-*version*.jar
+```
 
 ## How to run the tests
 
@@ -94,7 +108,6 @@ root
 ├── LICENSE
 ├── mvnw
 ├── mvnw.cmd
-├── HELP.md (to be removed)
 └── .gitignore
 ```
 

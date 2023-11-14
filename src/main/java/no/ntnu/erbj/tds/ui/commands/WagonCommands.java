@@ -21,11 +21,6 @@ public class WagonCommands {
   /** List all wagons. */
   @ShellMethod(value = "List all wagons.", key = "wagon list")
   public void listWagons() {
-    wagonDAO
-        .getAll()
-        .forEach(
-            wagon -> {
-              TdsLogger.getInstance().info(wagon.toString());
-            });
+    wagonDAO.getAll().forEach(wagon -> TdsLogger.getInstance().info(wagon.toString()));
   }
 }

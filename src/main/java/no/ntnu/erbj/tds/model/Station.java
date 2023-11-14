@@ -11,6 +11,9 @@ import java.util.List;
  * Class representing a station. A station has a name, a location, a list of departures and a number
  * of platforms. The assignment does specify that only ONE station should be used, but to
  * future-proof the application, the class is made to represent a station, and not THE station.
+ * <br><br>
+ * The task description asks for a "register" class; this is the class used to represent
+ * that register.
  *
  * @version 1.0
  * @see Departure
@@ -26,7 +29,6 @@ public class Station {
       platforms; // Number of platforms at the station, to be remade into a list of platforms
 
   // TODO: Add a list of platforms
-  // TODO: TBD if a builder is needed for this class
 
   /**
    * Constructor for the Station class. <br>
