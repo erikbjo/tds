@@ -57,8 +57,8 @@ public class Station {
       throw new IllegalArgumentException("Number of platforms cannot be less than 1");
     }
 
-    this.name = name;
-    this.location = location;
+    this.name = name.trim();
+    this.location = location.trim();
     this.departures = departures;
     this.platforms = platforms;
   }
@@ -84,8 +84,8 @@ public class Station {
       throw new IllegalArgumentException("Number of platforms cannot be less than 1");
     }
 
-    this.name = name;
-    this.location = location;
+    this.name = name.trim();
+    this.location = location.trim();
     this.departures = new ArrayList<>();
     this.platforms = platforms;
   }
@@ -152,8 +152,13 @@ public class Station {
    * @param departure the departure to add
    * @throws IllegalArgumentException if the departure already exists, or if the train already has a
    *     departure
+   * @throws IllegalArgumentException if the departure is null
    */
   public void addDeparture(Departure departure) {
+    if (departure == null) {
+      throw new IllegalArgumentException("Departure cannot be null");
+    }
+
     if (this.departures.contains(departure)) {
       throw new IllegalArgumentException("Departure already exists");
     }
@@ -168,9 +173,14 @@ public class Station {
    * Removes a departure from the station.
    *
    * @param departure the departure to remove
-   * @throws IllegalArgumentException if the departure does not exist
+   * @throws IllegalArgumentException if the departure does not exist in the station, or if the
+   *     departure is null
    */
   public void removeDeparture(Departure departure) {
+    if (departure == null) {
+      throw new IllegalArgumentException("Departure cannot be null");
+    }
+
     if (!this.departures.contains(departure)) {
       throw new IllegalArgumentException("Departure does not exist");
     }
@@ -187,8 +197,13 @@ public class Station {
    *
    * @param trainNumber the train number to search for
    * @return the departure with the given train number, or null if no such departure exists
+   * @throws IllegalArgumentException if the train number is null, empty or blank
    */
   public Departure getDepartureByTrainNumber(String trainNumber) {
+    if (trainNumber == null || trainNumber.isEmpty() || trainNumber.isBlank()) {
+      throw new IllegalArgumentException("Train number cannot be null, empty or blank");
+    }
+
     return this.departures.stream()
         .filter(
             dep ->
@@ -211,8 +226,12 @@ public class Station {
    * @param destination the destination to search for
    * @return a list of departure(s) with the given destination, or an empty list if no such
    *     departures
+   * @throws IllegalArgumentException if the destination is null, empty or blank
    */
   public List<Departure> getDeparturesByDestination(String destination) {
+    if (destination == null || destination.isEmpty() || destination.isBlank()) {
+      throw new IllegalArgumentException("Destination cannot be null, empty or blank");
+    }
     return this.departures.stream()
         .filter(
             dep -> dep.getDestination().toLowerCase().contains(destination.toLowerCase().trim()))

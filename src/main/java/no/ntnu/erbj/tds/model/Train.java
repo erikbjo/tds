@@ -37,19 +37,6 @@ public class Train {
      */
   private String trainNumber;
 
-  /**
-   * Constructor for the Train class.
-   *
-   * @param wagons the wagons of the train
-   * @throws IllegalArgumentException if the wagons are null
-   */
-  public Train(List<Wagon> wagons) {
-    if (wagons == null) {
-      throw new IllegalArgumentException("Wagons cannot be null");
-    }
-    this.wagons = wagons;
-  }
-
   /** Overloaded constructor for the Train class. */
   public Train() {
     if (wagons == null) {
@@ -227,7 +214,10 @@ public class Train {
    * @throws IllegalArgumentException if the train number is null, blank or empty
    */
   public void setTrainNumber(String trainNumber) {
-    this.trainNumber = trainNumber;
+    if (trainNumber == null || trainNumber.isBlank() || trainNumber.isEmpty()) {
+      throw new IllegalArgumentException("Train number cannot be null, blank or empty");
+    }
+    this.trainNumber = trainNumber.trim();
   }
 
   /**

@@ -49,8 +49,8 @@ public class Departure {
       this.departureTime = builder.getDepartureTime();
     }
 
-    this.line = builder.getLine();
-    this.destination = builder.getDestination();
+    this.line = builder.getLine().trim();
+    this.destination = builder.getDestination().trim();
     this.track = builder.getTrack();
     this.train = builder.getTrain();
   }
