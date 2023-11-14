@@ -4,6 +4,7 @@ import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence,
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class represents a train. A train have the following attributes:
@@ -23,7 +24,7 @@ import java.util.NoSuchElementException;
  */
 @Entity
 public class Train {
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "train_id")
   private List<Wagon> wagons;
 
@@ -31,6 +32,10 @@ public class Train {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  /*
+    Det må være mulig for brukeren av applikasjonen din å oppgi dette unike tognummeret, så ikke
+  la applikasjonen din automatisk generere det unike tognummeret
+     */
   private String trainNumber;
 
   /**
@@ -145,5 +150,93 @@ public class Train {
         wagon.reserveSeats(wagon.getOpenSeats());
       }
     }
+  }
+
+  /**
+   * Adds a wagon to the train.
+   *
+   * @param wagon the wagon to add
+   * @throws IllegalArgumentException if the wagon is null
+   */
+  public void addWagon(Wagon wagon) {
+    if (wagon == null) {
+      throw new IllegalArgumentException("Wagon cannot be null");
+    }
+    wagons.add(wagon);
+  }
+
+  /**
+   * Removes a wagon from the train.
+   *
+   * @param wagon the wagon to remove
+   * @throws IllegalArgumentException if the wagon is null
+   */
+  public void removeWagon(Wagon wagon) {
+    if (wagon == null) {
+      throw new IllegalArgumentException("Wagon cannot be null");
+    }
+    if (!wagons.contains(wagon)) {
+      throw new IllegalArgumentException("Wagon is not in the train");
+    }
+    wagons.remove(wagon);
+  }
+
+  /**
+   * Gets the wagons of the train.
+   *
+   * @return the wagons of the train
+   */
+  public List<Wagon> getWagons() {
+    return wagons;
+  }
+
+  /**
+   * Sets the wagons of the train.
+   *
+   * @param wagons the wagons of the train
+   * @throws IllegalArgumentException if the wagons are null or empty
+   */
+  public void setWagons(List<Wagon> wagons) {
+    if (wagons == null || wagons.isEmpty()) {
+      throw new IllegalArgumentException("Wagons cannot be null or empty");
+    }
+    this.wagons = wagons;
+  }
+
+  /**
+   * Gets the number of wagons of the train.
+   *
+   * @return the number of wagons of the train
+   */
+  public int getNumberOfWagons() {
+    return wagons.size();
+  }
+
+  /**
+   * Gets the train number of the train.
+   *
+   * @return the train number of the train
+   */
+  public String getTrainNumber() {
+    return trainNumber;
+  }
+
+  /**
+   * Sets the train number of the train.
+   *
+   * @param trainNumber the train number of the train
+   * @throws IllegalArgumentException if the train number is null, blank or empty
+   */
+  public void setTrainNumber(String trainNumber) {
+    this.trainNumber = trainNumber;
+  }
+
+  /**
+   * Gets the number of seats in the train.
+   *
+   * @return the number of seats in the train
+   */
+  public int getNumberOfSeats() {
+    return wagons.stream().mapToInt(Wagon::getOpenSeats).reduce(0, Integer::sum);
   }
 }

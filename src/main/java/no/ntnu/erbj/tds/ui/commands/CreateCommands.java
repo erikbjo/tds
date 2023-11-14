@@ -21,9 +21,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class CreateCommands {
   private static final String EXIT_STRING = "Exiting object creation."; // For SonarLint
+  private final TrainCommands trainCommands;
   @Autowired private DepartureDAO departureDAO;
   @Autowired private TrainDAO trainDAO;
   @Autowired private WagonDAO wagonDAO;
+
+  /**
+   * CreateCommands constructor. Uses bean injection to get the trainCommands object.
+   *
+   * @param trainCommands injects the trainCommands object.
+   */
+  public CreateCommands(TrainCommands trainCommands) {
+    this.trainCommands = trainCommands;
+  }
 
   /** Start sequence to create a wagon. */
   @ShellMethod(value = "Start sequence to create a wagon.", key = "new wagon")
@@ -65,24 +75,21 @@ public class CreateCommands {
   @ShellMethod(value = "Start sequence to create a train.", key = "new train")
   public void createTrain() {
     TdsLogger logger = TdsLogger.getInstance();
-    //    Scanner scanner = new Scanner(System.in);
-    //    logger.info("Do you want to create train? (y/exit): ");
-    //    String answer = scanner.nextLine();
-    //
-    //    if ("exit".equalsIgnoreCase(answer)) {
-    //      TdsLogger.getInstance().info("Exiting object creation.");
-    //      return;
-    //    } else if (!"y".equalsIgnoreCase(answer)) {
-    //      TdsLogger.getInstance().info("Invalid input.");
-    //      createTrain();
-    //    }
+    Scanner scanner = new Scanner(System.in);
+    Train train;
+    logger.info("Enter train number (or 'exit' to stop): ");
+    String answer = scanner.nextLine();
 
-    Train train = new Train();
-    logger.info("Train created: " + train);
+    if ("exit".equalsIgnoreCase(answer)) {
+      TdsLogger.getInstance().info(EXIT_STRING);
+      return;
+    } else {
+      train = new Train(answer);
+    }
 
-    logger.info("Trying to enter into DB");
     try {
       trainDAO.add(train);
+      logger.info("Successfully added train to database.");
     } catch (Exception e) {
       logger.warn(e.getMessage());
     }
@@ -101,7 +108,7 @@ public class CreateCommands {
     } else if (!"y".equalsIgnoreCase(answer)) {
       TdsLogger.getInstance().info("Invalid input.");
       createDeparture();
-    }
+    } // else continue
 
     if (trainDAO.getAll().isEmpty()) {
       TdsLogger.getInstance().info("No trains in database. Please create a train first.");
@@ -111,7 +118,8 @@ public class CreateCommands {
     String trainIdString;
     boolean isTrainIdValid;
 
-    trainDAO.printAllUnoccupiedTrains();
+    trainCommands.listUnoccupiedTrainsTable();
+
     do {
       logger.info("Enter train id: ");
       trainIdString = scanner.nextLine();
