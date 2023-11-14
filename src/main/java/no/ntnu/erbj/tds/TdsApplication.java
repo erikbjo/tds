@@ -1,6 +1,5 @@
 package no.ntnu.erbj.tds;
 
-import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

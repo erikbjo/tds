@@ -24,8 +24,6 @@ public class TrainCommands {
     trainDAO
         .getAll()
         .forEach(
-            train -> {
-              TdsLogger.getInstance().info(train.toString());
-            });
+            train -> TdsLogger.getInstance().info(train.toString()));
   }
 }

@@ -20,12 +20,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ShellComponent
 @EnableTransactionManagement
 public class CreateCommands {
+  private static final String EXIT_STRING = "Exiting object creation."; // For SonarLint
   @Autowired private DepartureDAO departureDAO;
-
   @Autowired private TrainDAO trainDAO;
-
   @Autowired private WagonDAO wagonDAO;
-  private final String exitString = "Exiting object creation."; // For SonarLint
 
   /** Start sequence to create a wagon. */
   @ShellMethod(value = "Start sequence to create a wagon.", key = "new wagon")
@@ -40,7 +38,7 @@ public class CreateCommands {
     String wagonType = scanner.nextLine();
 
     if ("exit".equalsIgnoreCase(wagonType)) {
-      TdsLogger.getInstance().info(exitString);
+      TdsLogger.getInstance().info(EXIT_STRING);
       return;
     }
 
@@ -99,7 +97,7 @@ public class CreateCommands {
     String answer = scanner.nextLine();
 
     if ("exit".equalsIgnoreCase(answer)) {
-      TdsLogger.getInstance().info(exitString);
+      TdsLogger.getInstance().info(EXIT_STRING);
     } else if (!"y".equalsIgnoreCase(answer)) {
       TdsLogger.getInstance().info("Invalid input.");
       createDeparture();
@@ -127,7 +125,7 @@ public class CreateCommands {
       }
 
       if (trainIdString.equalsIgnoreCase("exit") || trainIdString.isEmpty()) {
-        logger.info(exitString);
+        logger.info(EXIT_STRING);
         return;
       } else if (!isTrainIdValid) {
         logger.info("Invalid train id.");
