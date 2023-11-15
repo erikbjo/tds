@@ -83,6 +83,11 @@ root
 │   │   │                   │   ├── Wagon.java
 │   │   │                   │   └── WagonType.java
 │   │   │                   │
+│   │   │                   ├── shared
+│   │   │                   │   └── utilites
+│   │   │                   │       ├── StringValidator.java
+│   │   │                   │       └── TimeParser.java
+│   │   │                   │
 │   │   │                   ├── ui
 │   │   │                   │   ├── commands
 │   │   │                   │   │   ├── CreateCommands.java
