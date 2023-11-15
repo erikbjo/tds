@@ -85,29 +85,27 @@ public class TrainDAO implements DAO<Train> {
   /** Gets all unoccupied trains. */
   public List<Train> getAllUnoccupiedTrains() {
     List<Train> trainList = getAll();
-    List<Train> occupiedTrains =
-        em.createQuery("SELECT a FROM Departure a", Departure.class).getResultList().stream()
-            .map(Departure::getTrain)
-            .toList();
+    List<Long> trainIds =
+        em.createQuery("SELECT a.train.id FROM Departure a", Long.class).getResultList();
 
-    return trainList.stream().filter(train -> !occupiedTrains.contains(train)).toList();
+    return trainList.stream().filter(train -> !trainIds.contains(train.getId())).toList();
   }
 
   /**
    * Checks if a train is valid.
    *
-   * @param trainIdToCheck the id of the train to check.
+   * @param trainNumberToCheck the train number of the train to check.
    * @return true if the train is valid, false otherwise.
    */
-  public boolean trainIsValid(Long trainIdToCheck) {
-    List<Long> validIds = getAll().stream().map(Train::getId).toList();
-    List<Long> occupiedTrainIds =
+  public boolean trainIsValid(String trainNumberToCheck) {
+    List<String> validIds = getAll().stream().map(Train::getTrainNumber).toList();
+    List<String> occupiedTrainIds =
         em.createQuery("SELECT a FROM Departure a", Departure.class).getResultList().stream()
             .map(Departure::getTrain)
-            .map(Train::getId)
+            .map(Train::getTrainNumber)
             .toList();
 
-    return validIds.contains(trainIdToCheck) && !occupiedTrainIds.contains(trainIdToCheck);
+    return validIds.contains(trainNumberToCheck) && !occupiedTrainIds.contains(trainNumberToCheck);
   }
 
   /**
@@ -119,5 +117,17 @@ public class TrainDAO implements DAO<Train> {
   @Transactional
   public Train merge(Train train) {
     return em.merge(train);
+  }
+
+  /**
+   * Finds a train by its train number.
+   *
+   * @param trainIdString the train number of the train to find.
+   * @return the train if it exists, empty otherwise.
+   */
+  public Optional<Train> findByTrainNumber(String trainIdString) {
+    return getAll().stream()
+        .filter(train -> train.getTrainNumber().equals(trainIdString))
+        .findFirst();
   }
 }

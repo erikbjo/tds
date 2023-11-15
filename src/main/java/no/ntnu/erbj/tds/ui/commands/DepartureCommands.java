@@ -78,7 +78,7 @@ public class DepartureCommands {
               departure.getDepartureTime(),
               departure.getLine(),
               departure.getTrack(),
-              departure.getTrain().getId(),
+              departure.getTrain().getTrainNumber(),
               departure.getDestination()));
     }
 

@@ -67,11 +67,10 @@ public class CreateCommands {
     }
 
     Wagon wagon = new Wagon(safeWagonType);
-    TdsLogger.getInstance().info("Wagon created: " + wagon);
 
-    TdsLogger.getInstance().info("Trying to enter into DB");
     try {
       wagonDAO.add(wagon);
+      logger.info("Successfully added wagon to database.");
     } catch (Exception e) {
       TdsLogger.getInstance().warn(e.getMessage());
     }
@@ -90,7 +89,12 @@ public class CreateCommands {
       TdsLogger.getInstance().info(EXIT_STRING);
       return;
     } else {
-      train = new Train(answer);
+      try {
+        train = new Train(answer);
+      } catch (IllegalArgumentException e) {
+        logger.warn(e.getMessage());
+        return;
+      }
     }
 
     try {
@@ -106,84 +110,149 @@ public class CreateCommands {
   public void createDeparture() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
-    logger.info("Do you want to create departure? (y/exit): ");
-    String answer = scanner.nextLine();
 
-    if ("exit".equalsIgnoreCase(answer)) {
-      TdsLogger.getInstance().info(EXIT_STRING);
-    } else if (!"y".equalsIgnoreCase(answer)) {
-      TdsLogger.getInstance().info("Invalid input.");
-      createDeparture();
-    } // else continue
-
-    if (trainDAO.getAll().isEmpty()) {
-      TdsLogger.getInstance().info("No trains in database. Please create a train first.");
+    if (trainDAO.getAllUnoccupiedTrains().isEmpty()) {
+      TdsLogger.getInstance()
+          .info("No unoccupied trains in database. Please create a train first.");
       return;
     }
+
+    trainCommands.listUnoccupiedTrainsTable();
+    DepartureBuilder builder = new DepartureBuilder();
+    Train train = null;
 
     String trainIdString;
     boolean isTrainIdValid;
 
-    trainCommands.listUnoccupiedTrainsTable();
-
     do {
-      logger.info("Enter train id: ");
+      logger.info("Enter train number: ");
       trainIdString = scanner.nextLine();
 
       try {
-        isTrainIdValid =
-            trainDAO.find(Long.parseLong(trainIdString)).isPresent()
-                && trainDAO.trainIsValid(Long.parseLong(trainIdString));
-      } catch (NumberFormatException e) {
+        isTrainIdValid = trainDAO.trainIsValid(trainIdString);
+        train = trainDAO.findByTrainNumber(trainIdString).orElseThrow();
+      } catch (IllegalArgumentException e) {
         isTrainIdValid = false;
       }
 
-      if (trainIdString.equalsIgnoreCase("exit") || trainIdString.isEmpty()) {
+      if (trainIdString.equalsIgnoreCase("exit")) {
         logger.info(EXIT_STRING);
         return;
       } else if (!isTrainIdValid) {
-        logger.info("Invalid train id.");
+        logger.info("Invalid train id. Type 'exit' to exit.");
       }
 
     } while (!isTrainIdValid);
 
-    DepartureBuilder builder = new DepartureBuilder();
-    logger.info("Enter departure time (HH:mm): ");
-    String departureTime = scanner.nextLine();
-    builder.setDepartureTime(departureTime);
+    String departureTimeString;
+    boolean isDepartureTimeValid;
 
-    logger.info("Enter line: ");
-    String line = scanner.nextLine();
-    builder.setLine(line);
+    do {
+      logger.info("Enter departure time (HH:mm): ");
+      departureTimeString = scanner.nextLine();
 
-    logger.info("Enter destination: ");
-    String destination = scanner.nextLine();
-    builder.setDestination(destination);
+      try {
+        isDepartureTimeValid =
+            builder.setDepartureTime(departureTimeString).getDepartureTime() != null;
+      } catch (IllegalArgumentException e) {
+        isDepartureTimeValid = false;
+      }
 
-    logger.info("Enter track: ");
-    int track = scanner.nextInt();
-    builder.setTrack(track);
+      if (departureTimeString.equalsIgnoreCase("exit")) {
+        logger.info(EXIT_STRING);
+        return;
+      } // else continue
+      else if (!isDepartureTimeValid) {
+        logger.info("Invalid departure time. Type 'exit' to exit.");
+      }
 
-    scanner.nextLine();
-    logger.info("Enter delay time (HH:mm): ");
-    String delay = scanner.nextLine();
-    builder.setDelay(delay);
+    } while (!isDepartureTimeValid);
+
+    do {
+      logger.info("Enter line: ");
+      String line = scanner.nextLine();
+
+      if (line.equalsIgnoreCase("exit")) {
+        logger.info(EXIT_STRING);
+        return;
+      }
+
+      try {
+        builder.setLine(line);
+      } catch (IllegalArgumentException e) {
+        logger.info("Invalid line. Type 'exit' to exit.");
+      }
+    } while (builder.getLine() == null);
+
+    do {
+      logger.info("Enter destination: ");
+      String destination = scanner.nextLine();
+
+      if (destination.equalsIgnoreCase("exit")) {
+        logger.info(EXIT_STRING);
+        return;
+      }
+
+      try {
+        builder.setDestination(destination);
+      } catch (IllegalArgumentException e) {
+        logger.info("Invalid destination. Type 'exit' to exit.");
+      }
+    } while (builder.getDestination() == null);
+
+    String trackString;
+    boolean isTrackValid = false;
+    do {
+      logger.info("Enter track: ");
+      trackString = scanner.nextLine();
+
+      if (trackString.equalsIgnoreCase("exit")) {
+        logger.info(EXIT_STRING);
+        return;
+      }
+
+      try {
+        builder.setTrack(Integer.parseInt(trackString));
+        isTrackValid = true;
+      } catch (IllegalArgumentException e) {
+        logger.info("Invalid track. Type 'exit' to exit.");
+      }
+    } while (!isTrackValid);
+
+    // delay
+    String departureDelayString;
+    boolean isDepartureDelayValid;
+
+    do {
+      logger.info("Enter departure delay (HH:mm): ");
+      departureDelayString = scanner.nextLine();
+
+      try {
+        isDepartureDelayValid = builder.setDelay(departureDelayString).getDelay() != null;
+      } catch (IllegalArgumentException e) {
+        isDepartureDelayValid = false;
+      }
+
+      if (departureTimeString.equalsIgnoreCase("exit")) {
+        logger.info(EXIT_STRING);
+        return;
+      } // else continue
+      else if (!isDepartureDelayValid) {
+        logger.info("Invalid departure delay. Type 'exit' to exit.");
+      }
+
+    } while (!isDepartureDelayValid);
 
     Departure departure = builder.build();
 
     try {
       departureDAO.add(departure);
-
-      trainDAO
-          .find(Long.parseLong(trainIdString))
-          .ifPresent(
-              train -> {
-                Train managedTrain = trainDAO.merge(train);
-                departure.setTrain(managedTrain);
-                departureDAO.update(departure);
-              });
+      Train managedTrain = trainDAO.merge(train);
+      departure.setTrain(managedTrain);
+      departureDAO.update(departure);
+      logger.info("Successfully added departure to database.");
     } catch (Exception e) {
-      TdsLogger.getInstance().warn(e.getMessage());
+      TdsLogger.getInstance().warn(e.getMessage() + e);
     }
   }
 
