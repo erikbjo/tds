@@ -32,12 +32,9 @@ public class Wagon {
    * @throws IllegalArgumentException if a wagon type is null
    */
   public Wagon(WagonType wagonType) {
-    if (wagonType == null) {
-      throw new IllegalArgumentException("Wagon type cannot be null");
-    }
-    this.wagonType = wagonType;
-    this.openSeats = wagonType.getSeats();
-    this.reservedSeats = 0;
+    setWagonType(wagonType);
+    setOpenSeats(wagonType.getSeats());
+    setReservedSeats(0);
   }
 
   /** Used by DB. */
@@ -62,6 +59,19 @@ public class Wagon {
   }
 
   /**
+   * Sets the wagon type.
+   *
+   * @param wagonType the wagon type
+   * @throws IllegalArgumentException if the wagon type is null
+   */
+  public void setWagonType(WagonType wagonType) {
+    if (wagonType == null) {
+      throw new IllegalArgumentException("Wagon type cannot be null");
+    }
+    this.wagonType = wagonType;
+  }
+
+  /**
    * Gets the number of open seats in the wagon.
    *
    * @return the number of open seats
@@ -71,12 +81,48 @@ public class Wagon {
   }
 
   /**
+   * Sets the number of open seats in the wagon.
+   *
+   * @param openSeats the number of open seats
+   * @throws IllegalArgumentException if the number of open seats is less than 0, or if the number
+   *     of open seats is greater than the number of seats in the wagon
+   */
+  public void setOpenSeats(int openSeats) {
+    if (openSeats < 0) {
+      throw new IllegalArgumentException("Number of open seats cannot be less than 0");
+    }
+    if (openSeats > wagonType.getSeats()) {
+      throw new IllegalArgumentException(
+          "Number of open seats cannot be greater than the number of seats in the wagon");
+    }
+    this.openSeats = openSeats;
+  }
+
+  /**
    * Gets the number of reserved seats in the wagon.
    *
    * @return the number of reserved seats
    */
   public int getReservedSeats() {
     return reservedSeats;
+  }
+
+  /**
+   * Sets the number of reserved seats in the wagon.
+   *
+   * @param reservedSeats the number of reserved seats
+   * @throws IllegalArgumentException if the number of reserved seats is less than 0, or if the
+   *     number of reserved seats is greater than the number of seats in the wagon
+   */
+  public void setReservedSeats(int reservedSeats) {
+    if (reservedSeats < 0) {
+      throw new IllegalArgumentException("Number of reserved seats cannot be less than 0");
+    }
+    if (reservedSeats > wagonType.getSeats()) {
+      throw new IllegalArgumentException(
+          "Number of reserved seats cannot be greater than the number of seats in the wagon");
+    }
+    this.reservedSeats = reservedSeats;
   }
 
   /**
@@ -93,8 +139,8 @@ public class Wagon {
     if (seats > openSeats) {
       throw new IllegalArgumentException("Not enough seats available");
     }
-    openSeats -= seats;
-    reservedSeats += seats;
+    setOpenSeats(openSeats - seats);
+    setReservedSeats(reservedSeats + seats);
   }
 
   /**
@@ -112,7 +158,7 @@ public class Wagon {
       throw new IllegalArgumentException("Not enough seats reserved");
     }
 
-    openSeats += seats;
-    reservedSeats -= seats;
+    setOpenSeats(openSeats + seats);
+    setReservedSeats(reservedSeats - seats);
   }
 }

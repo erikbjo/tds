@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Erik
  */
 @Repository
-public class DepartureDAO implements DAO<Departure> {
+public class DepartureDao implements Dao<Departure> {
   @PersistenceContext private EntityManager em;
 
   /** {@inheritDoc} */

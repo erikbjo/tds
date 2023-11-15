@@ -11,7 +11,7 @@ import java.util.Optional;
  * @version 1.1
  * @author Erik Bjørnsen
  */
-public interface DAO<T> extends Iterable<T> {
+public interface Dao<T> extends Iterable<T> {
   /**
    * Adds a new instance of an entity to the database.
    *

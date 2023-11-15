@@ -5,6 +5,11 @@
 STUDENT NAME = Erik Bjørnsen  
 STUDENT ID = erbj
 
+![Java shield](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
+![Maven shield](https://img.shields.io/badge/Apache_Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
+![Spring boot shield](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot)
+![IDE](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
+
 ## Project description
 
 Train Dispatch System is a system for dispatching trains. It only shows the trains connected with Oslo S.
@@ -65,26 +70,46 @@ root
 │   │   │               └── tds
 │   │   │                   ├── dao
 │   │   │                   │   ├──DAO.java
-│   │   │                   │   ├──StationDAO.java
 │   │   │                   │   ├──DepartureDAO.java
+│   │   │                   │   ├──StationDAO.java
 │   │   │                   │   ├──TrainDAO.java
 │   │   │                   │   └──WagonDAO.java
-
-/* TODO: FIX THIS */
-
+│   │   │                   │
 │   │   │                   ├── model
-│   │   │                   │   ├── Station.java
 │   │   │                   │   ├── Departure.java
 │   │   │                   │   ├── DepartureBuilder.java
+│   │   │                   │   ├── Station.java
 │   │   │                   │   ├── Train.java
-│   │   │                   │   ├── TrainBuilder.java (maybe to be removed)
-│   │   │                   │   ├── WagonType.java
-│   │   │                   │   └── Wagon.java
+│   │   │                   │   ├── Wagon.java
+│   │   │                   │   └── WagonType.java
+│   │   │                   │
+│   │   │                   ├── shared
+│   │   │                   │   └── utilites
+│   │   │                   │       ├── StringValidator.java
+│   │   │                   │       └── TimeParser.java
+│   │   │                   │
+│   │   │                   ├── ui
+│   │   │                   │   ├── commands
+│   │   │                   │   │   ├── CreateCommands.java
+│   │   │                   │   │   ├── DepartureCommands.java
+│   │   │                   │   │   ├── TimeCommands.java
+│   │   │                   │   │   ├── TrainCommands.java
+│   │   │                   │   │   └── WagonCommands.java
+│   │   │                   │   │
+│   │   │                   │   ├── controllers
+│   │   │                   │   │   └── TimeController.java
+│   │   │                   │   │
+│   │   │                   │   └── utilites
+│   │   │                   │       ├── ANSIColors.java
+│   │   │                   │       ├── Colorize.java
+│   │   │                   │       ├── SortUtility.java
+│   │   │                   │       └── TdsLogger.java
 │   │   │                   │
 │   │   │                   └── TdsApplication.java (main class)
 │   │   └── resources
 │   │       ├── logback.xml
 │   │       └── application.properties
+│   │
 │   └── test
 │       └── java
 │           └── no
@@ -98,17 +123,17 @@ root
 │                           │   └── WagonDAOTest.java
 │                           │
 │                           └── model
-│                               ├── StationTest.java
-│                               ├── DepartureTest.java
 │                               ├── DepartureBuilderTest.java
+│                               ├── DepartureTest.java
+│                               ├── StationTest.java
 │                               ├── TrainTest.java
 │                               └── WagonTest.java
-├── pom.xml
-├── README.md
+├── .gitignore
 ├── LICENSE
 ├── mvnw
 ├── mvnw.cmd
-└── .gitignore
+├── pom.xml
+└── README.md
 ```
 
 ## Link to repository

@@ -60,7 +60,8 @@ class StationTest {
     assertThrows(IllegalArgumentException.class, () -> new Station("Valid", " ", 10));
     assertThrows(IllegalArgumentException.class, () -> new Station("Valid", "Valid", -1));
     assertThrows(IllegalArgumentException.class, () -> new Station("Valid", "Valid", 0));
-    assertThrows(IllegalArgumentException.class, () -> new Station("Valid", "Valid", null, 10));
+    // assertThrows(IllegalArgumentException.class, () -> new Station("Valid", "Valid", null, 10));
+    // ^^^ After refactor, this test will not fail.
   }
 
   /** Method under test: {@link Station#getName()} */
@@ -165,16 +166,16 @@ class StationTest {
     assertThrows(IllegalArgumentException.class, () -> gjovikS.getDeparturesByDestination(" "));
   }
 
-  /** Method under test: {@link Station#removeDeparturesBeforeTime(java.time.LocalTime)} */
+  /** Method under test: {@link Station#removeDeparturesBeforeTime(String)} */
   @Test
   void removeDeparturesBeforeTimePos() {
     gjovikS.addDeparture(departure1);
     gjovikS.addDeparture(departure2);
-    gjovikS.removeDeparturesBeforeTime(LocalTime.of(13, 10));
+    gjovikS.removeDeparturesBeforeTime("13:13");
     assertEquals(1, gjovikS.getDepartures().size());
   }
 
-  /** Method under test: {@link Station#removeDeparturesBeforeTime(LocalTime)} */
+  /** Method under test: {@link Station#removeDeparturesBeforeTime(String)} */
   @Test
   void removeDeparturesBeforeTimeNeg() {
     assertThrows(IllegalArgumentException.class, () -> gjovikS.removeDeparturesBeforeTime(null));

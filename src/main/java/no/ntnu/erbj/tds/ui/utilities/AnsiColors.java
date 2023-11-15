@@ -8,7 +8,7 @@ package no.ntnu.erbj.tds.ui.utilities;
  * @version 1.0
  * @author Erik
  */
-public enum ANSIColors {
+public enum AnsiColors {
   RESET("\u001B[0m"),
   BLACK("\u001B[30m"),
   RED("\u001B[31m"),
@@ -34,7 +34,7 @@ public enum ANSIColors {
    *
    * @param code The ANSI escape code.
    */
-  ANSIColors(String code) {
+  AnsiColors(String code) {
     this.code = code;
   }
 
