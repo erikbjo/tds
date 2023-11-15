@@ -1,16 +1,17 @@
 package no.ntnu.erbj.tds.model;
 
+import static no.ntnu.erbj.tds.shared.utilities.StringValidator.validateString;
+import static no.ntnu.erbj.tds.shared.utilities.TimeParser.parseTime;
+
 import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so using * is ok
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 /**
  * Class representing a departure from a station. A departure has a departure time, a line, a
  * destination, a track, a delay and a train. The class also has a builder class, which is used to
  * create a departure object.
  *
- * @version 1.0
+ * @version 1.2
  * @see DepartureBuilder
  * @see Train
  * @author Erik Bjørnsen
@@ -35,8 +36,13 @@ public class Departure {
    * Constructor for the Departure class.
    *
    * @param builder the builder to build the departure {@link DepartureBuilder}
+   * @throws IllegalArgumentException if the builder is null.
    */
   public Departure(DepartureBuilder builder) {
+    if (builder == null) {
+      throw new IllegalArgumentException("Builder cannot be null");
+    }
+
     if (builder.getDelay() == null) {
       this.delay = LocalTime.of(0, 0);
     } else {
@@ -70,6 +76,19 @@ public class Departure {
   }
 
   /**
+   * Sets the departure time of the departure.
+   *
+   * @param departureTime the departure time of the departure.
+   * @throws IllegalArgumentException if the departure time is null, empty or blank. Also, if the
+   *     departure time is not in the format HH:mm.
+   */
+  public void setDepartureTime(String departureTime) {
+    validateString(departureTime, "Departure time");
+
+    this.departureTime = parseTime(departureTime, "Departure time");
+  }
+
+  /**
    * Gets the line of the departure.
    *
    * @return the line of the departure.
@@ -79,12 +98,34 @@ public class Departure {
   }
 
   /**
+   * Sets the line of the departure.
+   *
+   * @param line the line of the departure.
+   * @throws IllegalArgumentException if the line is null, empty or blank.
+   */
+  public void setLine(String line) {
+    validateString(line, "Line");
+    this.line = line;
+  }
+
+  /**
    * Gets the destination of the departure.
    *
    * @return the destination of the departure.
    */
   public String getDestination() {
     return destination;
+  }
+
+  /**
+   * Sets the destination of the departure.
+   *
+   * @param destination the destination of the departure.
+   * @throws IllegalArgumentException if the destination is null, empty or blank.
+   */
+  public void setDestination(String destination) {
+    validateString(destination, "Destination");
+    this.destination = destination;
   }
 
   /**
@@ -126,15 +167,8 @@ public class Departure {
    *     not in the format HH:mm.
    */
   public void setDelay(String delay) {
-    if (delay == null || delay.isEmpty() || delay.isBlank()) {
-      throw new IllegalArgumentException("Delay cannot be null, empty or blank");
-    }
-
-    try {
-      this.delay = LocalTime.parse(delay, DateTimeFormatter.ofPattern("HH:mm"));
-    } catch (DateTimeParseException e) {
-      throw new IllegalArgumentException("Invalid delay time format. Please use HH:mm format.", e);
-    }
+    validateString(delay, "Delay");
+    this.delay = parseTime(delay, "Delay");
   }
 
   /**

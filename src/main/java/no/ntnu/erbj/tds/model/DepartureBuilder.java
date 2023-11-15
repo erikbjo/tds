@@ -1,8 +1,9 @@
 package no.ntnu.erbj.tds.model;
 
+import static no.ntnu.erbj.tds.shared.utilities.StringValidator.validateString;
+import static no.ntnu.erbj.tds.shared.utilities.TimeParser.parseTime;
+
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 /**
  * A builder class for the departure class. Can have these parameters:
@@ -21,7 +22,6 @@ import java.time.format.DateTimeParseException;
  * @author Erik Bjørnsen
  */
 public class DepartureBuilder {
-
   private LocalTime departureTime;
   private String line;
   private String destination;
@@ -47,20 +47,9 @@ public class DepartureBuilder {
    *     departure time is not in the format HH:mm.
    */
   public DepartureBuilder setDepartureTime(String departureTimeString) {
-    if (departureTimeString == null
-        || departureTimeString.isEmpty()
-        || departureTimeString.isBlank()) {
-      throw new IllegalArgumentException("Departure time cannot be null, empty or blank");
-    }
+    validateString(departureTimeString, "Departure time");
 
-    try {
-      this.departureTime =
-          LocalTime.parse(departureTimeString, DateTimeFormatter.ofPattern("HH:mm"));
-    } catch (DateTimeParseException e) {
-      throw new IllegalArgumentException(
-          "Invalid departure time format. Please use HH:mm format.", e);
-    }
-
+    this.departureTime = parseTime(departureTimeString, "Departure time");
     return this;
   }
 
@@ -81,9 +70,7 @@ public class DepartureBuilder {
    * @throws IllegalArgumentException if the line is null, empty or blank.
    */
   public DepartureBuilder setLine(String line) {
-    if (line == null || line.isEmpty() || line.isBlank()) {
-      throw new IllegalArgumentException("Line cannot be null, empty or blank");
-    }
+    validateString(line, "Line");
 
     this.line = line;
     return this;
@@ -106,9 +93,7 @@ public class DepartureBuilder {
    * @throws IllegalArgumentException if the destination is null, empty or blank.
    */
   public DepartureBuilder setDestination(String destination) {
-    if (destination == null || destination.isEmpty() || destination.isBlank()) {
-      throw new IllegalArgumentException("Destination cannot be null, empty or blank");
-    }
+    validateString(destination, "Destination");
 
     this.destination = destination;
     return this;
@@ -157,16 +142,9 @@ public class DepartureBuilder {
    *     not in the format HH:mm.
    */
   public DepartureBuilder setDelay(String delay) {
-    if (delay == null || delay.isEmpty() || delay.isBlank()) {
-      throw new IllegalArgumentException("Delay cannot be null, empty or blank");
-    }
+    validateString(delay, "Delay");
 
-    try {
-      this.delay = LocalTime.parse(delay, DateTimeFormatter.ofPattern("HH:mm"));
-    } catch (DateTimeParseException e) {
-      throw new IllegalArgumentException("Invalid delay time format. Please use HH:mm format.", e);
-    }
-
+    this.delay = parseTime(delay, "Delay");
     return this;
   }
 

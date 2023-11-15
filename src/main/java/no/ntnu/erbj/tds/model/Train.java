@@ -1,9 +1,12 @@
 package no.ntnu.erbj.tds.model;
 
+import static no.ntnu.erbj.tds.shared.utilities.StringValidator.validateString;
+
 import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so * is used
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * This class represents a train. A train have the following attributes:
@@ -31,10 +34,6 @@ public class Train {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  /*
-    Det må være mulig for brukeren av applikasjonen din å oppgi dette unike tognummeret, så ikke
-  la applikasjonen din automatisk generere det unike tognummeret
-     */
   private String trainNumber;
 
   /** Overloaded constructor for the Train class. */
@@ -45,26 +44,16 @@ public class Train {
   }
 
   /**
-   * Overloaded constructor for the Train class. Train number is added as a parameter.
+   * Overloaded constructor for the Train class. Train number is added as a parameter. The wagons
+   * can be null, but will be converted to an empty list.
    *
    * @param wagons the wagons of the train
    * @param trainNumber the train number
-   * @throws IllegalArgumentException if the wagons are null, or if the train number is null, blank
-   *     or empty
+   * @throws IllegalArgumentException if the train number is null, blank or empty
    */
   public Train(List<Wagon> wagons, String trainNumber) {
-    if (wagons == null) {
-      throw new IllegalArgumentException("Wagons cannot be null");
-    }
-    if (trainNumber == null) {
-      throw new IllegalArgumentException("Train number cannot be null");
-    }
-    trainNumber = trainNumber.trim();
-    if (trainNumber.isBlank() || trainNumber.isEmpty()) {
-      throw new IllegalArgumentException("Train number cannot be blank or empty");
-    }
-    this.wagons = wagons;
-    this.trainNumber = trainNumber;
+    this.setWagons(wagons);
+    this.setTrainNumber(trainNumber);
   }
 
   /**
@@ -74,15 +63,8 @@ public class Train {
    * @throws IllegalArgumentException if the train number is null, blank or empty
    */
   public Train(String trainNumber) {
-    if (trainNumber == null) {
-      throw new IllegalArgumentException("Train number cannot be null");
-    }
-    trainNumber = trainNumber.trim();
-    if (trainNumber.isBlank() || trainNumber.isEmpty()) {
-      throw new IllegalArgumentException("Train number cannot be blank or empty");
-    }
-    this.trainNumber = trainNumber;
-    this.wagons = new ArrayList<>();
+    this.setTrainNumber(trainNumber);
+    this.setWagons(null); // Using setter to be consistent
   }
 
   /**
@@ -177,16 +159,12 @@ public class Train {
   }
 
   /**
-   * Sets the wagons of the train.
+   * Sets the wagons of the train. Can be null, but will be converted to an empty list.
    *
    * @param wagons the wagons of the train
-   * @throws IllegalArgumentException if the wagons are null or empty
    */
   public void setWagons(List<Wagon> wagons) {
-    if (wagons == null || wagons.isEmpty()) {
-      throw new IllegalArgumentException("Wagons cannot be null or empty");
-    }
-    this.wagons = wagons;
+    this.wagons = Objects.requireNonNullElseGet(wagons, ArrayList::new);
   }
 
   /**
@@ -214,9 +192,7 @@ public class Train {
    * @throws IllegalArgumentException if the train number is null, blank or empty
    */
   public void setTrainNumber(String trainNumber) {
-    if (trainNumber == null || trainNumber.isBlank() || trainNumber.isEmpty()) {
-      throw new IllegalArgumentException("Train number cannot be null, blank or empty");
-    }
+    validateString(trainNumber, "Train number");
     this.trainNumber = trainNumber.trim();
   }
 
