@@ -3,6 +3,8 @@ package no.ntnu.erbj.tds.model;
 import static no.ntnu.erbj.tds.shared.utilities.StringValidator.validateString;
 
 import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so * is used
+import no.ntnu.erbj.tds.dao.TrainDao;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -77,15 +79,17 @@ public class Train {
   }
 
   /**
-   * NOTE: This method is maybe useless, depending on the task. It is not used in the current
-   * implementation. Makes a reservation in a wagon of the requested type.
+   * Makes a reservation for a number of seats in a wagon of the requested type. The reservation is
+   * made in the first available wagon of the requested type. If there are not enough available
+   * seats in the first available wagon, the reservation is made in the next available wagon, and so
+   * on. If no wagon of the requested type is available, or if there are not enough available seats
+   * in the wagons of the requested type, a NoSuchElementException is thrown.
    *
    * @param wagonType type of wagon to reserve seats in
    * @param numberOfSeats number of seats to reserve
    * @throws IllegalArgumentException if wagon-type is null, or if the number of seats is not
-   *     positive
-   * @throws NoSuchElementException if no wagon of the requested type is available, or if there are
-   *     not enough available seats in the wagons of the requested type
+   *     positive, or if the number of seats is greater than the number of seats in the train
+   * @throws NoSuchElementException if no wagon of the requested type is available
    */
   public void makeReservation(WagonType wagonType, int numberOfSeats) {
     if (wagonType == null) {
@@ -105,7 +109,7 @@ public class Train {
         filteredWagons.stream().mapToInt(Wagon::getOpenSeats).reduce(0, Integer::sum);
 
     if (availableSeats < numberOfSeats) {
-      throw new NoSuchElementException(
+      throw new IllegalArgumentException(
           "Not enough available seats in the wagons of the requested type.");
     }
 
@@ -124,11 +128,15 @@ public class Train {
    * Adds a wagon to the train.
    *
    * @param wagon the wagon to add
-   * @throws IllegalArgumentException if the wagon is null
+   * @throws IllegalArgumentException if the wagon is null, or if the wagon already exists in the
+   *     train
    */
   public void addWagon(Wagon wagon) {
     if (wagon == null) {
       throw new IllegalArgumentException("Wagon cannot be null");
+    }
+    if (wagons.contains(wagon)) {
+      throw new IllegalArgumentException("Wagon already exists");
     }
     wagons.add(wagon);
   }
@@ -186,7 +194,10 @@ public class Train {
   }
 
   /**
-   * Sets the train number of the train.
+   * Sets the train number of the train. The train number is unique, but this is not checked in the
+   * setter, but in the {@link TrainDao#add(Train)} and {@link TrainDao#trainNumberIsUnique(String)}
+   * and handled in the {@link no.ntnu.erbj.tds.ui.commands.CreateCommands#createTrain()} method.
+   * This is to separate the model from the database.
    *
    * @param trainNumber the train number of the train
    * @throws IllegalArgumentException if the train number is null, blank or empty

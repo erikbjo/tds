@@ -30,6 +30,75 @@ class DepartureTest {
             .build();
   }
 
+  /** Method under test: {@link Departure#Departure(DepartureBuilder)} */
+  @Test
+  void constructorNegative() {
+    assertThrows(IllegalArgumentException.class, () -> new Departure(null));
+  }
+
+  /** Method under test: {@link Departure#setDepartureTime(String)} */
+  @Test
+  void setDepartureTime() {
+    departure1.setDepartureTime("10:10");
+    assertEquals(LocalTime.of(10, 10), departure1.getDepartureTime());
+  }
+
+  /** Method under test: {@link Departure#setDepartureTime(String)} */
+  @Test
+  void setDepartureTimeNegative() {
+    assertThrows(IllegalArgumentException.class, () -> departure1.setDepartureTime(null));
+    assertThrows(IllegalArgumentException.class, () -> departure1.setDepartureTime(""));
+    assertThrows(IllegalArgumentException.class, () -> departure1.setDepartureTime(" "));
+    assertThrows(IllegalArgumentException.class, () -> departure1.setDepartureTime("10:10:10"));
+    assertThrows(IllegalArgumentException.class, () -> departure1.setDepartureTime("10:10:"));
+    assertThrows(IllegalArgumentException.class, () -> departure1.setDepartureTime("10:61"));
+    assertThrows(IllegalArgumentException.class, () -> departure1.setDepartureTime("25:10"));
+  }
+
+  /** Method under test: {@link Departure#setLine(String)} */
+  @Test
+  void setLine() {
+    departure1.setLine("L13");
+    assertEquals("L13", departure1.getLine());
+  }
+
+  /** Method under test: {@link Departure#setLine(String)} */
+  @Test
+  void setLineNegative() {
+    assertThrows(IllegalArgumentException.class, () -> departure1.setLine(null));
+    assertThrows(IllegalArgumentException.class, () -> departure1.setLine(""));
+    assertThrows(IllegalArgumentException.class, () -> departure1.setLine(" "));
+  }
+
+  /** Method under test: {@link Departure#setDestination(String)} */
+  @Test
+  void setDestination() {
+    departure1.setDestination("Oslo");
+    assertEquals("Oslo", departure1.getDestination());
+  }
+
+  /** Method under test: {@link Departure#setDestination(String)} */
+  @Test
+  void setDestinationNegative() {
+    assertThrows(IllegalArgumentException.class, () -> departure1.setDestination(null));
+    assertThrows(IllegalArgumentException.class, () -> departure1.setDestination(""));
+    assertThrows(IllegalArgumentException.class, () -> departure1.setDestination(" "));
+  }
+
+  /** Method under test: {@link Departure#setTrain(Train)} */
+  @Test
+  void setTrain() {
+    Train train = new Train("TestTrainNumber");
+    departure1.setTrain(train);
+    assertEquals(train, departure1.getTrain());
+  }
+
+  /** Method under test: {@link Departure#setTrain(Train)} */
+  @Test
+  void setTrainNegative() {
+    assertThrows(IllegalArgumentException.class, () -> departure1.setTrain(null));
+  }
+
   /** Method under test: {@link Departure#getDepartureTime()} */
   @Test
   void getDepartureTime() {
@@ -63,6 +132,12 @@ class DepartureTest {
   void setTrack() {
     departure1.setTrack(1);
     assertEquals(1, departure1.getTrack());
+  }
+
+  /** Method under test: {@link Departure#setTrack(int)} */
+  @Test
+  void setTrackNegative() {
+    assertThrows(IllegalArgumentException.class, () -> departure1.setTrack(-1));
   }
 
   /** Method under test: {@link Departure#getDelay()} */
