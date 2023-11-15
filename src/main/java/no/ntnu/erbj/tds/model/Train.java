@@ -3,6 +3,8 @@ package no.ntnu.erbj.tds.model;
 import static no.ntnu.erbj.tds.shared.utilities.StringValidator.validateString;
 
 import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so * is used
+import no.ntnu.erbj.tds.dao.TrainDao;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -192,7 +194,10 @@ public class Train {
   }
 
   /**
-   * Sets the train number of the train.
+   * Sets the train number of the train. The train number is unique, but this is not checked in the
+   * setter, but in the {@link TrainDao#add(Train)} and {@link TrainDao#trainNumberIsUnique(String)}
+   * and handled in the {@link no.ntnu.erbj.tds.ui.commands.CreateCommands#createTrain()} method.
+   * This is to separate the model from the database.
    *
    * @param trainNumber the train number of the train
    * @throws IllegalArgumentException if the train number is null, blank or empty

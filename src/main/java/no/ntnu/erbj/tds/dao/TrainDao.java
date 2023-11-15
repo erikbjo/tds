@@ -27,6 +27,8 @@ public class TrainDao implements Dao<Train> {
   public void add(Train train) {
     if (getAll().contains(train)) {
       throw new IllegalArgumentException("Instance of train already exists in the database.");
+    } else if (trainNumberIsUnique(train.getTrainNumber())) {
+      throw new IllegalArgumentException("Train number is not unique.");
     } else {
       this.em.persist(train);
     }
@@ -92,12 +94,13 @@ public class TrainDao implements Dao<Train> {
   }
 
   /**
-   * Checks if a train is valid.
+   * Checks if a train is occupied. A train is occupied if a departure exists with the train as
+   * a train.
    *
    * @param trainNumberToCheck the train number of the train to check.
    * @return true if the train is valid, false otherwise.
    */
-  public boolean trainIsValid(String trainNumberToCheck) {
+  public boolean trainIsNotOccupied(String trainNumberToCheck) {
     List<String> validIds = getAll().stream().map(Train::getTrainNumber).toList();
     List<String> occupiedTrainIds =
         em.createQuery("SELECT a FROM Departure a", Departure.class).getResultList().stream()
@@ -129,5 +132,15 @@ public class TrainDao implements Dao<Train> {
     return getAll().stream()
         .filter(train -> train.getTrainNumber().equals(trainIdString))
         .findFirst();
+  }
+
+  /**
+   * Checks if a given train number is unique.
+   *
+   * @param trainNumber the train number to check.
+   * @return true if the train number is unique, false otherwise.
+   */
+  public boolean trainNumberIsUnique(String trainNumber) {
+    return getAll().stream().noneMatch(train -> train.getTrainNumber().equals(trainNumber));
   }
 }

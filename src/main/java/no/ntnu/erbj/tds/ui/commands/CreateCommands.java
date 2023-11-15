@@ -81,21 +81,27 @@ public class CreateCommands {
   public void createTrain() {
     TdsLogger logger = TdsLogger.getInstance();
     Scanner scanner = new Scanner(System.in);
-    Train train;
-    logger.info("Enter train number (or 'exit' to stop): ");
-    String answer = scanner.nextLine();
 
-    if ("exit".equalsIgnoreCase(answer)) {
-      TdsLogger.getInstance().info(EXIT_STRING);
-      return;
-    } else {
-      try {
-        train = new Train(answer);
-      } catch (IllegalArgumentException e) {
-        logger.warn(e.getMessage());
+    Train train = null;
+    boolean isTrainNumberValid = false;
+
+    do {
+      logger.info("Enter train number: ");
+      String trainNumber = scanner.nextLine();
+
+      if (trainNumber.equalsIgnoreCase("exit")) {
+        logger.info(EXIT_STRING);
         return;
       }
-    }
+
+      try {
+        isTrainNumberValid = trainDao.trainNumberIsUnique(trainNumber);
+        train = new Train(trainNumber);
+      } catch (IllegalArgumentException e) {
+        logger.info("Invalid train number. Type 'exit' to exit.");
+      }
+
+    } while (!isTrainNumberValid);
 
     try {
       trainDao.add(train);
@@ -129,7 +135,7 @@ public class CreateCommands {
       trainIdString = scanner.nextLine();
 
       try {
-        isTrainIdValid = trainDao.trainIsValid(trainIdString);
+        isTrainIdValid = trainDao.trainIsNotOccupied(trainIdString);
         train = trainDao.findByTrainNumber(trainIdString).orElseThrow();
       } catch (IllegalArgumentException e) {
         isTrainIdValid = false;
