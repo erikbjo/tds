@@ -33,7 +33,6 @@ public class Station {
   private int
       platforms; // Number of platforms at the station, to be remade into a list of platforms
 
-  // TODO: Add a list of platforms
 
   /**
    * Constructor for the Station class. <br>

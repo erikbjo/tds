@@ -1,5 +1,16 @@
 package no.ntnu.erbj.tds.shared.utilities;
 
+/**
+ * A class containing static methods for validating strings. The class cannot be instantiated. <br>
+ * Contains the following methods:
+ *
+ * <ul>
+ *   <li>{@link #validateString(String, String)}
+ * </ul>
+ *
+ * @version 1.0
+ * @author erik
+ */
 public class StringValidator {
 
   /**

@@ -1,9 +1,9 @@
 package no.ntnu.erbj.tds.ui.commands;
 
 import java.util.Scanner;
-import no.ntnu.erbj.tds.dao.DepartureDAO;
-import no.ntnu.erbj.tds.dao.TrainDAO;
-import no.ntnu.erbj.tds.dao.WagonDAO;
+import no.ntnu.erbj.tds.dao.DepartureDao;
+import no.ntnu.erbj.tds.dao.TrainDao;
+import no.ntnu.erbj.tds.dao.WagonDao;
 import no.ntnu.erbj.tds.model.*;
 import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.shell.standard.ShellComponent;
@@ -21,9 +21,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class CreateCommands {
   private static final String EXIT_STRING = "Exiting object creation."; // For SonarLint
   private final TrainCommands trainCommands;
-  private final DepartureDAO departureDAO;
-  private final TrainDAO trainDAO;
-  private final WagonDAO wagonDAO;
+  private final DepartureDao departureDao;
+  private final TrainDao trainDao;
+  private final WagonDao wagonDao;
 
   /**
    * CreateCommands constructor. Uses constructor injection to get the trainCommands object.
@@ -32,13 +32,13 @@ public class CreateCommands {
    */
   public CreateCommands(
       TrainCommands trainCommands,
-      DepartureDAO departureDAO,
-      TrainDAO trainDAO,
-      WagonDAO wagonDAO) {
+      DepartureDao departureDao,
+      TrainDao trainDao,
+      WagonDao wagonDao) {
     this.trainCommands = trainCommands;
-    this.departureDAO = departureDAO;
-    this.trainDAO = trainDAO;
-    this.wagonDAO = wagonDAO;
+    this.departureDao = departureDao;
+    this.trainDao = trainDao;
+    this.wagonDao = wagonDao;
   }
 
   /** Start sequence to create a wagon. */
@@ -69,7 +69,7 @@ public class CreateCommands {
     Wagon wagon = new Wagon(safeWagonType);
 
     try {
-      wagonDAO.add(wagon);
+      wagonDao.add(wagon);
       logger.info("Successfully added wagon to database.");
     } catch (Exception e) {
       TdsLogger.getInstance().warn(e.getMessage());
@@ -98,7 +98,7 @@ public class CreateCommands {
     }
 
     try {
-      trainDAO.add(train);
+      trainDao.add(train);
       logger.info("Successfully added train to database.");
     } catch (Exception e) {
       logger.warn(e.getMessage());
@@ -111,7 +111,7 @@ public class CreateCommands {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
 
-    if (trainDAO.getAllUnoccupiedTrains().isEmpty()) {
+    if (trainDao.getAllUnoccupiedTrains().isEmpty()) {
       TdsLogger.getInstance()
           .info("No unoccupied trains in database. Please create a train first.");
       return;
@@ -129,8 +129,8 @@ public class CreateCommands {
       trainIdString = scanner.nextLine();
 
       try {
-        isTrainIdValid = trainDAO.trainIsValid(trainIdString);
-        train = trainDAO.findByTrainNumber(trainIdString).orElseThrow();
+        isTrainIdValid = trainDao.trainIsValid(trainIdString);
+        train = trainDao.findByTrainNumber(trainIdString).orElseThrow();
       } catch (IllegalArgumentException e) {
         isTrainIdValid = false;
       }
@@ -161,8 +161,7 @@ public class CreateCommands {
       if (departureTimeString.equalsIgnoreCase("exit")) {
         logger.info(EXIT_STRING);
         return;
-      } // else continue
-      else if (!isDepartureTimeValid) {
+      } else if (!isDepartureTimeValid) {
         logger.info("Invalid departure time. Type 'exit' to exit.");
       }
 
@@ -236,8 +235,7 @@ public class CreateCommands {
       if (departureTimeString.equalsIgnoreCase("exit")) {
         logger.info(EXIT_STRING);
         return;
-      } // else continue
-      else if (!isDepartureDelayValid) {
+      } else if (!isDepartureDelayValid) {
         logger.info("Invalid departure delay. Type 'exit' to exit.");
       }
 
@@ -246,10 +244,10 @@ public class CreateCommands {
     Departure departure = builder.build();
 
     try {
-      departureDAO.add(departure);
-      Train managedTrain = trainDAO.merge(train);
+      departureDao.add(departure);
+      Train managedTrain = trainDao.merge(train);
       departure.setTrain(managedTrain);
-      departureDAO.update(departure);
+      departureDao.update(departure);
       logger.info("Successfully added departure to database.");
     } catch (Exception e) {
       TdsLogger.getInstance().warn(e.getMessage() + e);

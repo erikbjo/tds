@@ -2,9 +2,9 @@ package no.ntnu.erbj.tds.ui.commands;
 
 import java.util.Comparator;
 import java.util.List;
-import no.ntnu.erbj.tds.dao.TrainDAO;
+import no.ntnu.erbj.tds.dao.TrainDao;
 import no.ntnu.erbj.tds.model.Train;
-import no.ntnu.erbj.tds.ui.utilities.ANSIColors;
+import no.ntnu.erbj.tds.ui.utilities.AnsiColors;
 import no.ntnu.erbj.tds.ui.utilities.Colorize;
 import no.ntnu.erbj.tds.ui.utilities.SortUtility;
 import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
@@ -25,17 +25,17 @@ public class TrainCommands {
   // Above and below are static to follow SonarLint's recommendation
   private static final String DIVIDER =
       "+-----------------+------------+------------------------------------------+";
-  private final String blueFormat = Colorize.colorizeText(ANSIColors.BLUE, TABLE_FORMAT);
-  private final String blueDivider = Colorize.colorizeText(ANSIColors.BLUE, DIVIDER);
-  private final TrainDAO trainDAO;
+  private final String blueFormat = Colorize.colorizeText(AnsiColors.BLUE, TABLE_FORMAT);
+  private final String blueDivider = Colorize.colorizeText(AnsiColors.BLUE, DIVIDER);
+  private final TrainDao trainDao;
 
   /**
    * TrainCommands constructor. Uses constructor injection to get the trainDAO object.
    *
-   * @param trainDAO injects the trainDAO object.
+   * @param trainDao injects the trainDAO object.
    */
-  public TrainCommands(TrainDAO trainDAO) {
-    this.trainDAO = trainDAO;
+  public TrainCommands(TrainDao trainDao) {
+    this.trainDao = trainDao;
   }
 
   private void printTableHeader() {
@@ -48,7 +48,7 @@ public class TrainCommands {
   /** List all trains. */
   @ShellMethod(value = "List all trains.", key = "train list")
   public void listTrains() {
-    trainDAO.getAll().forEach(train -> TdsLogger.getInstance().info(train.toString()));
+    trainDao.getAll().forEach(train -> TdsLogger.getInstance().info(train.toString()));
   }
 
   /** Stylised table of all trains, sorted by number of wagons. */
@@ -57,7 +57,7 @@ public class TrainCommands {
     TdsLogger logger = TdsLogger.getInstance();
 
     List<Train> trains =
-        SortUtility.sortBy(trainDAO.getAll(), Comparator.comparing(Train::getNumberOfWagons));
+        SortUtility.sortBy(trainDao.getAll(), Comparator.comparing(Train::getNumberOfWagons));
 
     printTableHeader();
 
@@ -73,25 +73,26 @@ public class TrainCommands {
     logger.info(DIVIDER);
   }
 
-  /**
-   * Stylised table of all un trains, sorted by number of wagons.
-   */
-  @ShellMethod(value = "List all unoccupied trains in a stylised table.", key = "train unoccupied table")
+  /** Stylised table of all un trains, sorted by number of wagons. */
+  @ShellMethod(
+      value = "List all unoccupied trains in a stylised table.",
+      key = "train unoccupied table")
   public void listUnoccupiedTrainsTable() {
     TdsLogger logger = TdsLogger.getInstance();
 
     List<Train> trains =
-            SortUtility.sortBy(trainDAO.getAllUnoccupiedTrains(), Comparator.comparing(Train::getNumberOfWagons));
+        SortUtility.sortBy(
+            trainDao.getAllUnoccupiedTrains(), Comparator.comparing(Train::getNumberOfWagons));
 
     printTableHeader();
 
     for (Train train : trains) {
       logger.info(
-              String.format(
-                      TABLE_FORMAT,
-                      train.getTrainNumber(),
-                      train.getNumberOfSeats(),
-                      train.getNumberOfWagons()));
+          String.format(
+              TABLE_FORMAT,
+              train.getTrainNumber(),
+              train.getNumberOfSeats(),
+              train.getNumberOfWagons()));
     }
 
     logger.info(DIVIDER);

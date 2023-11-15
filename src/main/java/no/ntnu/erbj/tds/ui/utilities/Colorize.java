@@ -5,7 +5,7 @@ package no.ntnu.erbj.tds.ui.utilities;
  *
  * @author Erik
  * @version 1.0
- * @see ANSIColors
+ * @see AnsiColors
  * @see <a href="https://en.wikipedia.org/wiki/ANSI_escape_code">ANSI escape code</a>
  */
 public class Colorize {
@@ -28,7 +28,7 @@ public class Colorize {
    * @param message The message to be colorized.
    * @return The colorized message.
    */
-  public static String colorizeText(ANSIColors color, String message) {
+  public static String colorizeText(AnsiColors color, String message) {
     return color.getCode() + message + RESET;
   }
 
@@ -41,7 +41,7 @@ public class Colorize {
    * @return The colorized message.
    */
   public static String colorizeBackgroundAndText(
-      ANSIColors bgColor, ANSIColors textColor, String message) {
+          AnsiColors bgColor, AnsiColors textColor, String message) {
     return bgColor.getCode() + textColor.getCode() + message + RESET;
   }
 
@@ -52,7 +52,7 @@ public class Colorize {
    * @param message The message to be colorized.
    * @return The colorized message.
    */
-  public static String colorizeBackground(ANSIColors bgColor, String message) {
+  public static String colorizeBackground(AnsiColors bgColor, String message) {
     return bgColor.getCode() + message + RESET;
   }
 }

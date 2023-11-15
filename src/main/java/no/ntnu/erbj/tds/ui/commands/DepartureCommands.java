@@ -3,9 +3,9 @@ package no.ntnu.erbj.tds.ui.commands;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
-import no.ntnu.erbj.tds.dao.DepartureDAO;
+import no.ntnu.erbj.tds.dao.DepartureDao;
 import no.ntnu.erbj.tds.model.Departure;
-import no.ntnu.erbj.tds.ui.utilities.ANSIColors;
+import no.ntnu.erbj.tds.ui.utilities.AnsiColors;
 import no.ntnu.erbj.tds.ui.utilities.Colorize;
 import no.ntnu.erbj.tds.ui.utilities.SortUtility;
 import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
@@ -27,17 +27,17 @@ public class DepartureCommands {
   private static final String DIVIDER =
       "+----------+------------+------------+----------------"
           + "+------------------------------------------+";
-  private final String blueFormat = Colorize.colorizeText(ANSIColors.BLUE, TABLE_FORMAT);
-  private final String blueDivider = Colorize.colorizeText(ANSIColors.BLUE, DIVIDER);
-  private final DepartureDAO departureDAO;
+  private final String blueFormat = Colorize.colorizeText(AnsiColors.BLUE, TABLE_FORMAT);
+  private final String blueDivider = Colorize.colorizeText(AnsiColors.BLUE, DIVIDER);
+  private final DepartureDao departureDao;
 
   /**
    * DepartureCommands constructor. Uses constructor injection to get the departureDAO object.
    *
-   * @param departureDAO injects the departureDAO object.
+   * @param departureDao injects the departureDAO object.
    */
-  public DepartureCommands(DepartureDAO departureDAO) {
-    this.departureDAO = departureDAO;
+  public DepartureCommands(DepartureDao departureDao) {
+    this.departureDao = departureDao;
   }
 
   /** Prints the table header for departure table. */
@@ -51,7 +51,7 @@ public class DepartureCommands {
   /** List all departures, sorted by departure time. */
   @ShellMethod(value = "List all departures.", key = "departure list")
   public void listDepartures() {
-    SortUtility.sortBy(departureDAO.getAll(), Comparator.comparing(Departure::getDepartureTime))
+    SortUtility.sortBy(departureDao.getAll(), Comparator.comparing(Departure::getDepartureTime))
         .forEach(departure -> TdsLogger.getInstance().info(departure.toString()));
   }
 
@@ -62,7 +62,7 @@ public class DepartureCommands {
 
     List<Departure> departures =
         SortUtility.sortBy(
-            departureDAO.getAll(), Comparator.comparing(Departure::getDepartureTime));
+            departureDao.getAll(), Comparator.comparing(Departure::getDepartureTime));
 
     if (departures.isEmpty()) {
       logger.info("No departures found. Please create a departure first.");
@@ -95,7 +95,7 @@ public class DepartureCommands {
 
     logger.info("Enter the train number of the departure you want to set the track of: ");
     Long trainNumber = scanner.nextLong();
-    Departure departure = departureDAO.getByTrainNumber(trainNumber);
+    Departure departure = departureDao.getByTrainNumber(trainNumber);
 
     if (departure == null) {
       logger.info("No departure found with train number " + trainNumber);
@@ -107,8 +107,8 @@ public class DepartureCommands {
     logger.info("Enter the track you want to set: ");
     int track = scanner.nextInt();
     departure.setTrack(track);
-    departureDAO.update(departure);
-    logger.info(Colorize.colorizeText(ANSIColors.GREEN, "Track set."));
+    departureDao.update(departure);
+    logger.info(Colorize.colorizeText(AnsiColors.GREEN, "Track set."));
   }
 
   /** Set the delay of a departure. */
@@ -121,7 +121,7 @@ public class DepartureCommands {
 
     logger.info("Enter the train number of the departure you want to set the delay of: ");
     Long trainNumber = scanner.nextLong();
-    Departure departure = departureDAO.getByTrainNumber(trainNumber);
+    Departure departure = departureDao.getByTrainNumber(trainNumber);
 
     if (departure == null) {
       logger.info("No departure found with train number " + trainNumber);
@@ -133,19 +133,20 @@ public class DepartureCommands {
     logger.info("Enter the delay you want to set: ");
     String delay = scanner.nextLine();
     departure.setDelay(delay);
-    departureDAO.update(departure);
-    logger.info(Colorize.colorizeText(ANSIColors.GREEN, "Delay set."));
+    departureDao.update(departure);
+    logger.info(Colorize.colorizeText(AnsiColors.GREEN, "Delay set."));
   }
 
   /** Search for a departure by train number. */
   @ShellMethod(
       value =
-          "Search for a departure by train number. Takes an integer as parameter. ex: departure search train 1234",
+          "Search for a departure by train number. "
+              + "Takes an integer as parameter. ex: departure search train 1234",
       key = "departure search train")
   public void searchByTrainNumber(long trainNumber) {
     TdsLogger logger = TdsLogger.getInstance();
 
-    List<Departure> departures = departureDAO.getAll();
+    List<Departure> departures = departureDao.getAll();
 
     departures =
         departures
@@ -175,12 +176,14 @@ public class DepartureCommands {
 
   /** Search for a departure by destination. */
   @ShellMethod(
-      value = "Search for a departure by destination. Takes the search string as parameter. ex: departure search destination Oslo",
+      value =
+          "Search for a departure by destination. "
+              + "Takes the search string as parameter. ex: departure search destination Oslo",
       key = "departure search destination")
   public void searchByDestination(String destination) {
     TdsLogger logger = TdsLogger.getInstance();
 
-    List<Departure> departures = departureDAO.getAll();
+    List<Departure> departures = departureDao.getAll();
 
     departures =
         departures.stream() // filter by departure.train CONTAINS destination, so os will match Oslo

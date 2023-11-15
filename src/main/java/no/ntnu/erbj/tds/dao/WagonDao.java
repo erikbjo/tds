@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Erik
  */
 @Repository
-public class WagonDAO implements DAO<Wagon> {
+public class WagonDao implements Dao<Wagon> {
   @PersistenceContext private EntityManager em;
 
   /** {@inheritDoc} */
