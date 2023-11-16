@@ -92,6 +92,7 @@ root
 │   │   │                   │   ├── commands
 │   │   │                   │   │   ├── CreateCommands.java
 │   │   │                   │   │   ├── DepartureCommands.java
+│   │   │                   │   │   ├── HelperCommands.java
 │   │   │                   │   │   ├── TimeCommands.java
 │   │   │                   │   │   ├── TrainCommands.java
 │   │   │                   │   │   └── WagonCommands.java
