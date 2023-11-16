@@ -66,15 +66,6 @@ public class DepartureDao implements Dao<Departure> {
     return em.createQuery("SELECT d FROM Departure d", Departure.class).getResultList();
   }
 
-  /** {@inheritDoc} */
-  @Override
-  public void printAllDetails() {
-    List<Departure> departureList = getAll();
-    for (Departure departure : departureList) {
-      TdsLogger.getInstance().info("Departure Details" + " :: " + departure.getId());
-    }
-  }
-
   /** Get a departure by train number. */
   public Departure getByTrainNumber(Long trainNumber) {
     TypedQuery<Departure> query =

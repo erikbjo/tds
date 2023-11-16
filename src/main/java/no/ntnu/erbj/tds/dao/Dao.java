@@ -54,7 +54,4 @@ public interface Dao<T> extends Iterable<T> {
    * @return All entity instances in the database as a List.
    */
   List<T> getAll();
-
-  /** Prints entity-specific details of all the entity instances in the database. */
-  void printAllDetails();
 }

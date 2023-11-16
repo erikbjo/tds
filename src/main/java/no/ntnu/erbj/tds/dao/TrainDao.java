@@ -67,23 +67,6 @@ public class TrainDao implements Dao<Train> {
     return em.createQuery("SELECT a FROM Train a", Train.class).getResultList();
   }
 
-  /** {@inheritDoc} */
-  @Override
-  public void printAllDetails() {
-    List<Train> trainList = getAll();
-    for (Train train : trainList) {
-      TdsLogger.getInstance().info("Train Details" + " :: " + train.getId());
-    }
-  }
-
-  /** Print all unoccupied trains. */
-  public void printAllUnoccupiedTrains() {
-    List<Train> unoccupiedTrains = getAllUnoccupiedTrains();
-    for (Train train : unoccupiedTrains) {
-      TdsLogger.getInstance().info("Train Details" + " :: " + train.getId());
-    }
-  }
-
   /** Gets all unoccupied trains. */
   public List<Train> getAllUnoccupiedTrains() {
     List<Train> trainList = getAll();
