@@ -27,7 +27,7 @@ public class TrainDao implements Dao<Train> {
   public void add(Train train) {
     if (getAll().contains(train)) {
       throw new IllegalArgumentException("Instance of train already exists in the database.");
-    } else if (trainNumberIsUnique(train.getTrainNumber())) {
+    } else if (!trainNumberIsUnique(train.getTrainNumber())) {
       throw new IllegalArgumentException("Train number is not unique.");
     } else {
       this.em.persist(train);
