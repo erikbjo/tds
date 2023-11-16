@@ -10,7 +10,7 @@
     </parent>
     <groupId>no.ntnu.erbj</groupId>
     <artifactId>tds</artifactId>
-    <version>1.1</version>
+    <version>2.0</version>
     <name>tds</name>
     <description>Train Dispatch System</description>
     <properties>
