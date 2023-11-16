@@ -5,6 +5,8 @@ import no.ntnu.erbj.tds.dao.DepartureDao;
 import no.ntnu.erbj.tds.dao.TrainDao;
 import no.ntnu.erbj.tds.dao.WagonDao;
 import no.ntnu.erbj.tds.model.*;
+import no.ntnu.erbj.tds.model.departures.Departure;
+import no.ntnu.erbj.tds.model.departures.DepartureBuilder;
 import no.ntnu.erbj.tds.ui.utilities.Printer;
 import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.shell.standard.ShellComponent;

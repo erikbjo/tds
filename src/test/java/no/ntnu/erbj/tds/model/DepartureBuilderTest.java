@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalTime;
+
+import no.ntnu.erbj.tds.model.departures.DepartureBuilder;
 import org.junit.jupiter.api.Test;
 
 class DepartureBuilderTest {

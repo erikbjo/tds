@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import no.ntnu.erbj.tds.model.Departure;
-import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
+import no.ntnu.erbj.tds.model.departures.Departure;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +66,7 @@ public class DepartureDao implements Dao<Departure> {
   }
 
   /** Get a departure by train number. */
-  public Departure getByTrainNumber(Long trainNumber) {
+  public Departure getByTrainNumber(String trainNumber) {
     TypedQuery<Departure> query =
         this.em.createQuery(
             "SELECT d FROM Departure d WHERE d.train.id = :trainNumber", Departure.class);

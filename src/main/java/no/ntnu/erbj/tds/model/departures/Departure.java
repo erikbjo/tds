@@ -1,9 +1,11 @@
-package no.ntnu.erbj.tds.model;
+package no.ntnu.erbj.tds.model.departures;
 
 import static no.ntnu.erbj.tds.shared.utilities.StringValidator.validateString;
 import static no.ntnu.erbj.tds.shared.utilities.TimeParser.parseTime;
 
 import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so using * is ok
+import no.ntnu.erbj.tds.model.Train;
+
 import java.time.LocalTime;
 
 /**
@@ -33,12 +35,12 @@ public class Departure {
   private LocalTime delay;
 
   /**
-   * Constructor for the Departure class.
+   * Constructor for the Departure class. Package private, so it can only be used by the builder.
    *
    * @param builder the builder to build the departure {@link DepartureBuilder}
    * @throws IllegalArgumentException if the builder is null.
    */
-  public Departure(DepartureBuilder builder) {
+   Departure(DepartureBuilder builder) {
     if (builder == null) {
       throw new IllegalArgumentException("Builder cannot be null");
     }

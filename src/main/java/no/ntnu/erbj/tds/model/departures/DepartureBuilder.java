@@ -1,4 +1,6 @@
-package no.ntnu.erbj.tds.model;
+package no.ntnu.erbj.tds.model.departures;
+
+import no.ntnu.erbj.tds.model.Train;
 
 import static no.ntnu.erbj.tds.shared.utilities.StringValidator.validateString;
 import static no.ntnu.erbj.tds.shared.utilities.TimeParser.parseTime;

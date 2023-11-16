@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import no.ntnu.erbj.tds.dao.DepartureDao;
-import no.ntnu.erbj.tds.model.Departure;
+import no.ntnu.erbj.tds.model.departures.Departure;
 import no.ntnu.erbj.tds.ui.utilities.*;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -55,7 +55,7 @@ public class DepartureCommands {
     TdsLogger logger = TdsLogger.getInstance();
 
     logger.info("Enter the train number of the departure you want to set the track of: ");
-    Long trainNumber = scanner.nextLong();
+    String trainNumber = scanner.nextLine();
     Departure departure = departureDao.getByTrainNumber(trainNumber);
 
     if (departure == null) {
@@ -78,7 +78,7 @@ public class DepartureCommands {
     Scanner scanner = new Scanner(System.in);
 
     Printer.printEnterTrainNumberForDelay();
-    Long trainNumber = scanner.nextLong();
+    String trainNumber = scanner.nextLine();
     Departure departure = departureDao.getByTrainNumber(trainNumber);
 
     if (departure == null) {
