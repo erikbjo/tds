@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import no.ntnu.erbj.tds.model.departures.Departure;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

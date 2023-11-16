@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import no.ntnu.erbj.tds.model.Departure;
 import no.ntnu.erbj.tds.model.Train;
-import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,21 +75,17 @@ public class TrainDao implements Dao<Train> {
   }
 
   /**
-   * Checks if a train is occupied. A train is occupied if a departure exists with the train as
-   * a train.
+   * Checks if a train is occupied. A train is occupied if a departure exists with the train as a
+   * train.
    *
    * @param trainNumberToCheck the train number of the train to check.
    * @return true if the train is valid, false otherwise.
    */
   public boolean trainIsNotOccupied(String trainNumberToCheck) {
-    List<String> validIds = getAll().stream().map(Train::getTrainNumber).toList();
-    List<String> occupiedTrainIds =
-        em.createQuery("SELECT a FROM Departure a", Departure.class).getResultList().stream()
-            .map(Departure::getTrain)
-            .map(Train::getTrainNumber)
-            .toList();
-
-    return validIds.contains(trainNumberToCheck) && !occupiedTrainIds.contains(trainNumberToCheck);
+    TypedQuery<Long> query = em.createQuery("SELECT COUNT(d) FROM Departure d WHERE d.train.trainNumber = :trainNumber", Long.class);
+    query.setParameter("trainNumber", trainNumberToCheck);
+    long count = query.getSingleResult();
+    return count == 0;
   }
 
   /**
@@ -118,12 +112,18 @@ public class TrainDao implements Dao<Train> {
   }
 
   /**
-   * Checks if a given train number is unique.
+   * Checks if a given train number is unique. A train number is unique if no other train has the
+   * same train number.
    *
    * @param trainNumber the train number to check.
    * @return true if the train number is unique, false otherwise.
    */
   public boolean trainNumberIsUnique(String trainNumber) {
-    return getAll().stream().noneMatch(train -> train.getTrainNumber().equals(trainNumber));
+    TypedQuery<Long> query =
+        em.createQuery(
+            "SELECT COUNT(t) FROM Train t WHERE t.trainNumber = :trainNumber", Long.class);
+    query.setParameter("trainNumber", trainNumber);
+    long count = query.getSingleResult();
+    return count == 0;
   }
 }

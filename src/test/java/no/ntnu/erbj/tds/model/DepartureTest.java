@@ -3,6 +3,9 @@ package no.ntnu.erbj.tds.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalTime;
+
+import no.ntnu.erbj.tds.model.departures.Departure;
+import no.ntnu.erbj.tds.model.departures.DepartureBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,11 +33,7 @@ class DepartureTest {
             .build();
   }
 
-  /** Method under test: {@link Departure#Departure(DepartureBuilder)} */
-  @Test
-  void constructorNegative() {
-    assertThrows(IllegalArgumentException.class, () -> new Departure(null));
-  }
+  // Constructor is package private, so we can't test it directly.
 
   /** Method under test: {@link Departure#setDepartureTime(String)} */
   @Test
