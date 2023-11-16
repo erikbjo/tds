@@ -102,6 +102,7 @@ root
 │   │   │                   │   └── utilites
 │   │   │                   │       ├── ANSIColors.java
 │   │   │                   │       ├── Colorize.java
+│   │   │                   │       ├── Printer.java
 │   │   │                   │       ├── SortUtility.java
 │   │   │                   │       └── TdsLogger.java
 │   │   │                   │

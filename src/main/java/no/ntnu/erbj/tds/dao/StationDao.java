@@ -63,13 +63,4 @@ public class StationDao implements Dao<Station> {
   public List<Station> getAll() {
     return em.createQuery("SELECT s FROM Station s", Station.class).getResultList();
   }
-
-  /** {@inheritDoc} */
-  @Override
-  public void printAllDetails() {
-    List<Station> stationList = getAll();
-    for (Station station : stationList) {
-      TdsLogger.getInstance().info("Station Details" + " :: " + station.getId());
-    }
-  }
 }

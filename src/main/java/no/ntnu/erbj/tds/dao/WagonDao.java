@@ -64,14 +64,4 @@ public class WagonDao implements Dao<Wagon> {
   public List<Wagon> getAll() {
     return em.createQuery("SELECT a FROM Wagon a", Wagon.class).getResultList();
   }
-
-  /** {@inheritDoc} */
-  @Override
-  public void printAllDetails() {
-    List<Wagon> wagonList = getAll();
-    for (Wagon wagon : wagonList) {
-      TdsLogger.getInstance()
-          .info("Wagon Details" + " :: " + wagon.getId() + " :: " + wagon.getWagonType());
-    }
-  }
 }

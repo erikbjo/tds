@@ -27,7 +27,7 @@ public class TrainDao implements Dao<Train> {
   public void add(Train train) {
     if (getAll().contains(train)) {
       throw new IllegalArgumentException("Instance of train already exists in the database.");
-    } else if (trainNumberIsUnique(train.getTrainNumber())) {
+    } else if (!trainNumberIsUnique(train.getTrainNumber())) {
       throw new IllegalArgumentException("Train number is not unique.");
     } else {
       this.em.persist(train);
@@ -65,23 +65,6 @@ public class TrainDao implements Dao<Train> {
   @Override
   public List<Train> getAll() {
     return em.createQuery("SELECT a FROM Train a", Train.class).getResultList();
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public void printAllDetails() {
-    List<Train> trainList = getAll();
-    for (Train train : trainList) {
-      TdsLogger.getInstance().info("Train Details" + " :: " + train.getId());
-    }
-  }
-
-  /** Print all unoccupied trains. */
-  public void printAllUnoccupiedTrains() {
-    List<Train> unoccupiedTrains = getAllUnoccupiedTrains();
-    for (Train train : unoccupiedTrains) {
-      TdsLogger.getInstance().info("Train Details" + " :: " + train.getId());
-    }
   }
 
   /** Gets all unoccupied trains. */

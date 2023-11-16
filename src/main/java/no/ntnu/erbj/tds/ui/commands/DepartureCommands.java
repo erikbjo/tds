@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import no.ntnu.erbj.tds.dao.DepartureDao;
 import no.ntnu.erbj.tds.model.Departure;
-import no.ntnu.erbj.tds.ui.utilities.AnsiColors;
-import no.ntnu.erbj.tds.ui.utilities.Colorize;
-import no.ntnu.erbj.tds.ui.utilities.SortUtility;
-import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
+import no.ntnu.erbj.tds.ui.utilities.*;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -17,18 +14,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Commands for manipulating departure objects.
  *
  * @author Erik
- * @version 1.1
+ * @version 2.0
  */
 @ShellComponent
 @EnableTransactionManagement
 public class DepartureCommands {
-  private static final String TABLE_FORMAT = "| %-8s | %-10s | %-10s | %-14s | %-40s |";
-  // Above and below are static to follow SonarLint's recommendation
-  private static final String DIVIDER =
-      "+----------+------------+------------+----------------"
-          + "+------------------------------------------+";
-  private final String blueFormat = Colorize.colorizeText(AnsiColors.BLUE, TABLE_FORMAT);
-  private final String blueDivider = Colorize.colorizeText(AnsiColors.BLUE, DIVIDER);
+
   private final DepartureDao departureDao;
 
   /**
@@ -40,49 +31,19 @@ public class DepartureCommands {
     this.departureDao = departureDao;
   }
 
-  /** Prints the table header for departure table. */
-  private void printTableHeader() {
-    TdsLogger logger = TdsLogger.getInstance();
-    logger.info(blueDivider);
-    logger.info(String.format(blueFormat, "Time", "Line", "Track", "Train number", "Destination"));
-    logger.info(blueDivider);
-  }
-
-  /** List all departures, sorted by departure time. */
-  @ShellMethod(value = "List all departures.", key = "departure list")
-  public void listDepartures() {
-    SortUtility.sortBy(departureDao.getAll(), Comparator.comparing(Departure::getDepartureTime))
-        .forEach(departure -> TdsLogger.getInstance().info(departure.toString()));
-  }
-
   /** Stylised table of all departures, sorted by departure time. */
   @ShellMethod(value = "List all departures in a stylised table.", key = "departure table")
   public void listDepartureTable() {
-    TdsLogger logger = TdsLogger.getInstance();
-
     List<Departure> departures =
         SortUtility.sortBy(
             departureDao.getAll(), Comparator.comparing(Departure::getDepartureTime));
 
     if (departures.isEmpty()) {
-      logger.info("No departures found. Please create a departure first.");
+      Printer.printNoDeparturesFound();
       return;
     }
 
-    printTableHeader();
-
-    for (Departure departure : departures) {
-      logger.info(
-          String.format(
-              TABLE_FORMAT,
-              departure.getDepartureTime(),
-              departure.getLine(),
-              departure.getTrack(),
-              departure.getTrain().getTrainNumber(),
-              departure.getDestination()));
-    }
-
-    logger.info(DIVIDER);
+    Printer.printDeparturesInTableFormat(departures);
   }
 
   /** Set the track of a departure. */
@@ -98,10 +59,8 @@ public class DepartureCommands {
     Departure departure = departureDao.getByTrainNumber(trainNumber);
 
     if (departure == null) {
-      logger.info("No departure found with train number " + trainNumber);
+      Printer.printNoDeparturesWithTrainNumber();
       return;
-    } else {
-      logger.info("Departure found: " + departure);
     }
 
     logger.info("Enter the track you want to set: ");
@@ -117,24 +76,26 @@ public class DepartureCommands {
     listDepartureTable();
 
     Scanner scanner = new Scanner(System.in);
-    TdsLogger logger = TdsLogger.getInstance();
 
-    logger.info("Enter the train number of the departure you want to set the delay of: ");
+    Printer.printEnterTrainNumberForDelay();
     Long trainNumber = scanner.nextLong();
     Departure departure = departureDao.getByTrainNumber(trainNumber);
 
     if (departure == null) {
-      logger.info("No departure found with train number " + trainNumber);
+      Printer.printNoDeparturesWithTrainNumber();
       return;
-    } else {
-      logger.info("Departure found: " + departure);
     }
 
-    logger.info("Enter the delay you want to set: ");
+    Printer.printEnterDelay();
     String delay = scanner.nextLine();
-    departure.setDelay(delay);
-    departureDao.update(departure);
-    logger.info(Colorize.colorizeText(AnsiColors.GREEN, "Delay set."));
+    try {
+      departure.setDelay(delay);
+      departureDao.update(departure);
+    } catch (IllegalArgumentException e) {
+      Printer.printException(e);
+      return;
+    }
+    Printer.printDelaySetSuccessfully();
   }
 
   /** Search for a departure by train number. */
@@ -144,8 +105,6 @@ public class DepartureCommands {
               + "Takes an integer as parameter. ex: departure search train 1234",
       key = "departure search train")
   public void searchByTrainNumber(long trainNumber) {
-    TdsLogger logger = TdsLogger.getInstance();
-
     List<Departure> departures = departureDao.getAll();
 
     departures =
@@ -157,20 +116,9 @@ public class DepartureCommands {
             .toList();
 
     if (departures.isEmpty()) {
-      logger.info("No departures found with train number " + trainNumber);
+      Printer.printNoDeparturesWithTrainNumber();
     } else {
-      printTableHeader();
-      departures.forEach(
-          departure ->
-              logger.info(
-                  String.format(
-                      TABLE_FORMAT,
-                      departure.getDepartureTime(),
-                      departure.getLine(),
-                      departure.getTrack(),
-                      departure.getTrain().getId(),
-                      departure.getDestination())));
-      logger.info(DIVIDER);
+      Printer.printDeparturesInTableFormat(departures);
     }
   }
 
@@ -181,8 +129,6 @@ public class DepartureCommands {
               + "Takes the search string as parameter. ex: departure search destination Oslo",
       key = "departure search destination")
   public void searchByDestination(String destination) {
-    TdsLogger logger = TdsLogger.getInstance();
-
     List<Departure> departures = departureDao.getAll();
 
     departures =
@@ -196,20 +142,9 @@ public class DepartureCommands {
             .toList();
 
     if (departures.isEmpty()) {
-      logger.info("No departures found with destination " + destination);
+      Printer.printNoDeparturesWithDestination();
     } else {
-      printTableHeader();
-      departures.forEach(
-          departure ->
-              logger.info(
-                  String.format(
-                      TABLE_FORMAT,
-                      departure.getDepartureTime(),
-                      departure.getLine(),
-                      departure.getTrack(),
-                      departure.getTrain().getId(),
-                      departure.getDestination())));
-      logger.info(DIVIDER);
+      Printer.printDeparturesInTableFormat(departures);
     }
   }
 }

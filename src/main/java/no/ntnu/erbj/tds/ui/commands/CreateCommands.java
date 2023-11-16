@@ -5,6 +5,7 @@ import no.ntnu.erbj.tds.dao.DepartureDao;
 import no.ntnu.erbj.tds.dao.TrainDao;
 import no.ntnu.erbj.tds.dao.WagonDao;
 import no.ntnu.erbj.tds.model.*;
+import no.ntnu.erbj.tds.ui.utilities.Printer;
 import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -14,12 +15,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Commands for creating objects.
  *
  * @author Erik
- * @version 1.2
+ * @version 2.0
  */
 @ShellComponent
 @EnableTransactionManagement
 public class CreateCommands {
-  private static final String EXIT_STRING = "Exiting object creation."; // For SonarLint
+
   private final TrainCommands trainCommands;
   private final DepartureDao departureDao;
   private final TrainDao trainDao;
@@ -46,7 +47,7 @@ public class CreateCommands {
   public void createWagon() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
-    logger.info("Enter wagon's type (or 'exit' to stop): ");
+    Printer.printEnterWagonType();
     for (WagonType value : WagonType.values()) {
       logger.info(value.toString());
     }
@@ -54,7 +55,7 @@ public class CreateCommands {
     String wagonType = scanner.nextLine();
 
     if ("exit".equalsIgnoreCase(wagonType)) {
-      TdsLogger.getInstance().info(EXIT_STRING);
+      Printer.printExitString();
       return;
     }
 
@@ -62,7 +63,7 @@ public class CreateCommands {
     try {
       safeWagonType = WagonType.getWagonTypeByString(wagonType);
     } catch (IllegalArgumentException e) {
-      TdsLogger.getInstance().warn("Invalid wagon type: " + wagonType);
+      Printer.printInvalidInput("wagon type");
       return;
     }
 
@@ -70,7 +71,7 @@ public class CreateCommands {
 
     try {
       wagonDao.add(wagon);
-      logger.info("Successfully added wagon to database.");
+      Printer.printAddedToDatabase();
     } catch (Exception e) {
       TdsLogger.getInstance().warn(e.getMessage());
     }
@@ -79,35 +80,35 @@ public class CreateCommands {
   /** Start sequence to create a train. */
   @ShellMethod(value = "Start sequence to create a train.", key = "new train")
   public void createTrain() {
-    TdsLogger logger = TdsLogger.getInstance();
     Scanner scanner = new Scanner(System.in);
 
     Train train = null;
     boolean isTrainNumberValid = false;
 
     do {
-      logger.info("Enter train number: ");
+      Printer.printEnterTrainNumber();
       String trainNumber = scanner.nextLine();
 
       if (trainNumber.equalsIgnoreCase("exit")) {
-        logger.info(EXIT_STRING);
+        Printer.printExitString();
         return;
       }
 
       try {
         isTrainNumberValid = trainDao.trainNumberIsUnique(trainNumber);
+        TdsLogger.getInstance().info("L99: " + trainNumber + " " + isTrainNumberValid);
         train = new Train(trainNumber);
       } catch (IllegalArgumentException e) {
-        logger.info("Invalid train number. Type 'exit' to exit.");
+        Printer.printInvalidInput("train number");
       }
 
     } while (!isTrainNumberValid);
 
     try {
       trainDao.add(train);
-      logger.info("Successfully added train to database.");
+      Printer.printAddedToDatabase();
     } catch (Exception e) {
-      logger.warn(e.getMessage());
+      Printer.printException(e);
     }
   }
 
@@ -115,11 +116,9 @@ public class CreateCommands {
   @ShellMethod(value = "Start sequence to create a departure.", key = "new departure")
   public void createDeparture() {
     Scanner scanner = new Scanner(System.in);
-    TdsLogger logger = TdsLogger.getInstance();
 
     if (trainDao.getAllUnoccupiedTrains().isEmpty()) {
-      TdsLogger.getInstance()
-          .info("No unoccupied trains in database. Please create a train first.");
+      Printer.printNoUnoccupiedTrains();
       return;
     }
 
@@ -131,7 +130,7 @@ public class CreateCommands {
     boolean isTrainIdValid;
 
     do {
-      logger.info("Enter train number: ");
+      Printer.printEnterTrainNumber();
       trainIdString = scanner.nextLine();
 
       try {
@@ -142,10 +141,10 @@ public class CreateCommands {
       }
 
       if (trainIdString.equalsIgnoreCase("exit")) {
-        logger.info(EXIT_STRING);
+        Printer.printExitString();
         return;
       } else if (!isTrainIdValid) {
-        logger.info("Invalid train id. Type 'exit' to exit.");
+        Printer.printInvalidInput("train number");
       }
 
     } while (!isTrainIdValid);
@@ -154,7 +153,7 @@ public class CreateCommands {
     boolean isDepartureTimeValid;
 
     do {
-      logger.info("Enter departure time (HH:mm): ");
+      Printer.printEnterDepartureTime();
       departureTimeString = scanner.nextLine();
 
       try {
@@ -165,54 +164,54 @@ public class CreateCommands {
       }
 
       if (departureTimeString.equalsIgnoreCase("exit")) {
-        logger.info(EXIT_STRING);
+        Printer.printExitString();
         return;
       } else if (!isDepartureTimeValid) {
-        logger.info("Invalid departure time. Type 'exit' to exit.");
+        Printer.printInvalidInput("departure time");
       }
 
     } while (!isDepartureTimeValid);
 
     do {
-      logger.info("Enter line: ");
+      Printer.printEnterLine();
       String line = scanner.nextLine();
 
       if (line.equalsIgnoreCase("exit")) {
-        logger.info(EXIT_STRING);
+        Printer.printExitString();
         return;
       }
 
       try {
         builder.setLine(line);
       } catch (IllegalArgumentException e) {
-        logger.info("Invalid line. Type 'exit' to exit.");
+        Printer.printInvalidInput("line");
       }
     } while (builder.getLine() == null);
 
     do {
-      logger.info("Enter destination: ");
+      Printer.printEnterDestination();
       String destination = scanner.nextLine();
 
       if (destination.equalsIgnoreCase("exit")) {
-        logger.info(EXIT_STRING);
+        Printer.printExitString();
         return;
       }
 
       try {
         builder.setDestination(destination);
       } catch (IllegalArgumentException e) {
-        logger.info("Invalid destination. Type 'exit' to exit.");
+        Printer.printInvalidInput("destination");
       }
     } while (builder.getDestination() == null);
 
     String trackString;
     boolean isTrackValid = false;
     do {
-      logger.info("Enter track: ");
+      Printer.printEnterTrack();
       trackString = scanner.nextLine();
 
       if (trackString.equalsIgnoreCase("exit")) {
-        logger.info(EXIT_STRING);
+        Printer.printExitString();
         return;
       }
 
@@ -220,7 +219,7 @@ public class CreateCommands {
         builder.setTrack(Integer.parseInt(trackString));
         isTrackValid = true;
       } catch (IllegalArgumentException e) {
-        logger.info("Invalid track. Type 'exit' to exit.");
+        Printer.printInvalidInput("track");
       }
     } while (!isTrackValid);
 
@@ -229,7 +228,7 @@ public class CreateCommands {
     boolean isDepartureDelayValid;
 
     do {
-      logger.info("Enter departure delay (HH:mm): ");
+      Printer.printEnterDelay();
       departureDelayString = scanner.nextLine();
 
       try {
@@ -239,10 +238,10 @@ public class CreateCommands {
       }
 
       if (departureTimeString.equalsIgnoreCase("exit")) {
-        logger.info(EXIT_STRING);
+        Printer.printExitString();
         return;
       } else if (!isDepartureDelayValid) {
-        logger.info("Invalid departure delay. Type 'exit' to exit.");
+        Printer.printInvalidInput("departure delay");
       }
 
     } while (!isDepartureDelayValid);
@@ -254,9 +253,9 @@ public class CreateCommands {
       Train managedTrain = trainDao.merge(train);
       departure.setTrain(managedTrain);
       departureDao.update(departure);
-      logger.info("Successfully added departure to database.");
+      Printer.printAddedToDatabase();
     } catch (Exception e) {
-      TdsLogger.getInstance().warn(e.getMessage() + e);
+      Printer.printException(e);
     }
   }
 
