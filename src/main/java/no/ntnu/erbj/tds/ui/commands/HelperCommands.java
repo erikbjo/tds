@@ -14,8 +14,8 @@ import no.ntnu.erbj.tds.shared.utilities.StringValidator;
 import no.ntnu.erbj.tds.shared.utilities.TimeParser;
 import no.ntnu.erbj.tds.ui.utilities.Printer;
 import no.ntnu.erbj.tds.ui.utilities.SortUtility;
+import no.ntnu.erbj.tds.ui.utilities.TablePrinter;
 import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
 
 @ShellComponent
 public class HelperCommands {
@@ -43,53 +43,16 @@ public class HelperCommands {
         SortUtility.sortBy(
             trainDao.getAllUnoccupiedTrains(), Comparator.comparing(Train::getNumberOfWagons));
 
-    Printer.printTrainsInTableFormat(trains);
+    TablePrinter.printTrainsInTableFormat(trains);
   }
 
-  /** Stylish table of all wagons, sorted by number of seats. */
-  public void listWagonTable() {
+  /** Stylish table of all wagons, sorted by number of open seats. */
+  public void listUnoccupiedWagonTable() {
     List<Wagon> wagons =
-        SortUtility.sortBy(wagonDao.getAll(), Comparator.comparing(Wagon::getNumberOfSeats));
+        SortUtility.sortBy(
+            wagonDao.getAllUnoccupiedWagons(), Comparator.comparing(Wagon::getOpenSeats));
 
-    Printer.printWagonsInTableFormat(wagons);
-  }
-
-  /**
-   * Private helper method to get a train from the user.<br>
-   * Can return an empty optional if the user enters "exit".
-   *
-   * @param scanner the scanner to use to get input from the user
-   * @return an optional train
-   */
-  public Optional<Train> getTrainFromUser(Scanner scanner) {
-    if (trainDao.getAllUnoccupiedTrains().isEmpty()) {
-      Printer.printNoUnoccupiedTrains();
-      return Optional.empty();
-    }
-
-    listUnoccupiedTrainsTable();
-    Train train = null;
-
-    String trainIdString;
-    boolean isTrainIdValid;
-
-    do {
-      Printer.printEnterTrainNumber();
-      trainIdString = scanner.nextLine();
-
-      if (trainIdString.equalsIgnoreCase("exit")) {
-        return Optional.empty();
-      }
-
-      try {
-        isTrainIdValid = trainDao.trainIsNotOccupied(trainIdString);
-        train = trainDao.findByTrainNumber(trainIdString).orElseThrow();
-      } catch (IllegalArgumentException e) {
-        isTrainIdValid = false;
-      }
-    } while (!isTrainIdValid);
-
-    return Optional.of(train);
+    TablePrinter.printWagonsInTableFormat(wagons);
   }
 
   /**
@@ -235,5 +198,78 @@ public class HelperCommands {
     } while (delayOpt.isEmpty());
 
     return delayOpt;
+  }
+
+  /**
+   * Private helper method to get a wagon from the user.<br>
+   * Can return an empty optional if the user enters "exit".
+   *
+   * @param scanner the scanner to use to get input from the user
+   * @return an optional wagon
+   */
+  public Optional<Wagon> getWagonFromUser(Scanner scanner) {
+    if (wagonDao.getAllUnoccupiedWagons().isEmpty()) {
+      Printer.printNoUnoccupiedWagons();
+      return Optional.empty();
+    }
+    Optional<Wagon> wagon = Optional.empty();
+
+    listUnoccupiedWagonTable();
+    String wagonIdString;
+
+    do {
+      Printer.printEnterTrainNumber();
+      wagonIdString = scanner.nextLine();
+
+      if (wagonIdString.equalsIgnoreCase("exit")) {
+        return Optional.empty();
+      }
+
+      try {
+        wagon = wagonDao.find(Long.parseLong(wagonIdString));
+      } catch (IllegalArgumentException e) {
+        Printer.printInvalidInput("wagon id (must be a number)");
+      }
+    } while (wagon.isEmpty());
+
+    return wagon;
+  }
+
+  /**
+   * Private helper method to get a train from the user.<br>
+   * Can return an empty optional if the user enters "exit".
+   *
+   * @param scanner the scanner to use to get input from the user
+   * @return an optional train
+   */
+  public Optional<Train> getTrainFromUser(Scanner scanner) {
+    if (trainDao.getAllUnoccupiedTrains().isEmpty()) {
+      Printer.printNoUnoccupiedTrains();
+      return Optional.empty();
+    }
+
+    listUnoccupiedTrainsTable();
+    Train train = null;
+
+    String trainIdString;
+    boolean isTrainIdValid;
+
+    do {
+      Printer.printEnterTrainNumber();
+      trainIdString = scanner.nextLine();
+
+      if (trainIdString.equalsIgnoreCase("exit")) {
+        return Optional.empty();
+      }
+
+      try {
+        isTrainIdValid = trainDao.trainIsNotOccupied(trainIdString);
+        train = trainDao.findByTrainNumber(trainIdString).orElseThrow();
+      } catch (IllegalArgumentException e) {
+        isTrainIdValid = false;
+      }
+    } while (!isTrainIdValid);
+
+    return Optional.of(train);
   }
 }

@@ -43,7 +43,7 @@ public class DepartureCommands {
       return;
     }
 
-    Printer.printDeparturesInTableFormat(departures);
+    TablePrinter.printDeparturesInTableFormat(departures);
   }
 
   /** Set the track of a departure. */
@@ -118,7 +118,7 @@ public class DepartureCommands {
     if (departures.isEmpty()) {
       Printer.printNoDeparturesWithTrainNumber();
     } else {
-      Printer.printDeparturesInTableFormat(departures);
+      TablePrinter.printDeparturesInTableFormat(departures);
     }
   }
 
@@ -144,7 +144,7 @@ public class DepartureCommands {
     if (departures.isEmpty()) {
       Printer.printNoDeparturesWithDestination();
     } else {
-      Printer.printDeparturesInTableFormat(departures);
+      TablePrinter.printDeparturesInTableFormat(departures);
     }
   }
 }
