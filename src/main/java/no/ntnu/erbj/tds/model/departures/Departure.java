@@ -24,6 +24,7 @@ public class Departure {
   private Long id;
 
   @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "train_id")
   private Train train;
 
   private LocalTime departureTime;

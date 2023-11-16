@@ -1,9 +1,6 @@
 package no.ntnu.erbj.tds.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 /**
  * A wagon is a part of a train. It has a wagon number and a wagon type. The wagon type determines
@@ -16,12 +13,14 @@ import jakarta.persistence.Id;
  */
 @Entity
 public class Wagon {
-  private WagonType wagonType;
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @ManyToOne
+  private Train train;
+
+  private WagonType wagonType;
   private int openSeats;
   private int reservedSeats;
 
@@ -41,12 +40,39 @@ public class Wagon {
   public Wagon() {}
 
   /**
+   * Gets the train the wagon is a part of. Used by DB.
+   *
+   * @return the train the wagon is a part of
+   */
+  public Train getTrain() {
+    return train;
+  }
+
+  /**
+   * Sets the train the wagon is a part of. Used by DB.
+   *
+   * @param train the train the wagon is a part of
+   */
+  public void setTrain(Train train) {
+    this.train = train;
+  }
+
+  /**
    * Gets the id of the wagon.
    *
    * @return the id
    */
   public Long getId() {
     return id;
+  }
+
+  /**
+   * Sets the id of the wagon. Used by DB.
+   *
+   * @param id the id
+   */
+  public void setId(Long id) {
+    this.id = id;
   }
 
   /**

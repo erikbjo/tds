@@ -29,6 +29,7 @@ public class TrainDao implements Dao<Train> {
       throw new IllegalArgumentException("Train number is not unique.");
     } else {
       this.em.persist(train);
+      updateWagonsOfTrain(train);
     }
   }
 
@@ -44,6 +45,7 @@ public class TrainDao implements Dao<Train> {
   @Transactional
   public void update(Train train) {
     em.merge(train);
+    updateWagonsOfTrain(train);
   }
 
   /** {@inheritDoc} */
@@ -65,7 +67,11 @@ public class TrainDao implements Dao<Train> {
     return em.createQuery("SELECT a FROM Train a", Train.class).getResultList();
   }
 
-  /** Gets all unoccupied trains. */
+  /**
+   * Gets all unoccupied trains.
+   *
+   * @return a list of all unoccupied trains.
+   */
   public List<Train> getAllUnoccupiedTrains() {
     List<Train> trainList = getAll();
     List<Long> trainIds =
@@ -82,7 +88,10 @@ public class TrainDao implements Dao<Train> {
    * @return true if the train is valid, false otherwise.
    */
   public boolean trainIsNotOccupied(String trainNumberToCheck) {
-    TypedQuery<Long> query = em.createQuery("SELECT COUNT(d) FROM Departure d WHERE d.train.trainNumber = :trainNumber", Long.class);
+    TypedQuery<Long> query =
+        em.createQuery(
+            "SELECT COUNT(d) FROM Departure d WHERE d.train.trainNumber = :trainNumber",
+            Long.class);
     query.setParameter("trainNumber", trainNumberToCheck);
     long count = query.getSingleResult();
     return count == 0;
@@ -125,5 +134,22 @@ public class TrainDao implements Dao<Train> {
     query.setParameter("trainNumber", trainNumber);
     long count = query.getSingleResult();
     return count == 0;
+  }
+
+  /**
+   * Updates the wagons of a train. Sets the train of each wagon to the given train.
+   *
+   * @param train the train to update the wagons of.
+   */
+  private void updateWagonsOfTrain(Train train) {
+    train
+        .getWagons()
+        .forEach(
+            wagon -> {
+              if (!em.contains(wagon)) {
+                wagon = em.merge(wagon);
+              }
+              wagon.setTrain(train);
+            });
   }
 }
