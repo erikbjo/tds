@@ -1,5 +1,7 @@
 package no.ntnu.erbj.tds.ui.commands;
 
+import java.time.LocalTime;
+import java.util.Optional;
 import java.util.Scanner;
 import no.ntnu.erbj.tds.dao.DepartureDao;
 import no.ntnu.erbj.tds.dao.TrainDao;
@@ -7,6 +9,8 @@ import no.ntnu.erbj.tds.dao.WagonDao;
 import no.ntnu.erbj.tds.model.*;
 import no.ntnu.erbj.tds.model.departures.Departure;
 import no.ntnu.erbj.tds.model.departures.DepartureBuilder;
+import no.ntnu.erbj.tds.shared.utilities.StringValidator;
+import no.ntnu.erbj.tds.shared.utilities.TimeParser;
 import no.ntnu.erbj.tds.ui.utilities.Printer;
 import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.shell.standard.ShellComponent;
@@ -118,135 +122,43 @@ public class CreateCommands {
   @ShellMethod(value = "Start sequence to create a departure.", key = "new departure")
   public void createDeparture() {
     Scanner scanner = new Scanner(System.in);
+    DepartureBuilder builder = new DepartureBuilder();
 
-    if (trainDao.getAllUnoccupiedTrains().isEmpty()) {
-      Printer.printNoUnoccupiedTrains();
+    Train train = getTrainFromUser(scanner).orElse(null);
+    if (train == null) {
+      Printer.printExitString();
       return;
     }
 
-    trainCommands.listUnoccupiedTrainsTable();
-    DepartureBuilder builder = new DepartureBuilder();
-    Train train = null;
+    LocalTime departureTime = getDepartureTimeFromUser(scanner).orElse(null);
+    if (departureTime == null) {
+      Printer.printExitString();
+      return;
+    }
 
-    String trainIdString;
-    boolean isTrainIdValid;
+    String line = getLineFromUser(scanner).orElse(null);
+    if (line == null) {
+      Printer.printExitString();
+      return;
+    }
 
-    do {
-      Printer.printEnterTrainNumber();
-      trainIdString = scanner.nextLine();
+    String destination = getDestinationFromUser(scanner).orElse(null);
+    if (destination == null) {
+      Printer.printExitString();
+      return;
+    }
 
-      try {
-        isTrainIdValid = trainDao.trainIsNotOccupied(trainIdString);
-        train = trainDao.findByTrainNumber(trainIdString).orElseThrow();
-      } catch (IllegalArgumentException e) {
-        isTrainIdValid = false;
-      }
+    Integer track = getTrackFromUser(scanner).orElse(null);
+    if (track == null) {
+      Printer.printExitString();
+      return;
+    }
 
-      if (trainIdString.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      } else if (!isTrainIdValid) {
-        Printer.printInvalidInput("train number");
-      }
-
-    } while (!isTrainIdValid);
-
-    String departureTimeString;
-    boolean isDepartureTimeValid;
-
-    do {
-      Printer.printEnterDepartureTime();
-      departureTimeString = scanner.nextLine();
-
-      try {
-        isDepartureTimeValid =
-            builder.setDepartureTime(departureTimeString).getDepartureTime() != null;
-      } catch (IllegalArgumentException e) {
-        isDepartureTimeValid = false;
-      }
-
-      if (departureTimeString.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      } else if (!isDepartureTimeValid) {
-        Printer.printInvalidInput("departure time");
-      }
-
-    } while (!isDepartureTimeValid);
-
-    do {
-      Printer.printEnterLine();
-      String line = scanner.nextLine();
-
-      if (line.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      }
-
-      try {
-        builder.setLine(line);
-      } catch (IllegalArgumentException e) {
-        Printer.printInvalidInput("line");
-      }
-    } while (builder.getLine() == null);
-
-    do {
-      Printer.printEnterDestination();
-      String destination = scanner.nextLine();
-
-      if (destination.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      }
-
-      try {
-        builder.setDestination(destination);
-      } catch (IllegalArgumentException e) {
-        Printer.printInvalidInput("destination");
-      }
-    } while (builder.getDestination() == null);
-
-    String trackString;
-    boolean isTrackValid = false;
-    do {
-      Printer.printEnterTrack();
-      trackString = scanner.nextLine();
-
-      if (trackString.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      }
-
-      try {
-        builder.setTrack(Integer.parseInt(trackString));
-        isTrackValid = true;
-      } catch (IllegalArgumentException e) {
-        Printer.printInvalidInput("track");
-      }
-    } while (!isTrackValid);
-
-    // delay
-    String departureDelayString;
-    boolean isDepartureDelayValid;
-
-    do {
-      Printer.printEnterDelay();
-      departureDelayString = scanner.nextLine();
-
-      try {
-        isDepartureDelayValid = builder.setDelay(departureDelayString).getDelay() != null;
-      } catch (IllegalArgumentException e) {
-        isDepartureDelayValid = false;
-      }
-
-      if (departureTimeString.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      } else if (!isDepartureDelayValid) {
-        Printer.printInvalidInput("departure delay");
-      }
-
-    } while (!isDepartureDelayValid);
+    LocalTime delay = getDelayFromUser(scanner).orElse(null);
+    if (delay == null) {
+      Printer.printExitString();
+      return;
+    }
 
     Departure departure = builder.build();
 
@@ -265,5 +177,188 @@ public class CreateCommands {
   @ShellMethod(value = "Start sequence to create a reservation.", key = "new reservation")
   public void createReservation() {
     // TODO: Implement, need implementation of departure first
+  }
+
+  /**
+   * Private helper method to get a train from the user.<br>
+   * Can return an empty optional if the user enters "exit".
+   *
+   * @param scanner the scanner to use to get input from the user
+   * @return an optional train
+   */
+  private Optional<Train> getTrainFromUser(Scanner scanner) {
+    if (trainDao.getAllUnoccupiedTrains().isEmpty()) {
+      Printer.printNoUnoccupiedTrains();
+      return Optional.empty();
+    }
+
+    trainCommands.listUnoccupiedTrainsTable();
+    Train train = null;
+
+    String trainIdString;
+    boolean isTrainIdValid;
+
+    do {
+      Printer.printEnterTrainNumber();
+      trainIdString = scanner.nextLine();
+
+      if (trainIdString.equalsIgnoreCase("exit")) {
+        return Optional.empty();
+      }
+
+      try {
+        isTrainIdValid = trainDao.trainIsNotOccupied(trainIdString);
+        train = trainDao.findByTrainNumber(trainIdString).orElseThrow();
+      } catch (IllegalArgumentException e) {
+        isTrainIdValid = false;
+      }
+    } while (!isTrainIdValid);
+
+    return Optional.of(train);
+  }
+
+  /**
+   * Private helper method to get a departure time from the user.<br>
+   * Can return an empty optional if the user enters "exit".
+   *
+   * @param scanner the scanner to use to get input from the user
+   * @return an optional departure time
+   */
+  private Optional<LocalTime> getDepartureTimeFromUser(Scanner scanner) {
+    Optional<LocalTime> departureTime = Optional.empty();
+
+    do {
+      Printer.printEnterDepartureTime();
+      String departureTimeString = scanner.nextLine();
+
+      if (departureTimeString.equalsIgnoreCase("exit")) {
+        return Optional.empty();
+      }
+
+      try {
+        StringValidator.validateString(departureTimeString, "Departure time");
+        departureTime = Optional.of(TimeParser.parseTime(departureTimeString, "Departure time"));
+      } catch (IllegalArgumentException e) {
+        Printer.printInvalidInput("departure time");
+      }
+    } while (departureTime.isEmpty());
+
+    return departureTime;
+  }
+
+  /**
+   * Private helper method to get a line from the user.<br>
+   * Can return an empty optional if the user enters "exit".
+   *
+   * @param scanner the scanner to use to get input from the user
+   * @return an optional line
+   */
+  private Optional<String> getLineFromUser(Scanner scanner) {
+    Optional<String> lineOpt = Optional.empty();
+
+    do {
+      Printer.printEnterLine();
+      String line = scanner.nextLine();
+
+      if (line.equalsIgnoreCase("exit")) {
+        return Optional.empty();
+      }
+
+      try {
+        StringValidator.validateString(line, "Line");
+        lineOpt = Optional.of(line);
+      } catch (IllegalArgumentException e) {
+        Printer.printInvalidInput("line");
+      }
+    } while (lineOpt.isEmpty());
+
+    return lineOpt;
+  }
+
+  /**
+   * Private helper method to get a destination from the user.<br>
+   * Can return an empty optional if the user enters "exit".
+   *
+   * @param scanner the scanner to use to get input from the user
+   * @return an optional destination
+   */
+  private Optional<String> getDestinationFromUser(Scanner scanner) {
+    Optional<String> destinationOpt = Optional.empty();
+
+    do {
+      Printer.printEnterDestination();
+      String destination = scanner.nextLine();
+
+      if (destination.equalsIgnoreCase("exit")) {
+        return Optional.empty();
+      }
+
+      try {
+        StringValidator.validateString(destination, "Destination");
+        destinationOpt = Optional.of(destination);
+      } catch (IllegalArgumentException e) {
+        Printer.printInvalidInput("destination");
+      }
+    } while (destinationOpt.isEmpty());
+
+    return destinationOpt;
+  }
+
+  /**
+   * Private helper method to get a track from the user.<br>
+   * Can return an empty optional if the user enters "exit".
+   *
+   * @param scanner the scanner to use to get input from the user
+   * @return an optional track
+   */
+  private Optional<Integer> getTrackFromUser(Scanner scanner) {
+    Optional<Integer> trackOpt = Optional.empty();
+
+    do {
+      Printer.printEnterTrack();
+      String trackString = scanner.nextLine();
+
+      if (trackString.equalsIgnoreCase("exit")) {
+        return Optional.empty();
+      }
+
+      try {
+        int track = Integer.parseInt(trackString);
+        trackOpt = Optional.of(track);
+      } catch (IllegalArgumentException e) {
+        Printer.printInvalidInput("track");
+      }
+    } while (trackOpt.isEmpty());
+
+    return trackOpt;
+  }
+
+  /**
+   * Private helper method to get a delay from the user.<br>
+   * Can return an empty optional if the user enters "exit".
+   *
+   * @param scanner the scanner to use to get input from the user
+   * @return an optional delay
+   */
+  private Optional<LocalTime> getDelayFromUser(Scanner scanner) {
+    Optional<LocalTime> delayOpt = Optional.empty();
+
+    do {
+      Printer.printEnterDelay();
+      String delayString = scanner.nextLine();
+
+      if (delayString.equalsIgnoreCase("exit")) {
+        return Optional.empty();
+      }
+
+      try {
+        LocalTime delay = TimeParser.parseTime(delayString, "Delay");
+        delayOpt = Optional.of(delay);
+      } catch (IllegalArgumentException e) {
+        Printer.printInvalidInput("delay");
+      }
+    } while (delayOpt.isEmpty());
+
+    return delayOpt;
   }
 }
