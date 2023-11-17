@@ -5,7 +5,6 @@ import static no.ntnu.erbj.tds.shared.utilities.TimeParser.parseTime;
 
 import jakarta.persistence.*;
 import java.time.LocalTime;
-
 import no.ntnu.erbj.tds.model.Station;
 import no.ntnu.erbj.tds.model.Train;
 
