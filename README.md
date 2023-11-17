@@ -105,6 +105,7 @@ root
 │   │   │                   │       ├── Colorize.java
 │   │   │                   │       ├── Printer.java
 │   │   │                   │       ├── SortUtility.java
+│   │   │                   │       ├── TablePrinter.java
 │   │   │                   │       └── TdsLogger.java
 │   │   │                   │
 │   │   │                   └── TdsApplication.java (main class)
