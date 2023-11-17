@@ -3,16 +3,12 @@ package no.ntnu.erbj.tds.model;
 import static no.ntnu.erbj.tds.shared.utilities.StringValidator.validateString;
 import static no.ntnu.erbj.tds.shared.utilities.TimeParser.parseTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import no.ntnu.erbj.tds.model.departures.Departure;
-
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import no.ntnu.erbj.tds.model.departures.Departure;
 
 /**
  * Class representing a station. A station has a name, a location, a list of departures and a number
@@ -31,7 +27,8 @@ public class Station {
   @Id @GeneratedValue private Long id;
   private String name;
   private String location;
-  @OneToMany private List<Departure> departures;
+  @OneToMany(mappedBy = "station", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Departure> departures;
   private int
       platforms; // Number of platforms at the station, to be remade into a list of platforms
 

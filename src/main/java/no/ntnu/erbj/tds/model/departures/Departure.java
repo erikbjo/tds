@@ -3,10 +3,11 @@ package no.ntnu.erbj.tds.model.departures;
 import static no.ntnu.erbj.tds.shared.utilities.StringValidator.validateString;
 import static no.ntnu.erbj.tds.shared.utilities.TimeParser.parseTime;
 
-import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so using * is ok
-import no.ntnu.erbj.tds.model.Train;
-
+import jakarta.persistence.*;
 import java.time.LocalTime;
+
+import no.ntnu.erbj.tds.model.Station;
+import no.ntnu.erbj.tds.model.Train;
 
 /**
  * Class representing a departure from a station. A departure has a departure time, a line, a
@@ -24,8 +25,13 @@ public class Departure {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne()
+  @JoinColumn(name = "train_id")
   private Train train;
+
+  @ManyToOne
+  @JoinColumn(name = "station_id")
+  private Station station;
 
   private LocalTime departureTime;
   private String line;
@@ -40,7 +46,7 @@ public class Departure {
    * @param builder the builder to build the departure {@link DepartureBuilder}
    * @throws IllegalArgumentException if the builder is null.
    */
-   Departure(DepartureBuilder builder) {
+  Departure(DepartureBuilder builder) {
     if (builder == null) {
       throw new IllegalArgumentException("Builder cannot be null");
     }

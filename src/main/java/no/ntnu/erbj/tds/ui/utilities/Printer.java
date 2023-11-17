@@ -17,24 +17,6 @@ public class Printer {
 
   private static final TdsLogger logger = TdsLogger.getInstance();
   private static final String EXIT_STRING = "Exiting object creation."; // For SonarLint
-  private static final String DEPARTURE_TABLE_FORMAT = "| %-8s | %-10s | %-10s | %-14s | %-40s |";
-  // Above and below are static to follow SonarLint's recommendation
-  private static final String DEPARTURE_TABLE_DIVIDER =
-      "+----------+------------+------------+----------------"
-          + "+------------------------------------------+";
-  private static final String BLUE_DEPARTURE_FORMAT =
-      Colorize.colorizeText(AnsiColors.BLUE, DEPARTURE_TABLE_FORMAT);
-  private static final String BLUE_DEPARTURE_DIVIDER =
-      Colorize.colorizeText(AnsiColors.BLUE, DEPARTURE_TABLE_DIVIDER);
-
-  private static final String TRAIN_TABLE_FORMAT = "| %-15s | %-10s | %-40s |";
-  // Above and below are static to follow SonarLint's recommendation
-  private static final String TRAIN_TABLE_DIVIDER =
-      "+-----------------+------------+------------------------------------------+";
-  private static final String BLUE_TRAIN_FORMAT =
-      Colorize.colorizeText(AnsiColors.BLUE, TRAIN_TABLE_FORMAT);
-  private static final String BLUE_TRAIN_DIVIDER =
-      Colorize.colorizeText(AnsiColors.BLUE, TRAIN_TABLE_DIVIDER);
 
   /**
    * Private constructor to prevent instantiation.
@@ -120,40 +102,6 @@ public class Printer {
     logger.warn(exception.getMessage());
   }
 
-  /** Prints the table header for departure table. */
-  public static void printDepartureTableHeader() {
-    logger.info(BLUE_DEPARTURE_DIVIDER);
-    logger.info(
-        String.format(
-            BLUE_DEPARTURE_FORMAT, "Time", "Line", "Track", "Train number", "Destination"));
-    logger.info(BLUE_DEPARTURE_DIVIDER);
-  }
-
-  /** Prints the table divider for departure table. */
-  public static void printDepartureTableDivider() {
-    logger.info(DEPARTURE_TABLE_DIVIDER);
-  }
-
-  /**
-   * Prints a list of departures in a stylized table.
-   *
-   * @param departures the list of departures to print
-   */
-  public static void printDeparturesInTableFormat(List<Departure> departures) {
-    printDepartureTableHeader();
-    for (Departure departure : departures) {
-      logger.info(
-          String.format(
-              DEPARTURE_TABLE_FORMAT,
-              departure.getDepartureTime(),
-              departure.getLine(),
-              departure.getTrack(),
-              departure.getTrain().getTrainNumber(),
-              departure.getDestination()));
-    }
-    printDepartureTableDivider();
-  }
-
   /** Prints a message to the console informing the user that there are no departures in the db. */
   public static void printNoDeparturesFound() {
     logger.info("No departures found. Please create a departure first.");
@@ -183,38 +131,21 @@ public class Printer {
     logger.info("Enter the train number of the departure you want to set the delay of: ");
   }
 
+  /** Prints a message to the console asking the user to enter the ID of a wagon. */
+  public static void printEnterWagonId() {
+    logger.info("Enter the ID of the wagon you want to add to the train: ");
+  }
+
   /** Prints a message to the console informing the user that the delay was set successfully. */
   public static void printDelaySetSuccessfully() {
     logger.info(Colorize.colorizeText(AnsiColors.GREEN, "Delay set."));
   }
 
-  /** Prints the table header for train table. */
-  public static void printTrainTableHeader() {
-    logger.info(BLUE_TRAIN_DIVIDER);
-    logger.info(String.format(BLUE_TRAIN_FORMAT, "Train number", "Seats", "Wagons"));
-    logger.info(BLUE_TRAIN_DIVIDER);
-  }
-
-  /** Prints the table divider for train table. */
-  public static void printTrainTableDivider() {
-    logger.info(TRAIN_TABLE_DIVIDER);
-  }
-
   /**
-   * Prints a list of trains in a stylized table.
-   *
-   * @param trains the list of trains to print
+   * Prints a message to the console informing the user that there are no unoccupied wagons in the
+   * database.
    */
-  public static void printTrainsInTableFormat(List<Train> trains) {
-    printTrainTableHeader();
-    for (Train train : trains) {
-      logger.info(
-          String.format(
-              TRAIN_TABLE_FORMAT,
-              train.getTrainNumber(),
-              train.getNumberOfSeats(),
-              train.getNumberOfWagons()));
-    }
-    printTrainTableDivider();
+  public static void printNoUnoccupiedWagons() {
+    logger.info("No unoccupied wagons in database. Please create a new wagon first.");
   }
 }

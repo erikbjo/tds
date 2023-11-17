@@ -92,6 +92,7 @@ root
 │   │   │                   │   ├── commands
 │   │   │                   │   │   ├── CreateCommands.java
 │   │   │                   │   │   ├── DepartureCommands.java
+│   │   │                   │   │   ├── HelperCommands.java
 │   │   │                   │   │   ├── TimeCommands.java
 │   │   │                   │   │   ├── TrainCommands.java
 │   │   │                   │   │   └── WagonCommands.java
@@ -104,6 +105,7 @@ root
 │   │   │                   │       ├── Colorize.java
 │   │   │                   │       ├── Printer.java
 │   │   │                   │       ├── SortUtility.java
+│   │   │                   │       ├── TablePrinter.java
 │   │   │                   │       └── TdsLogger.java
 │   │   │                   │
 │   │   │                   └── TdsApplication.java (main class)

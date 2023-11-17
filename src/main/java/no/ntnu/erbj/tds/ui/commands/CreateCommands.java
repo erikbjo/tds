@@ -1,5 +1,6 @@
 package no.ntnu.erbj.tds.ui.commands;
 
+import java.time.LocalTime;
 import java.util.Scanner;
 import no.ntnu.erbj.tds.dao.DepartureDao;
 import no.ntnu.erbj.tds.dao.TrainDao;
@@ -23,25 +24,28 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class CreateCommands {
 
-  private final TrainCommands trainCommands;
   private final DepartureDao departureDao;
   private final TrainDao trainDao;
   private final WagonDao wagonDao;
+  private final HelperCommands helperCommands;
 
   /**
    * CreateCommands constructor. Uses constructor injection to get the trainCommands object.
    *
-   * @param trainCommands injects the trainCommands object.
+   * @param departureDao injects the departureDao object.
+   * @param trainDao injects the trainDao object.
+   * @param wagonDao injects the wagonDao object.
+   * @param helperCommands injects the helperCommands object.
    */
   public CreateCommands(
-      TrainCommands trainCommands,
       DepartureDao departureDao,
       TrainDao trainDao,
-      WagonDao wagonDao) {
-    this.trainCommands = trainCommands;
+      WagonDao wagonDao,
+      HelperCommands helperCommands) {
     this.departureDao = departureDao;
     this.trainDao = trainDao;
     this.wagonDao = wagonDao;
+    this.helperCommands = helperCommands;
   }
 
   /** Start sequence to create a wagon. */
@@ -98,7 +102,6 @@ public class CreateCommands {
 
       try {
         isTrainNumberValid = trainDao.trainNumberIsUnique(trainNumber);
-        TdsLogger.getInstance().info("L99: " + trainNumber + " " + isTrainNumberValid);
         train = new Train(trainNumber);
       } catch (IllegalArgumentException e) {
         Printer.printInvalidInput("train number");
@@ -118,146 +121,61 @@ public class CreateCommands {
   @ShellMethod(value = "Start sequence to create a departure.", key = "new departure")
   public void createDeparture() {
     Scanner scanner = new Scanner(System.in);
+    DepartureBuilder builder = new DepartureBuilder();
 
-    if (trainDao.getAllUnoccupiedTrains().isEmpty()) {
-      Printer.printNoUnoccupiedTrains();
+    Train train = helperCommands.getUnoccupiedTrainFromUser(scanner).orElse(null);
+    if (train == null) {
+      Printer.printExitString();
       return;
     }
+    builder.setTrain(train);
 
-    trainCommands.listUnoccupiedTrainsTable();
-    DepartureBuilder builder = new DepartureBuilder();
-    Train train = null;
+    LocalTime departureTime = helperCommands.getDepartureTimeFromUser(scanner).orElse(null);
+    if (departureTime == null) {
+      Printer.printExitString();
+      return;
+    }
+    builder.setDepartureTimeLocalTime(departureTime);
 
-    String trainIdString;
-    boolean isTrainIdValid;
+    String line = helperCommands.getLineFromUser(scanner).orElse(null);
+    if (line == null) {
+      Printer.printExitString();
+      return;
+    }
+    builder.setLine(line);
 
-    do {
-      Printer.printEnterTrainNumber();
-      trainIdString = scanner.nextLine();
+    String destination = helperCommands.getDestinationFromUser(scanner).orElse(null);
+    if (destination == null) {
+      Printer.printExitString();
+      return;
+    }
+    builder.setDestination(destination);
 
-      try {
-        isTrainIdValid = trainDao.trainIsNotOccupied(trainIdString);
-        train = trainDao.findByTrainNumber(trainIdString).orElseThrow();
-      } catch (IllegalArgumentException e) {
-        isTrainIdValid = false;
-      }
+    Integer track = helperCommands.getTrackFromUser(scanner).orElse(null);
+    if (track == null) {
+      Printer.printExitString();
+      return;
+    }
+    builder.setTrack(track);
 
-      if (trainIdString.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      } else if (!isTrainIdValid) {
-        Printer.printInvalidInput("train number");
-      }
-
-    } while (!isTrainIdValid);
-
-    String departureTimeString;
-    boolean isDepartureTimeValid;
-
-    do {
-      Printer.printEnterDepartureTime();
-      departureTimeString = scanner.nextLine();
-
-      try {
-        isDepartureTimeValid =
-            builder.setDepartureTime(departureTimeString).getDepartureTime() != null;
-      } catch (IllegalArgumentException e) {
-        isDepartureTimeValid = false;
-      }
-
-      if (departureTimeString.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      } else if (!isDepartureTimeValid) {
-        Printer.printInvalidInput("departure time");
-      }
-
-    } while (!isDepartureTimeValid);
-
-    do {
-      Printer.printEnterLine();
-      String line = scanner.nextLine();
-
-      if (line.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      }
-
-      try {
-        builder.setLine(line);
-      } catch (IllegalArgumentException e) {
-        Printer.printInvalidInput("line");
-      }
-    } while (builder.getLine() == null);
-
-    do {
-      Printer.printEnterDestination();
-      String destination = scanner.nextLine();
-
-      if (destination.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      }
-
-      try {
-        builder.setDestination(destination);
-      } catch (IllegalArgumentException e) {
-        Printer.printInvalidInput("destination");
-      }
-    } while (builder.getDestination() == null);
-
-    String trackString;
-    boolean isTrackValid = false;
-    do {
-      Printer.printEnterTrack();
-      trackString = scanner.nextLine();
-
-      if (trackString.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      }
-
-      try {
-        builder.setTrack(Integer.parseInt(trackString));
-        isTrackValid = true;
-      } catch (IllegalArgumentException e) {
-        Printer.printInvalidInput("track");
-      }
-    } while (!isTrackValid);
-
-    // delay
-    String departureDelayString;
-    boolean isDepartureDelayValid;
-
-    do {
-      Printer.printEnterDelay();
-      departureDelayString = scanner.nextLine();
-
-      try {
-        isDepartureDelayValid = builder.setDelay(departureDelayString).getDelay() != null;
-      } catch (IllegalArgumentException e) {
-        isDepartureDelayValid = false;
-      }
-
-      if (departureTimeString.equalsIgnoreCase("exit")) {
-        Printer.printExitString();
-        return;
-      } else if (!isDepartureDelayValid) {
-        Printer.printInvalidInput("departure delay");
-      }
-
-    } while (!isDepartureDelayValid);
+    LocalTime delay = helperCommands.getDelayFromUser(scanner).orElse(null);
+    if (delay == null) {
+      Printer.printExitString();
+      return;
+    }
+    builder.setDepartureTimeLocalTime(delay);
 
     Departure departure = builder.build();
 
     try {
       departureDao.add(departure);
-      Train managedTrain = trainDao.merge(train);
-      departure.setTrain(managedTrain);
-      departureDao.update(departure);
+      // Train managedTrain = trainDao.merge(train);
+      // departure.setTrain(managedTrain);
+      // departureDao.update(departure);
       Printer.printAddedToDatabase();
     } catch (Exception e) {
       Printer.printException(e);
+      e.printStackTrace();
     }
   }
 

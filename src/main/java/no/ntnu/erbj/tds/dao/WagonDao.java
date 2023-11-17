@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import no.ntnu.erbj.tds.model.Wagon;
-import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,5 +62,27 @@ public class WagonDao implements Dao<Wagon> {
   @Override
   public List<Wagon> getAll() {
     return em.createQuery("SELECT a FROM Wagon a", Wagon.class).getResultList();
+  }
+
+  /**
+   * Gets all unoccupied wagons.
+   *
+   * @return a list of all unoccupied wagons
+   */
+  public List<Wagon> getAllUnoccupiedWagons() {
+    List<Wagon> wagonList = getAll();
+
+    return wagonList.stream().filter(wagon -> wagon.getTrain() == null).toList();
+  }
+
+  /**
+   * Merges a wagon.
+   *
+   * @param wagon the wagon to merge.
+   * @return the wagon train.
+   */
+  @Transactional
+  public Wagon merge(Wagon wagon) {
+    return em.merge(wagon);
   }
 }

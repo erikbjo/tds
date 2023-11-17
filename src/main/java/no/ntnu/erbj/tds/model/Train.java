@@ -3,12 +3,12 @@ package no.ntnu.erbj.tds.model;
 import static no.ntnu.erbj.tds.shared.utilities.StringValidator.validateString;
 
 import jakarta.persistence.*; // Importing 5+ packages from jakarta.persistence, so * is used
-import no.ntnu.erbj.tds.dao.TrainDao;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import no.ntnu.erbj.tds.dao.TrainDao;
+import no.ntnu.erbj.tds.model.departures.Departure;
 
 /**
  * This class represents a train. A train have the following attributes:
@@ -28,13 +28,18 @@ import java.util.Objects;
  */
 @Entity
 public class Train {
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  @JoinColumn(name = "train_id")
+  @OneToMany(
+      mappedBy = "train",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.EAGER)
   private List<Wagon> wagons;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @OneToOne() private Departure departure;
 
   private String trainNumber;
 
@@ -139,6 +144,7 @@ public class Train {
       throw new IllegalArgumentException("Wagon already exists");
     }
     wagons.add(wagon);
+    wagon.setTrain(this);
   }
 
   /**
@@ -155,6 +161,7 @@ public class Train {
       throw new IllegalArgumentException("Wagon is not in the train");
     }
     wagons.remove(wagon);
+    wagon.setTrain(null);
   }
 
   /**
