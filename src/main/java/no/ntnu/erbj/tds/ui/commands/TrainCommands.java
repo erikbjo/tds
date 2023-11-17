@@ -59,11 +59,6 @@ public class TrainCommands {
 
   @ShellMethod(value = "Starts sequence to add a wagon to a train.", key = "train add wagon")
   public void addWagonToTrain() {
-    if (trainDao.getAllUnoccupiedTrains().isEmpty()) {
-      Printer.printNoUnoccupiedTrains();
-      return;
-    }
-
     if (wagonDao.getAllUnoccupiedWagons().isEmpty()) {
       Printer.printNoUnoccupiedWagons();
       return;
@@ -101,6 +96,7 @@ public class TrainCommands {
       managedWagon.setTrain(managedTrain);
       managedTrain.addWagon(managedWagon);
       trainDao.update(managedTrain);
+        Printer.printAddedToDatabase();
     } else {
       Printer.printException(new Exception("Could not add wagon to train."));
     }

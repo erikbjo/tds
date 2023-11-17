@@ -29,7 +29,7 @@ public class TrainDao implements Dao<Train> {
       throw new IllegalArgumentException("Train number is not unique.");
     } else {
       this.em.persist(train);
-      updateWagonsOfTrain(train);
+      // updateWagonsOfTrain(train);
     }
   }
 
@@ -45,7 +45,7 @@ public class TrainDao implements Dao<Train> {
   @Transactional
   public void update(Train train) {
     em.merge(train);
-    updateWagonsOfTrain(train);
+    // updateWagonsOfTrain(train);
   }
 
   /** {@inheritDoc} */

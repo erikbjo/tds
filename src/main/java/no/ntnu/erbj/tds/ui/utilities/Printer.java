@@ -131,6 +131,11 @@ public class Printer {
     logger.info("Enter the train number of the departure you want to set the delay of: ");
   }
 
+  /** Prints a message to the console asking the user to enter the ID of a wagon. */
+  public static void printEnterWagonId() {
+    logger.info("Enter the ID of the wagon you want to add to the train: ");
+  }
+
   /** Prints a message to the console informing the user that the delay was set successfully. */
   public static void printDelaySetSuccessfully() {
     logger.info(Colorize.colorizeText(AnsiColors.GREEN, "Delay set."));

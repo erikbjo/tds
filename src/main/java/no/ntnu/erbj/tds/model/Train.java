@@ -28,15 +28,18 @@ import no.ntnu.erbj.tds.model.departures.Departure;
  */
 @Entity
 public class Train {
-  @OneToMany(fetch = FetchType.EAGER)
+  @OneToMany(
+      mappedBy = "train",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.EAGER)
   private List<Wagon> wagons;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @OneToOne()
-  private Departure departure;
+  @OneToOne() private Departure departure;
 
   private String trainNumber;
 
@@ -141,6 +144,7 @@ public class Train {
       throw new IllegalArgumentException("Wagon already exists");
     }
     wagons.add(wagon);
+    wagon.setTrain(this);
   }
 
   /**
@@ -157,6 +161,7 @@ public class Train {
       throw new IllegalArgumentException("Wagon is not in the train");
     }
     wagons.remove(wagon);
+    wagon.setTrain(null);
   }
 
   /**

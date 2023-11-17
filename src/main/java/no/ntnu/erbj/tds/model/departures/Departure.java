@@ -5,6 +5,8 @@ import static no.ntnu.erbj.tds.shared.utilities.TimeParser.parseTime;
 
 import jakarta.persistence.*;
 import java.time.LocalTime;
+
+import no.ntnu.erbj.tds.model.Station;
 import no.ntnu.erbj.tds.model.Train;
 
 /**
@@ -23,9 +25,13 @@ public class Departure {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne()
   @JoinColumn(name = "train_id")
   private Train train;
+
+  @ManyToOne
+  @JoinColumn(name = "station_id")
+  private Station station;
 
   private LocalTime departureTime;
   private String line;

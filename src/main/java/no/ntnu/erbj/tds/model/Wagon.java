@@ -18,6 +18,7 @@ public class Wagon {
   private Long id;
 
   @ManyToOne
+  @JoinColumn(name = "train_id")
   private Train train;
 
   private WagonType wagonType;

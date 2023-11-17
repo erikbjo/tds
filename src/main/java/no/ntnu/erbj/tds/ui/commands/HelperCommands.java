@@ -55,8 +55,16 @@ public class HelperCommands {
     TablePrinter.printWagonsInTableFormat(wagons);
   }
 
+  /** Stylish table of all trains, sorted by number of wagons. */
+  public void listAllTrainsTable() {
+    List<Train> trains =
+        SortUtility.sortBy(trainDao.getAll(), Comparator.comparing(Train::getNumberOfWagons));
+
+    TablePrinter.printTrainsInTableFormat(trains);
+  }
+
   /**
-   * Private helper method to get a departure time from the user.<br>
+   * Helper method to get a departure time from the user.<br>
    * Can return an empty optional if the user enters "exit".
    *
    * @param scanner the scanner to use to get input from the user
@@ -85,7 +93,7 @@ public class HelperCommands {
   }
 
   /**
-   * Private helper method to get a line from the user.<br>
+   * Helper method to get a line from the user.<br>
    * Can return an empty optional if the user enters "exit".
    *
    * @param scanner the scanner to use to get input from the user
@@ -114,7 +122,7 @@ public class HelperCommands {
   }
 
   /**
-   * Private helper method to get a destination from the user.<br>
+   * Helper method to get a destination from the user.<br>
    * Can return an empty optional if the user enters "exit".
    *
    * @param scanner the scanner to use to get input from the user
@@ -143,7 +151,7 @@ public class HelperCommands {
   }
 
   /**
-   * Private helper method to get a track from the user.<br>
+   * Helper method to get a track from the user.<br>
    * Can return an empty optional if the user enters "exit".
    *
    * @param scanner the scanner to use to get input from the user
@@ -172,7 +180,7 @@ public class HelperCommands {
   }
 
   /**
-   * Private helper method to get a delay from the user.<br>
+   * Helper method to get a delay from the user.<br>
    * Can return an empty optional if the user enters "exit".
    *
    * @param scanner the scanner to use to get input from the user
@@ -201,7 +209,7 @@ public class HelperCommands {
   }
 
   /**
-   * Private helper method to get a wagon from the user.<br>
+   * Helper method to get a wagon from the user.<br>
    * Can return an empty optional if the user enters "exit".
    *
    * @param scanner the scanner to use to get input from the user
@@ -218,7 +226,7 @@ public class HelperCommands {
     String wagonIdString;
 
     do {
-      Printer.printEnterTrainNumber();
+      Printer.printEnterWagonId();
       wagonIdString = scanner.nextLine();
 
       if (wagonIdString.equalsIgnoreCase("exit")) {
@@ -236,20 +244,20 @@ public class HelperCommands {
   }
 
   /**
-   * Private helper method to get a train from the user.<br>
+   * Helper method to get a train from the user.<br>
    * Can return an empty optional if the user enters "exit".
    *
    * @param scanner the scanner to use to get input from the user
    * @return an optional train
    */
-  public Optional<Train> getTrainFromUser(Scanner scanner) {
+  public Optional<Train> getUnoccupiedTrainFromUser(Scanner scanner) {
     if (trainDao.getAllUnoccupiedTrains().isEmpty()) {
       Printer.printNoUnoccupiedTrains();
       return Optional.empty();
     }
 
     listUnoccupiedTrainsTable();
-    Train train = null;
+    Optional<Train> train = Optional.empty();
 
     String trainIdString;
     boolean isTrainIdValid;
@@ -264,12 +272,43 @@ public class HelperCommands {
 
       try {
         isTrainIdValid = trainDao.trainIsNotOccupied(trainIdString);
-        train = trainDao.findByTrainNumber(trainIdString).orElseThrow();
+        train = trainDao.findByTrainNumber(trainIdString);
       } catch (IllegalArgumentException e) {
         isTrainIdValid = false;
       }
-    } while (!isTrainIdValid);
+    } while (train.isEmpty() && !isTrainIdValid);
 
-    return Optional.of(train);
+    return train;
+  }
+
+  /**
+   * Helper method to get a train from the user.<br>
+   * Can return an empty optional if the user enters "exit".
+   *
+   * @param scanner the scanner to use to get input from the user
+   * @return an optional train
+   */
+  public Optional<Train> getTrainFromUser(Scanner scanner) {
+    listAllTrainsTable();
+    Optional<Train> train = Optional.empty();
+
+    String trainIdString;
+
+    do {
+      Printer.printEnterTrainNumber();
+      trainIdString = scanner.nextLine();
+
+      if (trainIdString.equalsIgnoreCase("exit")) {
+        return Optional.empty();
+      }
+
+      try {
+        train = trainDao.findByTrainNumber(trainIdString);
+      } catch (IllegalArgumentException e) {
+        Printer.printInvalidInput("train number");
+      }
+    } while (train.isEmpty());
+
+    return train;
   }
 }

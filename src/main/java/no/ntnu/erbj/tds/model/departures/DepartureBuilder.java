@@ -1,11 +1,10 @@
 package no.ntnu.erbj.tds.model.departures;
 
-import no.ntnu.erbj.tds.model.Train;
-
 import static no.ntnu.erbj.tds.shared.utilities.StringValidator.validateString;
 import static no.ntnu.erbj.tds.shared.utilities.TimeParser.parseTime;
 
 import java.time.LocalTime;
+import no.ntnu.erbj.tds.model.Train;
 
 /**
  * A builder class for the departure class. Can have these parameters:
@@ -52,6 +51,22 @@ public class DepartureBuilder {
     validateString(departureTimeString, "Departure time");
 
     this.departureTime = parseTime(departureTimeString, "Departure time");
+    return this;
+  }
+
+  /**
+   * Sets the departure time of the departure. Uses LocalTime instead of String.
+   *
+   * @param departureTime the departure time of the departure.
+   * @return the departure builder.
+   * @throws IllegalArgumentException if the departure time is null.
+   */
+  public DepartureBuilder setDepartureTimeLocalTime(LocalTime departureTime) {
+    if (departureTime == null) {
+      throw new IllegalArgumentException("Departure time cannot be null");
+    }
+
+    this.departureTime = departureTime;
     return this;
   }
 
@@ -147,6 +162,22 @@ public class DepartureBuilder {
     validateString(delay, "Delay");
 
     this.delay = parseTime(delay, "Delay");
+    return this;
+  }
+
+  /**
+   * Sets the delay of the departure. Uses LocalTime instead of String.
+   *
+   * @param delay the delay of the departure.
+   * @return the departure builder.
+   * @throws IllegalArgumentException if the delay is null.
+   */
+  public DepartureBuilder setDelayLocalTime(LocalTime delay) {
+    if (delay == null) {
+      throw new IllegalArgumentException("Delay cannot be null");
+    }
+
+    this.delay = delay;
     return this;
   }
 

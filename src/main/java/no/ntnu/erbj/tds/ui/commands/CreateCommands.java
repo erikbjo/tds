@@ -123,52 +123,59 @@ public class CreateCommands {
     Scanner scanner = new Scanner(System.in);
     DepartureBuilder builder = new DepartureBuilder();
 
-    Train train = helperCommands.getTrainFromUser(scanner).orElse(null);
+    Train train = helperCommands.getUnoccupiedTrainFromUser(scanner).orElse(null);
     if (train == null) {
       Printer.printExitString();
       return;
     }
+    builder.setTrain(train);
 
     LocalTime departureTime = helperCommands.getDepartureTimeFromUser(scanner).orElse(null);
     if (departureTime == null) {
       Printer.printExitString();
       return;
     }
+    builder.setDepartureTimeLocalTime(departureTime);
 
     String line = helperCommands.getLineFromUser(scanner).orElse(null);
     if (line == null) {
       Printer.printExitString();
       return;
     }
+    builder.setLine(line);
 
     String destination = helperCommands.getDestinationFromUser(scanner).orElse(null);
     if (destination == null) {
       Printer.printExitString();
       return;
     }
+    builder.setDestination(destination);
 
     Integer track = helperCommands.getTrackFromUser(scanner).orElse(null);
     if (track == null) {
       Printer.printExitString();
       return;
     }
+    builder.setTrack(track);
 
     LocalTime delay = helperCommands.getDelayFromUser(scanner).orElse(null);
     if (delay == null) {
       Printer.printExitString();
       return;
     }
+    builder.setDepartureTimeLocalTime(delay);
 
     Departure departure = builder.build();
 
     try {
       departureDao.add(departure);
-      Train managedTrain = trainDao.merge(train);
-      departure.setTrain(managedTrain);
-      departureDao.update(departure);
+      // Train managedTrain = trainDao.merge(train);
+      // departure.setTrain(managedTrain);
+      // departureDao.update(departure);
       Printer.printAddedToDatabase();
     } catch (Exception e) {
       Printer.printException(e);
+      e.printStackTrace();
     }
   }
 
