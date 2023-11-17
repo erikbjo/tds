@@ -169,9 +169,6 @@ public class CreateCommands {
 
     try {
       departureDao.add(departure);
-      // Train managedTrain = trainDao.merge(train);
-      // departure.setTrain(managedTrain);
-      // departureDao.update(departure);
       Printer.printAddedToDatabase();
     } catch (Exception e) {
       Printer.printException(e);
@@ -182,6 +179,6 @@ public class CreateCommands {
   /** Start sequence to create a reservation. Note: This is not implemented yet */
   @ShellMethod(value = "Start sequence to create a reservation.", key = "new reservation")
   public void createReservation() {
-    // TODO: Implement, need implementation of departure first
+    throw new UnsupportedOperationException("Not implemented yet.");
   }
 }

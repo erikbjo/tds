@@ -17,6 +17,14 @@ import no.ntnu.erbj.tds.ui.utilities.SortUtility;
 import no.ntnu.erbj.tds.ui.utilities.TablePrinter;
 import org.springframework.shell.standard.ShellComponent;
 
+/**
+ * Helper commands for the other commands. <br>
+ * Contains methods that are used by multiple commands. <br>
+ * These methods are extracted to this class to avoid code duplication.
+ *
+ * @author erik
+ * @version 2.0
+ */
 @ShellComponent
 public class HelperCommands {
 
@@ -61,6 +69,14 @@ public class HelperCommands {
         SortUtility.sortBy(trainDao.getAll(), Comparator.comparing(Train::getNumberOfWagons));
 
     TablePrinter.printTrainsInTableFormat(trains);
+  }
+
+  /** Stylish table of all wagons, sorted by number of open seats. */
+  public void listAllWagonTable() {
+    List<Wagon> wagons =
+        SortUtility.sortBy(wagonDao.getAll(), Comparator.comparing(Wagon::getOpenSeats));
+
+    TablePrinter.printWagonsInTableFormat(wagons);
   }
 
   /**

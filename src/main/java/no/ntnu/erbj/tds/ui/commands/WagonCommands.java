@@ -1,7 +1,6 @@
 package no.ntnu.erbj.tds.ui.commands;
 
 import no.ntnu.erbj.tds.dao.WagonDao;
-import no.ntnu.erbj.tds.ui.utilities.TablePrinter;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -16,19 +15,21 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class WagonCommands {
   private final WagonDao wagonDao;
+  private final HelperCommands helperCommands;
 
   /**
    * WagonCommands constructor. Uses constructor injection to get the wagonDAO object.
    *
    * @param wagonDao injects the wagonDAO object.
    */
-  public WagonCommands(WagonDao wagonDao) {
+  public WagonCommands(WagonDao wagonDao, HelperCommands helperCommands) {
     this.wagonDao = wagonDao;
+    this.helperCommands = helperCommands;
   }
 
   /** Stylised table of all wagons. */
   @ShellMethod(value = "List all wagons in a stylised table.", key = "wagon table")
   public void listWagonTable() {
-    TablePrinter.printWagonsInTableFormat(wagonDao.getAll());
+    helperCommands.listAllWagonTable();
   }
 }

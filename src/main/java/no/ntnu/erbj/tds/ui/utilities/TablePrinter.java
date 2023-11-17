@@ -6,7 +6,7 @@ import no.ntnu.erbj.tds.model.Wagon;
 import no.ntnu.erbj.tds.model.departures.Departure;
 
 /**
- * A
+ * Utility class for printing tables.
  *
  * @version 2.0
  * @author erik

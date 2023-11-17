@@ -1,8 +1,5 @@
 package no.ntnu.erbj.tds.ui.utilities;
 
-import java.util.List;
-import no.ntnu.erbj.tds.model.departures.Departure;
-import no.ntnu.erbj.tds.model.Train;
 
 /**
  * A class that provides printing functionality. <br>

@@ -57,6 +57,7 @@ public class TrainCommands {
     TablePrinter.printTrainsInTableFormat(trains);
   }
 
+  /** Start sequence to add a wagon to a train. */
   @ShellMethod(value = "Starts sequence to add a wagon to a train.", key = "train add wagon")
   public void addWagonToTrain() {
     if (wagonDao.getAllUnoccupiedWagons().isEmpty()) {
@@ -78,17 +79,6 @@ public class TrainCommands {
       return;
     }
 
-    // try {
-    //   Wagon managedWagon = wagonDao.find(wagon.getId()).orElse(null);
-    //   Train managedTrain = trainDao.find(train.getId()).orElse(null);
-    //
-    //   train.addWagon(managedWagon);
-    //   trainDao.update(managedTrain);
-    //   Printer.printAddedToDatabase();
-    // } catch (Exception e) {
-    //   TdsLogger.getInstance().warn(e.getMessage());
-    // }
-
     Wagon managedWagon = wagonDao.merge(wagon);
     Train managedTrain = trainDao.merge(train);
 
@@ -96,7 +86,7 @@ public class TrainCommands {
       managedWagon.setTrain(managedTrain);
       managedTrain.addWagon(managedWagon);
       trainDao.update(managedTrain);
-        Printer.printAddedToDatabase();
+      Printer.printAddedToDatabase();
     } else {
       Printer.printException(new Exception("Could not add wagon to train."));
     }
