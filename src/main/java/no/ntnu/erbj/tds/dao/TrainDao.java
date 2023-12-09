@@ -133,21 +133,4 @@ public class TrainDao implements Dao<Train> {
     long count = query.getSingleResult();
     return count == 0;
   }
-
-  /**
-   * Updates the wagons of a train. Sets the train of each wagon to the given train.
-   *
-   * @param train the train to update the wagons of.
-   */
-  private void updateWagonsOfTrain(Train train) {
-    train
-        .getWagons()
-        .forEach(
-            wagon -> {
-              if (!em.contains(wagon)) {
-                wagon = em.merge(wagon);
-              }
-              wagon.setTrain(train);
-            });
-  }
 }

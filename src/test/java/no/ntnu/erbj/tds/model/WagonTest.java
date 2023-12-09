@@ -70,15 +70,18 @@ class WagonTest {
   /** Method under test: {@link Wagon#reserveSeats(int)} */
   @Test
   void reserveSeatsTooMany() {
+    int sleepingSeats = WagonType.SLEEPING.getSeats();
+    int passengerSeats = WagonType.PASSENGER.getSeats();
+    int freightSeats = WagonType.FREIGHT.getSeats();
     assertThrows(
         IllegalArgumentException.class,
-        () -> sleepingWagon.reserveSeats(WagonType.SLEEPING.getSeats() + 1));
+        () -> sleepingWagon.reserveSeats(sleepingSeats + 1));
     assertThrows(
         IllegalArgumentException.class,
-        () -> passengerWagon.reserveSeats(WagonType.PASSENGER.getSeats() + 1));
+        () -> passengerWagon.reserveSeats(passengerSeats + 1));
     assertThrows(
         IllegalArgumentException.class,
-        () -> freightWagon.reserveSeats(WagonType.FREIGHT.getSeats() + 1));
+        () -> freightWagon.reserveSeats(freightSeats + 1));
   }
 
   /** Method under test: {@link Wagon#cancelReservation(int)} */
