@@ -1,14 +1,12 @@
 # Train Dispatch System 🚂
 
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/HVrmLnmo)
-
-STUDENT NAME = Erik Bjørnsen  
-STUDENT ID = erbj
-
 ![Java shield](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![Maven shield](https://img.shields.io/badge/Apache_Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
 ![Spring boot shield](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot)
 ![IDE](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
+
+STUDENT NAME = Erik Bjørnsen  
+STUDENT ID = erbj
 
 ## Project description
 
@@ -16,32 +14,19 @@ Train Dispatch System is a system for dispatching trains. It only shows the trai
 
 ## How to run the project
 
-1. Clone the repository
-
+1. Clone the repository with:
 ```bash
 git clone git@github.com:NTNU-BIDATA-IDATG1003-2023/mappe-idatg1003-traindispatchsystem-erikbjo.git
 ```
 
-2. Compile the program with:
-
+2. Run the program with:
 ```bash
-./mvnw clean install
-```
-
-3. Run the program with:
-
-```bash
-java -jar target/tds-*version*.jar
+./mvnw clean spring-boot:run
 ```
 
 or
 
-1. Download the jar file from git or with this command:
-
-```bash
-wget https://github.com/NTNU-BIDATA-IDATG1003-2023/mappe-idatg1003-traindispatchsystem-erikbjo/releases/ *FIX THIS*
-```
-
+1. Download the jar file from git releases
 2. Run the program with:
 
 ```bash
@@ -54,7 +39,7 @@ java -jar tds-*version*.jar
 2. Run the tests with:
 
 ```bash
-mvn test
+./mvnw clean test
 ```
 
 ## Project structure
@@ -119,12 +104,6 @@ root
 │               └── ntnu
 │                   └── erbj   
 │                       └── tds
-│                           ├── dao
-│                           │   ├── StationDAOTest.java
-│                           │   ├── DepartureDAOTest.java
-│                           │   ├── TrainDAOTest.java
-│                           │   └── WagonDAOTest.java
-│                           │
 │                           └── model
 │                               ├── DepartureBuilderTest.java
 │                               ├── DepartureTest.java
