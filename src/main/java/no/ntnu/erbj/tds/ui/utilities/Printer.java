@@ -59,7 +59,7 @@ public class Printer {
 
   /** Prints a message to the console asking the user to enter a train number. */
   public static void printEnterTrainNumber() {
-    logger.info("Enter train number: ");
+    logger.info("Enter train number: (exit to cancel)");
   }
 
   /** Prints a message to the console asking the user to enter a line. */
@@ -143,6 +143,10 @@ public class Printer {
    */
   public static void printNoUnoccupiedWagons() {
     logger.info("No unoccupied wagons in database. Please create a new wagon first.");
+  }
+
+  public static void printTrainIsOccupied() {
+    logger.info("Train is occupied or invalid. Please try again.");
   }
 
   /** Prints a message to the console informing the user that the train number is not unique. */

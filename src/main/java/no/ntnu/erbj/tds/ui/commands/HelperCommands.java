@@ -285,7 +285,7 @@ public class HelperCommands {
     Optional<Train> train = Optional.empty();
 
     String trainIdString;
-    boolean isTrainIdValid;
+    boolean isTrainIdValid = false;
 
     do {
       Printer.printEnterTrainNumber();
@@ -299,9 +299,14 @@ public class HelperCommands {
         isTrainIdValid = trainDao.trainIsNotOccupied(trainIdString);
         train = trainDao.findByTrainNumber(trainIdString);
       } catch (IllegalArgumentException e) {
-        isTrainIdValid = false;
+        Printer.printInvalidInput("train number");
       }
-    } while (train.isEmpty() && !isTrainIdValid);
+
+      if (!isTrainIdValid || train.isEmpty()) {
+        Printer.printTrainIsOccupied();
+      }
+
+    } while (train.isEmpty() || !isTrainIdValid);
 
     return train;
   }
