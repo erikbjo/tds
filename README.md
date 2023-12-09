@@ -8,11 +8,11 @@
 STUDENT NAME = Erik Bjørnsen  
 STUDENT ID = erbj
 
-## Project description
+## Project description 📝
 
 Train Dispatch System is a system for dispatching trains. It only shows the trains connected with Oslo S.
 
-## How to run the project
+## How to run the project 🚀
 
 1. Clone the repository with:
 ```bash
@@ -33,7 +33,7 @@ or
 java -jar tds-*version*.jar
 ```
 
-## How to run the tests
+## How to run the tests 🧪
 
 1. Clone the repository
 2. Run the tests with:
@@ -42,7 +42,19 @@ java -jar tds-*version*.jar
 ./mvnw clean test
 ```
 
-## Project structure
+## How to use the program 🖥
+
+When the program is running, you can use the following command to get help:
+```tds
+help
+```
+
+## Contact 📧
+
+If you have any questions, you can contact me at
+[here](mailto:bjornsen.erik@gmail.com)
+
+## Project structure 📁
 
 ```
 root
@@ -118,8 +130,10 @@ root
 └── README.md
 ```
 
-## Link to repository
+## Troubleshooting 🛠
+
+If you get any persistence errors, try to delete the tdsDB directory and run the program again.
+
+## Link to repository 🌐
 
 [GitHub Classroom](https://github.com/NTNU-BIDATA-IDATG1003-2023/mappe-idatg1003-traindispatchsystem-erikbjo)
-
-## References
