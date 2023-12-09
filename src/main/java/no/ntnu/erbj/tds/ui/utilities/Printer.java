@@ -70,7 +70,7 @@ public class Printer {
 
   /** Prints a message to the console asking the user to enter a track. */
   public static void printEnterTrack() {
-    logger.info("Enter track: ");
+    logger.info("Enter track: (nothing for no track)");
   }
 
   /** Prints a message to the console asking the user to enter a destination. */

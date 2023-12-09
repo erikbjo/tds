@@ -168,7 +168,8 @@ public class HelperCommands {
 
   /**
    * Helper method to get a track from the user.<br>
-   * Can return an empty optional if the user enters "exit".
+   * Can return an empty optional if the user enters "exit".<br>
+   * Returns -1 if the user enters nothing.
    *
    * @param scanner the scanner to use to get input from the user
    * @return an optional track
@@ -182,6 +183,10 @@ public class HelperCommands {
 
       if (trackString.equalsIgnoreCase("exit")) {
         return Optional.empty();
+      }
+
+      if (trackString.isEmpty() || trackString.isBlank()) {
+        return Optional.of(-1);
       }
 
       try {

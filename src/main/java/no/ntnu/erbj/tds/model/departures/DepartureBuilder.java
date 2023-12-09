@@ -133,7 +133,7 @@ public class DepartureBuilder {
    * @throws IllegalArgumentException if the track is less than 1.
    */
   public DepartureBuilder setTrack(int track) {
-    if (track < 1) {
+    if (track < 1 && track != -1) {
       throw new IllegalArgumentException("Track cannot be less than 1");
     }
 
