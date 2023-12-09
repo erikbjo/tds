@@ -113,17 +113,21 @@ public class DepartureCommands {
   @ShellMethod(
       value =
           "Search for a departure by train number. "
-              + "Takes an integer as parameter. ex: departure search train 1234",
+              + "Takes an integer as parameter. ex: departure search train abc123",
       key = "departure search train")
-  public void searchByTrainNumber(long trainNumber) {
+  public void searchByTrainNumber(String trainNumber) {
     List<Departure> departures = departureDao.getAll();
 
     departures =
         departures
-            .stream() // filter by departure.train CONTAINS trainNumber, so 1234 will match 12345
-            .filter(
+            .stream()
+            .filter( // filter by departure.train CONTAINS trainNumber, so 1234 will match 12345 etc
                 departure ->
-                    departure.getTrain().getId().toString().contains(String.valueOf(trainNumber)))
+                    departure
+                        .getTrain()
+                        .getTrainNumber()
+                        .toLowerCase()
+                        .contains(String.valueOf(trainNumber).trim().toLowerCase()))
             .toList();
 
     if (departures.isEmpty()) {
