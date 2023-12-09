@@ -10,7 +10,12 @@ STUDENT ID = erbj
 
 ## Project description 📝
 
-Train Dispatch System is a system for dispatching trains. It only shows the trains connected with Oslo S.
+<p>
+Train Dispatch System is a Java application made to manage train departures.
+The application is made with Spring Boot and Maven, and uses Derby as a database.
+The user-interface is made with Spring Shell.
+Exam project for the course IDATG1003 at NTNU Gjøvik.
+</p>
 
 ## How to run the project 🚀
 
@@ -30,7 +35,7 @@ or
 2. Run the program with:
 
 ```bash
-java -jar tds-*version*.jar
+java -jar tds-3.jar
 ```
 
 ## How to run the tests 🧪
@@ -51,8 +56,7 @@ help
 
 ## Contact 📧
 
-If you have any questions, you can contact me at
-[here](mailto:bjornsen.erik@gmail.com)
+If you have any questions, you can contact me [here](mailto:bjornsen.erik@gmail.com)
 
 ## Project structure 📁
 
@@ -66,15 +70,17 @@ root
 │   │   │           └── erbj
 │   │   │               └── tds
 │   │   │                   ├── dao
-│   │   │                   │   ├──DAO.java
-│   │   │                   │   ├──DepartureDAO.java
-│   │   │                   │   ├──StationDAO.java
-│   │   │                   │   ├──TrainDAO.java
-│   │   │                   │   └──WagonDAO.java
+│   │   │                   │   ├──Dao.java
+│   │   │                   │   ├──DepartureDao.java
+│   │   │                   │   ├──StationDao.java
+│   │   │                   │   ├──TrainDao.java
+│   │   │                   │   └──WagonDao.java
 │   │   │                   │
 │   │   │                   ├── model
-│   │   │                   │   ├── Departure.java
-│   │   │                   │   ├── DepartureBuilder.java
+│   │   │                   │   ├── departures
+│   │   │                   │   │   ├── Departure.java
+│   │   │                   │   │   └── DepartureBuilder.java
+│   │   │                   │   │
 │   │   │                   │   ├── Station.java
 │   │   │                   │   ├── Train.java
 │   │   │                   │   ├── Wagon.java
@@ -98,7 +104,7 @@ root
 │   │   │                   │   │   └── TimeController.java
 │   │   │                   │   │
 │   │   │                   │   └── utilites
-│   │   │                   │       ├── ANSIColors.java
+│   │   │                   │       ├── AnsiColors.java
 │   │   │                   │       ├── Colorize.java
 │   │   │                   │       ├── Printer.java
 │   │   │                   │       ├── SortUtility.java

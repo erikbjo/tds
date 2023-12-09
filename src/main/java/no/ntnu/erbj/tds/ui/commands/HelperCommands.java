@@ -24,7 +24,7 @@ import org.springframework.shell.standard.ShellComponent;
  * These methods are extracted to this class to avoid code duplication.
  *
  * @author erik
- * @version 2.0
+ * @version 3.0
  */
 @ShellComponent
 public class HelperCommands {

@@ -11,7 +11,7 @@ import org.springframework.shell.standard.ShellMethod;
  * Commands for manipulating the current time.
  *
  * @author Erik
- * @version 2.0
+ * @version 3.0
  */
 @ShellComponent
 public class TimeCommands {
@@ -35,8 +35,8 @@ public class TimeCommands {
   /** Sets the current time. */
   @ShellMethod(
       value =
-          "Set the current time. Also deletes departures that have a departure time " +
-                  "before the new time. Takes a parameter in format: HH:mm",
+          "Set the current time. Also deletes departures that have a departure time "
+              + "before the new time. Takes a parameter in format: HH:mm",
       key = "time set")
   public void setCurrentTime(String time) {
     String[] timeSplit = time.split(":");
@@ -61,34 +61,33 @@ public class TimeCommands {
   /** Increments the current time by one minute. */
   @ShellMethod(
       value =
-          "Increment minutes by one. Also deletes departures that have a departure time before the new time.",
-      key = {"m++", "time increment minutes"})
+          "Increment minutes by one. "
+              + "Also deletes departures that have a departure time before the new time.",
+      key = "m++")
   public void incrementMinutes() {
     TimeController.incrementMinutes();
     departureDao.removeDeparturesBeforeLocalTime(TimeController.getCurrentTime());
   }
 
   /** Decrements the current time by one minute. */
-  @ShellMethod(
-      value = "Decrement minutes by one.",
-      key = {"m--", "time-decrement-minutes"})
+  @ShellMethod(value = "Decrement minutes by one.", key = "m--")
   public void decrementMinutes() {
     TimeController.decrementMinutes();
   }
 
   /** Increments the current time by one hour. */
   @ShellMethod(
-      value = "Increment hours by one. Also deletes departures that have a departure time before the new time.",
-      key = {"h++", "time increment hours"})
+      value =
+          "Increment hours by one. "
+              + "Also deletes departures that have a departure time before the new time.",
+      key = "h++")
   public void incrementHours() {
     TimeController.incrementHours();
     departureDao.removeDeparturesBeforeLocalTime(TimeController.getCurrentTime());
   }
 
   /** Decrements the current time by one hour. */
-  @ShellMethod(
-      value = "Decrement hours by one.",
-      key = {"h--", "time decrement hours"})
+  @ShellMethod(value = "Decrement hours by one.", key = "h--")
   public void decrementHours() {
     TimeController.decrementHours();
   }

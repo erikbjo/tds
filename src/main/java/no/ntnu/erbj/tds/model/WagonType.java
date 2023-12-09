@@ -26,15 +26,6 @@ public enum WagonType {
   }
 
   /**
-   * Gets the number of seats for the wagon type.
-   *
-   * @return the number of seats
-   */
-  public int getSeats() {
-    return seats;
-  }
-
-  /**
    * Gets the wagon type from a string.
    *
    * @param wagonType the wagon type as a string
@@ -51,5 +42,14 @@ public enum WagonType {
       case "CAFETERIA" -> CAFETERIA;
       default -> throw new IllegalArgumentException("Invalid wagon type: " + wagonType);
     };
+  }
+
+  /**
+   * Gets the number of seats for the wagon type.
+   *
+   * @return the number of seats
+   */
+  public int getSeats() {
+    return seats;
   }
 }

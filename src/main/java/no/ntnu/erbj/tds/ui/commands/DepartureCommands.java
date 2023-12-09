@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Commands for manipulating departure objects.
  *
  * @author Erik
- * @version 2.0
+ * @version 3.0
  */
 @ShellComponent
 @EnableTransactionManagement
@@ -120,8 +120,8 @@ public class DepartureCommands {
 
     departures =
         departures
-            .stream()
-            .filter( // filter by departure.train CONTAINS trainNumber, so 1234 will match 12345 etc
+            .stream() // filter by departure.train CONTAINS trainNumber, so 1234 will match 12345
+            .filter(
                 departure ->
                     departure
                         .getTrain()
