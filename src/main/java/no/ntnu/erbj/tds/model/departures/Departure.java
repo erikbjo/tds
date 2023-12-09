@@ -235,4 +235,13 @@ public class Departure {
   public Long getId() {
     return id;
   }
+
+  /**
+   * Gets the estimated arrival time of the departure.
+   *
+   * @return the estimated arrival time of the departure.
+   */
+  public LocalTime getEstimatedArrival() {
+    return departureTime.plusHours(delay.getHour()).plusMinutes(delay.getMinute());
+  }
 }
