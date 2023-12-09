@@ -77,6 +77,11 @@ public class HelperCommands {
     List<Wagon> wagons =
         SortUtility.sortBy(wagonDao.getAll(), Comparator.comparing(Wagon::getOpenSeats));
 
+    if (wagons.isEmpty()) {
+      Printer.printNoWagonsFound();
+      return;
+    }
+
     TablePrinter.printWagonsInTableFormat(wagons);
   }
 

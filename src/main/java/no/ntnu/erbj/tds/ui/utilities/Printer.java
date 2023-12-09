@@ -178,4 +178,11 @@ public class Printer {
         Colorize.colorizeText(
             AnsiColors.RED, "Removed train with train number " + trainNumber + "."));
   }
+
+  /**
+   * Prints a message to the console informing the user that there are no wagons in the database.
+   */
+  public static void printNoWagonsFound() {
+    logger.info("No wagons found. Please create a wagon first.");
+  }
 }

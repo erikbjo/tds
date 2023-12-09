@@ -179,10 +179,4 @@ public class CreateCommands {
       e.printStackTrace();
     }
   }
-
-  /** Start sequence to create a reservation. Note: This is not implemented yet */
-  @ShellMethod(value = "Start sequence to create a reservation.", key = "new reservation")
-  public void createReservation() {
-    throw new UnsupportedOperationException("Not implemented yet.");
-  }
 }
