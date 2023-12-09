@@ -96,6 +96,32 @@ public class Departure {
   }
 
   /**
+   * Sets the departure time of the departure. Uses LocalTime instead of String.
+   *
+   * @param departureTime the departure time of the departure.
+   * @throws IllegalArgumentException if the departure time is null.
+   */
+  public void setDepartureLocalTime(LocalTime departureTime) {
+    if (departureTime == null) {
+      throw new IllegalArgumentException("Departure time cannot be null");
+    }
+    this.departureTime = departureTime;
+  }
+
+  /**
+   * Sets the delay of the departure. Uses LocalTime instead of String.
+   *
+   * @param delay the delay of the departure.
+   * @throws IllegalArgumentException if the delay is null.
+   */
+  public void setDelayLocalTime(LocalTime delay) {
+    if (delay == null) {
+      throw new IllegalArgumentException("Delay cannot be null");
+    }
+    this.delay = delay;
+  }
+
+  /**
    * Gets the line of the departure.
    *
    * @return the line of the departure.

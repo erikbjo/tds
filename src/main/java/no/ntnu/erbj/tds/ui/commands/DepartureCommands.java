@@ -1,5 +1,6 @@
 package no.ntnu.erbj.tds.ui.commands;
 
+import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -72,12 +73,11 @@ public class DepartureCommands {
     }
 
     try {
-    departure.get().setTrack(track.get());
-    departureDao.update(departure.get());
-    Printer.printTrackSetSuccessfully();
+      departure.get().setTrack(track.get());
+      departureDao.update(departure.get());
+      Printer.printTrackSetSuccessfully();
     } catch (IllegalArgumentException e) {
-      Printer.printException(e);
-      e.printStackTrace();
+      Printer.printException(e); // Unexpected exception
     }
   }
 
@@ -88,25 +88,25 @@ public class DepartureCommands {
 
     Scanner scanner = new Scanner(System.in);
 
-    Printer.printEnterTrainNumberForDelay();
-    String trainNumber = scanner.nextLine();
-    Departure departure = departureDao.getByTrainNumber(trainNumber);
-
-    if (departure == null) {
+    Optional<Departure> departure = helperCommands.getDepartureFromUser(scanner);
+    if (departure.isEmpty()) {
       Printer.printNoDeparturesWithTrainNumber();
       return;
     }
 
-    Printer.printEnterDelay();
-    String delay = scanner.nextLine();
-    try {
-      departure.setDelay(delay);
-      departureDao.update(departure);
-    } catch (IllegalArgumentException e) {
-      Printer.printException(e);
+    Optional<LocalTime> delay = helperCommands.getDelayFromUser(scanner);
+    if (delay.isEmpty()) {
+      Printer.printExitString();
       return;
     }
-    Printer.printDelaySetSuccessfully();
+
+    try {
+      departure.get().setDelayLocalTime(delay.get());
+      departureDao.update(departure.get());
+      Printer.printDelaySetSuccessfully();
+    } catch (IllegalArgumentException e) {
+      Printer.printException(e); // Unexpected exception
+    }
   }
 
   /** Search for a departure by train number. */
