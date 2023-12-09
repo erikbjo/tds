@@ -54,7 +54,7 @@ public class Printer {
 
   /** Prints a message to the console asking the user to enter a departure delay. */
   public static void printEnterDelay() {
-    logger.info("Enter delay (HH:mm): ");
+    logger.info("Enter delay (HH:mm): (nothing for no delay)");
   }
 
   /** Prints a message to the console asking the user to enter a train number. */

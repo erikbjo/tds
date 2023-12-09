@@ -218,6 +218,10 @@ public class HelperCommands {
         return Optional.empty();
       }
 
+      if (delayString.isEmpty() || delayString.isBlank()) {
+        return Optional.of(LocalTime.of(0, 0));
+      }
+
       try {
         LocalTime delay = TimeParser.parseTime(delayString, "Delay");
         delayOpt = Optional.of(delay);
