@@ -107,6 +107,10 @@ public class CreateCommands {
         Printer.printInvalidInput("train number");
       }
 
+      if (!isTrainNumberValid) {
+        Printer.printTrainNumberNotUnique();
+      }
+
     } while (!isTrainNumberValid);
 
     try {

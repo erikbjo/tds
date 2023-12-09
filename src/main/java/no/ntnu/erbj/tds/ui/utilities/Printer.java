@@ -1,6 +1,5 @@
 package no.ntnu.erbj.tds.ui.utilities;
 
-
 /**
  * A class that provides printing functionality. <br>
  * Contains methods for printing messages to the console, as well as methods for printing lists of
@@ -144,5 +143,10 @@ public class Printer {
    */
   public static void printNoUnoccupiedWagons() {
     logger.info("No unoccupied wagons in database. Please create a new wagon first.");
+  }
+
+  /** Prints a message to the console informing the user that the train number is not unique. */
+  public static void printTrainNumberNotUnique() {
+    logger.info("Train number is not unique. Please try again.");
   }
 }
