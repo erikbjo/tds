@@ -10,6 +10,7 @@ import no.ntnu.erbj.tds.dao.TrainDao;
 import no.ntnu.erbj.tds.dao.WagonDao;
 import no.ntnu.erbj.tds.model.Train;
 import no.ntnu.erbj.tds.model.Wagon;
+import no.ntnu.erbj.tds.model.departures.Departure;
 import no.ntnu.erbj.tds.shared.utilities.StringValidator;
 import no.ntnu.erbj.tds.shared.utilities.TimeParser;
 import no.ntnu.erbj.tds.ui.utilities.Printer;
@@ -340,5 +341,35 @@ public class HelperCommands {
     } while (train.isEmpty());
 
     return train;
+  }
+
+  /**
+   * Helper method to get a departure from the user.<br>
+   * Can return an empty optional if the user enters "exit".
+   *
+   * @param scanner the scanner to use to get input from the user
+   * @return an optional departure
+   */
+  public Optional<Departure> getDepartureFromUser(Scanner scanner) {
+    Optional<Departure> departure;
+    String trainNumber;
+
+    do {
+      Printer.printEnterTrainNumber();
+      trainNumber = scanner.nextLine();
+
+      if (trainNumber.equalsIgnoreCase("exit")) {
+        return Optional.empty();
+      }
+
+      departure = Optional.ofNullable(departureDao.getByTrainNumber(trainNumber));
+
+      if (departure.isEmpty()) {
+        Printer.printNoDeparturesWithTrainNumber();
+      }
+
+    } while (departure.isEmpty());
+
+    return departure;
   }
 }

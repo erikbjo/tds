@@ -145,13 +145,14 @@ public class Departure {
   }
 
   /**
-   * Sets the track of the departure.
+   * Sets the track of the departure. If the track is -1, it means that the train is not assigned to
+   * a track.
    *
    * @param track the track of the departure.
    * @throws IllegalArgumentException if the track is less than 1.
    */
   public void setTrack(int track) {
-    if (track < 1) {
+    if (track < 1 && track != -1) {
       throw new IllegalArgumentException("Track cannot be less than 1");
     }
     this.track = track;

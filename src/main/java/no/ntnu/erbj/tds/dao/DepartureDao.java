@@ -68,8 +68,8 @@ public class DepartureDao implements Dao<Departure> {
   /** Get a departure by train number. */
   public Departure getByTrainNumber(String trainNumber) {
     TypedQuery<Departure> query =
-        this.em.createQuery(
-            "SELECT d FROM Departure d WHERE d.train.id = :trainNumber", Departure.class);
+            this.em.createQuery(
+                    "SELECT d FROM Departure d WHERE d.train.trainNumber = :trainNumber", Departure.class);
     query.setParameter("trainNumber", trainNumber);
     return query.getSingleResult();
   }

@@ -153,4 +153,17 @@ public class Printer {
   public static void printTrainNumberNotUnique() {
     logger.info("Train number is not unique. Please try again.");
   }
+
+  /**
+   * Prints a message to the console asking the user to enter a train number of a departure to set
+   * track.
+   */
+  public static void printEnterTrainNumberForTrack() {
+    logger.info("Enter the train number of the departure you want to set the track of: ");
+  }
+
+  /** Prints a message to the console informing the user that the track was set successfully. */
+  public static void printTrackSetSuccessfully() {
+    logger.info(Colorize.colorizeText(AnsiColors.GREEN, "Track set."));
+  }
 }

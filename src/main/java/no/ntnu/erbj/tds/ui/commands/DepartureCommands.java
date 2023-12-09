@@ -2,6 +2,7 @@ package no.ntnu.erbj.tds.ui.commands;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import no.ntnu.erbj.tds.dao.DepartureDao;
 import no.ntnu.erbj.tds.model.departures.Departure;
@@ -21,19 +22,21 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class DepartureCommands {
 
   private final DepartureDao departureDao;
+  private final HelperCommands helperCommands;
 
   /**
    * DepartureCommands constructor. Uses constructor injection to get the departureDAO object.
    *
    * @param departureDao injects the departureDAO object.
    */
-  public DepartureCommands(DepartureDao departureDao) {
+  public DepartureCommands(DepartureDao departureDao, HelperCommands helperCommands) {
     this.departureDao = departureDao;
+    this.helperCommands = helperCommands;
   }
 
   /**
-   * Stylised table of all departures, sorted by departure time.
-   * Uses {@link no.ntnu.erbj.tds.ui.utilities.TablePrinter#printDeparturesInTableFormat(List)}
+   * Stylised table of all departures, sorted by departure time. Uses {@link
+   * no.ntnu.erbj.tds.ui.utilities.TablePrinter#printDeparturesInTableFormat(List)}
    */
   @ShellMethod(value = "List all departures in a stylised table.", key = "departure table")
   public void listDepartureTable() {
@@ -55,22 +58,27 @@ public class DepartureCommands {
     listDepartureTable();
 
     Scanner scanner = new Scanner(System.in);
-    TdsLogger logger = TdsLogger.getInstance();
 
-    logger.info("Enter the train number of the departure you want to set the track of: ");
-    String trainNumber = scanner.nextLine();
-    Departure departure = departureDao.getByTrainNumber(trainNumber);
-
-    if (departure == null) {
-      Printer.printNoDeparturesWithTrainNumber();
+    Optional<Departure> departure = helperCommands.getDepartureFromUser(scanner);
+    if (departure.isEmpty()) {
+      Printer.printExitString();
       return;
     }
 
-    logger.info("Enter the track you want to set: ");
-    int track = scanner.nextInt();
-    departure.setTrack(track);
-    departureDao.update(departure);
-    logger.info(Colorize.colorizeText(AnsiColors.GREEN, "Track set."));
+    Optional<Integer> track = helperCommands.getTrackFromUser(scanner);
+    if (track.isEmpty()) {
+      Printer.printExitString();
+      return;
+    }
+
+    try {
+    departure.get().setTrack(track.get());
+    departureDao.update(departure.get());
+    Printer.printTrackSetSuccessfully();
+    } catch (IllegalArgumentException e) {
+      Printer.printException(e);
+      e.printStackTrace();
+    }
   }
 
   /** Set the delay of a departure. */
