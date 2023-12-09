@@ -31,7 +31,10 @@ public class DepartureCommands {
     this.departureDao = departureDao;
   }
 
-  /** Stylised table of all departures, sorted by departure time. */
+  /**
+   * Stylised table of all departures, sorted by departure time.
+   * Uses {@link no.ntnu.erbj.tds.ui.utilities.TablePrinter#printDeparturesInTableFormat(List)}
+   */
   @ShellMethod(value = "List all departures in a stylised table.", key = "departure table")
   public void listDepartureTable() {
     List<Departure> departures =

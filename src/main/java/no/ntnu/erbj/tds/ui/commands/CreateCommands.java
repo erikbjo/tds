@@ -163,7 +163,7 @@ public class CreateCommands {
       Printer.printExitString();
       return;
     }
-    builder.setDepartureTimeLocalTime(delay);
+    builder.setDelayLocalTime(delay);
 
     Departure departure = builder.build();
 
