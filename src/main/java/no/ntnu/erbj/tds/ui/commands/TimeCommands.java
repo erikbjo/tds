@@ -1,6 +1,7 @@
 package no.ntnu.erbj.tds.ui.commands;
 
 import java.time.LocalTime;
+import no.ntnu.erbj.tds.dao.DepartureDao;
 import no.ntnu.erbj.tds.ui.controllers.TimeController;
 import no.ntnu.erbj.tds.ui.utilities.TdsLogger;
 import org.springframework.shell.standard.ShellComponent;
@@ -10,10 +11,20 @@ import org.springframework.shell.standard.ShellMethod;
  * Commands for manipulating the current time.
  *
  * @author Erik
- * @version 1.0
+ * @version 2.0
  */
 @ShellComponent
 public class TimeCommands {
+  private final DepartureDao departureDao;
+
+  /**
+   * TimeCommands constructor. Uses constructor injection to get the departureDAO object.
+   *
+   * @param departureDao injects the departureDAO object.
+   */
+  public TimeCommands(DepartureDao departureDao) {
+    this.departureDao = departureDao;
+  }
 
   /** Gets the current time. */
   @ShellMethod(value = "Get the current time.", key = "time show")
@@ -22,7 +33,11 @@ public class TimeCommands {
   }
 
   /** Sets the current time. */
-  @ShellMethod(value = "Set the current time. Takes a parameter in format: HH:mm", key = "time set")
+  @ShellMethod(
+      value =
+          "Set the current time. Also deletes departures that have a departure time " +
+                  "before the new time. Takes a parameter in format: HH:mm",
+      key = "time set")
   public void setCurrentTime(String time) {
     String[] timeSplit = time.split(":");
 
@@ -40,14 +55,17 @@ public class TimeCommands {
     }
 
     TimeController.setCurrentTime(LocalTime.parse(time));
+    departureDao.removeDeparturesBeforeLocalTime(TimeController.getCurrentTime());
   }
 
   /** Increments the current time by one minute. */
   @ShellMethod(
-      value = "Increment minutes by one.",
+      value =
+          "Increment minutes by one. Also deletes departures that have a departure time before the new time.",
       key = {"m++", "time increment minutes"})
   public void incrementMinutes() {
     TimeController.incrementMinutes();
+    departureDao.removeDeparturesBeforeLocalTime(TimeController.getCurrentTime());
   }
 
   /** Decrements the current time by one minute. */
@@ -60,10 +78,11 @@ public class TimeCommands {
 
   /** Increments the current time by one hour. */
   @ShellMethod(
-      value = "Increment hours by one.",
+      value = "Increment hours by one. Also deletes departures that have a departure time before the new time.",
       key = {"h++", "time increment hours"})
   public void incrementHours() {
     TimeController.incrementHours();
+    departureDao.removeDeparturesBeforeLocalTime(TimeController.getCurrentTime());
   }
 
   /** Decrements the current time by one hour. */

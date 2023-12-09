@@ -1,10 +1,12 @@
 package no.ntnu.erbj.tds.dao;
 
 import jakarta.persistence.*;
+import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import no.ntnu.erbj.tds.model.departures.Departure;
+import no.ntnu.erbj.tds.ui.utilities.Printer;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,9 +70,26 @@ public class DepartureDao implements Dao<Departure> {
   /** Get a departure by train number. */
   public Departure getByTrainNumber(String trainNumber) {
     TypedQuery<Departure> query =
-            this.em.createQuery(
-                    "SELECT d FROM Departure d WHERE d.train.trainNumber = :trainNumber", Departure.class);
+        this.em.createQuery(
+            "SELECT d FROM Departure d WHERE d.train.trainNumber = :trainNumber", Departure.class);
     query.setParameter("trainNumber", trainNumber);
     return query.getSingleResult();
+  }
+
+  /**
+   * Removes all departures before a given local time.
+   *
+   * @param localTime the local time to remove departures before.
+   */
+  @Transactional
+  public void removeDeparturesBeforeLocalTime(LocalTime localTime) {
+    List<Departure> departures = getAll();
+    departures.forEach(
+        departure -> {
+          if (departure.getEstimatedArrival().isBefore(localTime)) {
+            em.remove(departure);
+            Printer.printRemovedTrainWithTrainNumber(departure.getTrain().getTrainNumber());
+          }
+        });
   }
 }

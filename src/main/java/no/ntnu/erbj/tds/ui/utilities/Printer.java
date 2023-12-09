@@ -166,4 +166,16 @@ public class Printer {
   public static void printTrackSetSuccessfully() {
     logger.info(Colorize.colorizeText(AnsiColors.GREEN, "Track set."));
   }
+
+  /**
+   * Prints a message to the console informing the user that a train with the given train number has
+   * been removed from the database.
+   *
+   * @param trainNumber the train number of the train that was removed
+   */
+  public static void printRemovedTrainWithTrainNumber(String trainNumber) {
+    logger.info(
+        Colorize.colorizeText(
+            AnsiColors.RED, "Removed train with train number " + trainNumber + "."));
+  }
 }
