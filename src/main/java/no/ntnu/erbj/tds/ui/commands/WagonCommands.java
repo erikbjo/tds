@@ -1,6 +1,5 @@
 package no.ntnu.erbj.tds.ui.commands;
 
-import no.ntnu.erbj.tds.dao.WagonDao;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -9,21 +8,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Commands for manipulating wagon objects.
  *
  * @author Erik
- * @version 1.1
+ * @version 3.0
  */
 @ShellComponent
 @EnableTransactionManagement
 public class WagonCommands {
-  private final WagonDao wagonDao;
   private final HelperCommands helperCommands;
 
   /**
-   * WagonCommands constructor. Uses constructor injection to get the wagonDAO object.
+   * WagonCommands constructor. Uses constructor injection to get the helperCommands object.
    *
-   * @param wagonDao injects the wagonDAO object.
+   * @param helperCommands injects the helperCommands object.
    */
-  public WagonCommands(WagonDao wagonDao, HelperCommands helperCommands) {
-    this.wagonDao = wagonDao;
+  public WagonCommands(HelperCommands helperCommands) {
     this.helperCommands = helperCommands;
   }
 

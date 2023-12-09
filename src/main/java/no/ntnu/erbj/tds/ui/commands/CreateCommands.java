@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Commands for creating objects.
  *
  * @author Erik
- * @version 2.0
+ * @version 3.0
  */
 @ShellComponent
 @EnableTransactionManagement
@@ -53,33 +53,37 @@ public class CreateCommands {
   public void createWagon() {
     Scanner scanner = new Scanner(System.in);
     TdsLogger logger = TdsLogger.getInstance();
-    Printer.printEnterWagonType();
     for (WagonType value : WagonType.values()) {
       logger.info(value.toString());
     }
 
-    String wagonType = scanner.nextLine();
+    boolean isWagonTypeValid = false;
+    String wagonType;
+    Printer.printEnterWagonType();
 
-    if ("exit".equalsIgnoreCase(wagonType)) {
-      Printer.printExitString();
-      return;
-    }
+    do {
+      wagonType = scanner.nextLine();
 
-    WagonType safeWagonType;
-    try {
-      safeWagonType = WagonType.getWagonTypeByString(wagonType);
-    } catch (IllegalArgumentException e) {
-      Printer.printInvalidInput("wagon type");
-      return;
-    }
+      if (wagonType.equalsIgnoreCase("exit")) {
+        Printer.printExitString();
+        return;
+      }
 
-    Wagon wagon = new Wagon(safeWagonType);
+      try {
+        WagonType.getWagonTypeByString(wagonType);
+        isWagonTypeValid = true; // If no exception is thrown, the wagon type is valid.
+      } catch (IllegalArgumentException e) {
+        Printer.printInvalidInput("wagon type");
+      }
+    } while (!isWagonTypeValid);
+
+    Wagon wagon = new Wagon(WagonType.getWagonTypeByString(wagonType));
 
     try {
       wagonDao.add(wagon);
       Printer.printAddedToDatabase();
     } catch (Exception e) {
-      TdsLogger.getInstance().warn(e.getMessage());
+      Printer.printException(e); // Unexpected exception
     }
   }
 
@@ -107,7 +111,11 @@ public class CreateCommands {
         Printer.printInvalidInput("train number");
       }
 
-    } while (!isTrainNumberValid);
+      if (!isTrainNumberValid) {
+        Printer.printTrainNumberNotUnique();
+      }
+
+    } while (!isTrainNumberValid || train == null);
 
     try {
       trainDao.add(train);
@@ -163,7 +171,7 @@ public class CreateCommands {
       Printer.printExitString();
       return;
     }
-    builder.setDepartureTimeLocalTime(delay);
+    builder.setDelayLocalTime(delay);
 
     Departure departure = builder.build();
 
@@ -174,11 +182,5 @@ public class CreateCommands {
       Printer.printException(e);
       e.printStackTrace();
     }
-  }
-
-  /** Start sequence to create a reservation. Note: This is not implemented yet */
-  @ShellMethod(value = "Start sequence to create a reservation.", key = "new reservation")
-  public void createReservation() {
-    throw new UnsupportedOperationException("Not implemented yet.");
   }
 }

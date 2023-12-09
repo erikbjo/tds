@@ -136,7 +136,7 @@ class DepartureTest {
   /** Method under test: {@link Departure#setTrack(int)} */
   @Test
   void setTrackNegative() {
-    assertThrows(IllegalArgumentException.class, () -> departure1.setTrack(-1));
+    assertThrows(IllegalArgumentException.class, () -> departure1.setTrack(-10));
   }
 
   /** Method under test: {@link Departure#getDelay()} */

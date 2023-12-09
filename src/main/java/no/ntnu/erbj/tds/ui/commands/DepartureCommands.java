@@ -1,7 +1,9 @@
 package no.ntnu.erbj.tds.ui.commands;
 
+import java.time.LocalTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import no.ntnu.erbj.tds.dao.DepartureDao;
 import no.ntnu.erbj.tds.model.departures.Departure;
@@ -14,24 +16,29 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Commands for manipulating departure objects.
  *
  * @author Erik
- * @version 2.0
+ * @version 3.0
  */
 @ShellComponent
 @EnableTransactionManagement
 public class DepartureCommands {
 
   private final DepartureDao departureDao;
+  private final HelperCommands helperCommands;
 
   /**
    * DepartureCommands constructor. Uses constructor injection to get the departureDAO object.
    *
    * @param departureDao injects the departureDAO object.
    */
-  public DepartureCommands(DepartureDao departureDao) {
+  public DepartureCommands(DepartureDao departureDao, HelperCommands helperCommands) {
     this.departureDao = departureDao;
+    this.helperCommands = helperCommands;
   }
 
-  /** Stylised table of all departures, sorted by departure time. */
+  /**
+   * Stylised table of all departures, sorted by departure time. Uses {@link
+   * no.ntnu.erbj.tds.ui.utilities.TablePrinter#printDeparturesInTableFormat(List)}
+   */
   @ShellMethod(value = "List all departures in a stylised table.", key = "departure table")
   public void listDepartureTable() {
     List<Departure> departures =
@@ -52,22 +59,26 @@ public class DepartureCommands {
     listDepartureTable();
 
     Scanner scanner = new Scanner(System.in);
-    TdsLogger logger = TdsLogger.getInstance();
 
-    logger.info("Enter the train number of the departure you want to set the track of: ");
-    String trainNumber = scanner.nextLine();
-    Departure departure = departureDao.getByTrainNumber(trainNumber);
-
-    if (departure == null) {
-      Printer.printNoDeparturesWithTrainNumber();
+    Optional<Departure> departure = helperCommands.getDepartureFromUser(scanner);
+    if (departure.isEmpty()) {
+      Printer.printExitString();
       return;
     }
 
-    logger.info("Enter the track you want to set: ");
-    int track = scanner.nextInt();
-    departure.setTrack(track);
-    departureDao.update(departure);
-    logger.info(Colorize.colorizeText(AnsiColors.GREEN, "Track set."));
+    Optional<Integer> track = helperCommands.getTrackFromUser(scanner);
+    if (track.isEmpty()) {
+      Printer.printExitString();
+      return;
+    }
+
+    try {
+      departure.get().setTrack(track.get());
+      departureDao.update(departure.get());
+      Printer.printTrackSetSuccessfully();
+    } catch (IllegalArgumentException e) {
+      Printer.printException(e); // Unexpected exception
+    }
   }
 
   /** Set the delay of a departure. */
@@ -77,34 +88,34 @@ public class DepartureCommands {
 
     Scanner scanner = new Scanner(System.in);
 
-    Printer.printEnterTrainNumberForDelay();
-    String trainNumber = scanner.nextLine();
-    Departure departure = departureDao.getByTrainNumber(trainNumber);
-
-    if (departure == null) {
+    Optional<Departure> departure = helperCommands.getDepartureFromUser(scanner);
+    if (departure.isEmpty()) {
       Printer.printNoDeparturesWithTrainNumber();
       return;
     }
 
-    Printer.printEnterDelay();
-    String delay = scanner.nextLine();
-    try {
-      departure.setDelay(delay);
-      departureDao.update(departure);
-    } catch (IllegalArgumentException e) {
-      Printer.printException(e);
+    Optional<LocalTime> delay = helperCommands.getDelayFromUser(scanner);
+    if (delay.isEmpty()) {
+      Printer.printExitString();
       return;
     }
-    Printer.printDelaySetSuccessfully();
+
+    try {
+      departure.get().setDelayLocalTime(delay.get());
+      departureDao.update(departure.get());
+      Printer.printDelaySetSuccessfully();
+    } catch (IllegalArgumentException e) {
+      Printer.printException(e); // Unexpected exception
+    }
   }
 
   /** Search for a departure by train number. */
   @ShellMethod(
       value =
           "Search for a departure by train number. "
-              + "Takes an integer as parameter. ex: departure search train 1234",
+              + "Takes an integer as parameter. ex: departure search train abc123",
       key = "departure search train")
-  public void searchByTrainNumber(long trainNumber) {
+  public void searchByTrainNumber(String trainNumber) {
     List<Departure> departures = departureDao.getAll();
 
     departures =
@@ -112,7 +123,11 @@ public class DepartureCommands {
             .stream() // filter by departure.train CONTAINS trainNumber, so 1234 will match 12345
             .filter(
                 departure ->
-                    departure.getTrain().getId().toString().contains(String.valueOf(trainNumber)))
+                    departure
+                        .getTrain()
+                        .getTrainNumber()
+                        .toLowerCase()
+                        .contains(String.valueOf(trainNumber).trim().toLowerCase()))
             .toList();
 
     if (departures.isEmpty()) {

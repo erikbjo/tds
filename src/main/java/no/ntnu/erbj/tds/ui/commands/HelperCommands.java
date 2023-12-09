@@ -10,6 +10,7 @@ import no.ntnu.erbj.tds.dao.TrainDao;
 import no.ntnu.erbj.tds.dao.WagonDao;
 import no.ntnu.erbj.tds.model.Train;
 import no.ntnu.erbj.tds.model.Wagon;
+import no.ntnu.erbj.tds.model.departures.Departure;
 import no.ntnu.erbj.tds.shared.utilities.StringValidator;
 import no.ntnu.erbj.tds.shared.utilities.TimeParser;
 import no.ntnu.erbj.tds.ui.utilities.Printer;
@@ -23,7 +24,7 @@ import org.springframework.shell.standard.ShellComponent;
  * These methods are extracted to this class to avoid code duplication.
  *
  * @author erik
- * @version 2.0
+ * @version 3.0
  */
 @ShellComponent
 public class HelperCommands {
@@ -75,6 +76,11 @@ public class HelperCommands {
   public void listAllWagonTable() {
     List<Wagon> wagons =
         SortUtility.sortBy(wagonDao.getAll(), Comparator.comparing(Wagon::getOpenSeats));
+
+    if (wagons.isEmpty()) {
+      Printer.printNoWagonsFound();
+      return;
+    }
 
     TablePrinter.printWagonsInTableFormat(wagons);
   }
@@ -168,7 +174,8 @@ public class HelperCommands {
 
   /**
    * Helper method to get a track from the user.<br>
-   * Can return an empty optional if the user enters "exit".
+   * Can return an empty optional if the user enters "exit".<br>
+   * Returns -1 if the user enters nothing.
    *
    * @param scanner the scanner to use to get input from the user
    * @return an optional track
@@ -182,6 +189,10 @@ public class HelperCommands {
 
       if (trackString.equalsIgnoreCase("exit")) {
         return Optional.empty();
+      }
+
+      if (trackString.isEmpty() || trackString.isBlank()) {
+        return Optional.of(-1);
       }
 
       try {
@@ -211,6 +222,10 @@ public class HelperCommands {
 
       if (delayString.equalsIgnoreCase("exit")) {
         return Optional.empty();
+      }
+
+      if (delayString.isEmpty() || delayString.isBlank()) {
+        return Optional.of(LocalTime.of(0, 0));
       }
 
       try {
@@ -276,7 +291,7 @@ public class HelperCommands {
     Optional<Train> train = Optional.empty();
 
     String trainIdString;
-    boolean isTrainIdValid;
+    boolean isTrainIdValid = false;
 
     do {
       Printer.printEnterTrainNumber();
@@ -290,9 +305,14 @@ public class HelperCommands {
         isTrainIdValid = trainDao.trainIsNotOccupied(trainIdString);
         train = trainDao.findByTrainNumber(trainIdString);
       } catch (IllegalArgumentException e) {
-        isTrainIdValid = false;
+        Printer.printInvalidInput("train number");
       }
-    } while (train.isEmpty() && !isTrainIdValid);
+
+      if (!isTrainIdValid || train.isEmpty()) {
+        Printer.printTrainIsOccupied();
+      }
+
+    } while (train.isEmpty() || !isTrainIdValid);
 
     return train;
   }
@@ -326,5 +346,35 @@ public class HelperCommands {
     } while (train.isEmpty());
 
     return train;
+  }
+
+  /**
+   * Helper method to get a departure from the user.<br>
+   * Can return an empty optional if the user enters "exit".
+   *
+   * @param scanner the scanner to use to get input from the user
+   * @return an optional departure
+   */
+  public Optional<Departure> getDepartureFromUser(Scanner scanner) {
+    Optional<Departure> departure;
+    String trainNumber;
+
+    do {
+      Printer.printEnterTrainNumber();
+      trainNumber = scanner.nextLine();
+
+      if (trainNumber.equalsIgnoreCase("exit")) {
+        return Optional.empty();
+      }
+
+      departure = Optional.ofNullable(departureDao.getByTrainNumber(trainNumber));
+
+      if (departure.isEmpty()) {
+        Printer.printNoDeparturesWithTrainNumber();
+      }
+
+    } while (departure.isEmpty());
+
+    return departure;
   }
 }

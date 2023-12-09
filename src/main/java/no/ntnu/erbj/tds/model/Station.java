@@ -27,11 +27,11 @@ public class Station {
   @Id @GeneratedValue private Long id;
   private String name;
   private String location;
+
   @OneToMany(mappedBy = "station", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Departure> departures;
-  private int
-      platforms; // Number of platforms at the station, to be remade into a list of platforms
 
+  private int platforms;
 
   /**
    * Constructor for the Station class. <br>

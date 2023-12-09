@@ -1,6 +1,5 @@
 package no.ntnu.erbj.tds.ui.utilities;
 
-
 /**
  * A class that provides printing functionality. <br>
  * Contains methods for printing messages to the console, as well as methods for printing lists of
@@ -55,12 +54,12 @@ public class Printer {
 
   /** Prints a message to the console asking the user to enter a departure delay. */
   public static void printEnterDelay() {
-    logger.info("Enter delay (HH:mm): ");
+    logger.info("Enter delay (HH:mm): (nothing for no delay)");
   }
 
   /** Prints a message to the console asking the user to enter a train number. */
   public static void printEnterTrainNumber() {
-    logger.info("Enter train number: ");
+    logger.info("Enter train number: (exit to cancel)");
   }
 
   /** Prints a message to the console asking the user to enter a line. */
@@ -70,7 +69,7 @@ public class Printer {
 
   /** Prints a message to the console asking the user to enter a track. */
   public static void printEnterTrack() {
-    logger.info("Enter track: ");
+    logger.info("Enter track: (nothing for no track)");
   }
 
   /** Prints a message to the console asking the user to enter a destination. */
@@ -144,5 +143,46 @@ public class Printer {
    */
   public static void printNoUnoccupiedWagons() {
     logger.info("No unoccupied wagons in database. Please create a new wagon first.");
+  }
+
+  public static void printTrainIsOccupied() {
+    logger.info("Train is occupied or invalid. Please try again.");
+  }
+
+  /** Prints a message to the console informing the user that the train number is not unique. */
+  public static void printTrainNumberNotUnique() {
+    logger.info("Train number is not unique. Please try again.");
+  }
+
+  /**
+   * Prints a message to the console asking the user to enter a train number of a departure to set
+   * track.
+   */
+  public static void printEnterTrainNumberForTrack() {
+    logger.info("Enter the train number of the departure you want to set the track of: ");
+  }
+
+  /** Prints a message to the console informing the user that the track was set successfully. */
+  public static void printTrackSetSuccessfully() {
+    logger.info(Colorize.colorizeText(AnsiColors.GREEN, "Track set."));
+  }
+
+  /**
+   * Prints a message to the console informing the user that a train with the given train number has
+   * been removed from the database.
+   *
+   * @param trainNumber the train number of the train that was removed
+   */
+  public static void printRemovedTrainWithTrainNumber(String trainNumber) {
+    logger.info(
+        Colorize.colorizeText(
+            AnsiColors.RED, "Removed train with train number " + trainNumber + "."));
+  }
+
+  /**
+   * Prints a message to the console informing the user that there are no wagons in the database.
+   */
+  public static void printNoWagonsFound() {
+    logger.info("No wagons found. Please create a wagon first.");
   }
 }

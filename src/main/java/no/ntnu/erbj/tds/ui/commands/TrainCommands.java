@@ -16,15 +16,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Commands for manipulating train objects.
  *
  * @author Erik
- * @version 2.0
+ * @version 3.0
  */
 @ShellComponent
 @EnableTransactionManagement
 public class TrainCommands {
   private final TrainDao trainDao;
   private final WagonDao wagonDao;
-  private final WagonCommands wagonCommands;
-  private final CreateCommands createCommands;
   private final HelperCommands helperCommands;
 
   /**
@@ -32,19 +30,11 @@ public class TrainCommands {
    *
    * @param trainDao injects the trainDAO object.
    * @param wagonDao injects the wagonDAO object.
-   * @param wagonCommands injects the wagonCommands object.
-   * @param createCommands injects the createCommands object.
+   * @param helperCommands injects the helperCommands object.
    */
-  public TrainCommands(
-      TrainDao trainDao,
-      WagonDao wagonDao,
-      WagonCommands wagonCommands,
-      CreateCommands createCommands,
-      HelperCommands helperCommands) {
+  public TrainCommands(TrainDao trainDao, WagonDao wagonDao, HelperCommands helperCommands) {
     this.trainDao = trainDao;
     this.wagonDao = wagonDao;
-    this.wagonCommands = wagonCommands;
-    this.createCommands = createCommands;
     this.helperCommands = helperCommands;
   }
 

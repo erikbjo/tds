@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 /**
  * The main class of the application. This class is responsible for starting the application.
  *
- * @version 2.0
+ * @version 3.0
  * @author Erik Bjørnsen
  */
 @SpringBootApplication
@@ -24,8 +24,6 @@ public class TdsApplication {
    * @param args The command line arguments.
    */
   public static void main(String[] args) {
-
     SpringApplication.run(TdsApplication.class, args);
-
   }
 }

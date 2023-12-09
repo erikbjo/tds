@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * This class is a Data Access Object (DAO) for the Station class. It provides methods for
- * accessing the database.
+ * This class is a Data Access Object (DAO) for the Station class. <br>
+ * It provides methods for accessing the database.
  *
  * @version 1.1
  * @author Erik

@@ -96,6 +96,32 @@ public class Departure {
   }
 
   /**
+   * Sets the departure time of the departure. Uses LocalTime instead of String.
+   *
+   * @param departureTime the departure time of the departure.
+   * @throws IllegalArgumentException if the departure time is null.
+   */
+  public void setDepartureLocalTime(LocalTime departureTime) {
+    if (departureTime == null) {
+      throw new IllegalArgumentException("Departure time cannot be null");
+    }
+    this.departureTime = departureTime;
+  }
+
+  /**
+   * Sets the delay of the departure. Uses LocalTime instead of String.
+   *
+   * @param delay the delay of the departure.
+   * @throws IllegalArgumentException if the delay is null.
+   */
+  public void setDelayLocalTime(LocalTime delay) {
+    if (delay == null) {
+      throw new IllegalArgumentException("Delay cannot be null");
+    }
+    this.delay = delay;
+  }
+
+  /**
    * Gets the line of the departure.
    *
    * @return the line of the departure.
@@ -145,13 +171,14 @@ public class Departure {
   }
 
   /**
-   * Sets the track of the departure.
+   * Sets the track of the departure. If the track is -1, it means that the train is not assigned to
+   * a track.
    *
    * @param track the track of the departure.
    * @throws IllegalArgumentException if the track is less than 1.
    */
   public void setTrack(int track) {
-    if (track < 1) {
+    if (track < 1 && track != -1) {
       throw new IllegalArgumentException("Track cannot be less than 1");
     }
     this.track = track;
@@ -207,5 +234,14 @@ public class Departure {
    */
   public Long getId() {
     return id;
+  }
+
+  /**
+   * Gets the estimated arrival time of the departure.
+   *
+   * @return the estimated arrival time of the departure.
+   */
+  public LocalTime getEstimatedArrival() {
+    return departureTime.plusHours(delay.getHour()).plusMinutes(delay.getMinute());
   }
 }

@@ -41,7 +41,7 @@ public class Colorize {
    * @return The colorized message.
    */
   public static String colorizeBackgroundAndText(
-          AnsiColors bgColor, AnsiColors textColor, String message) {
+      AnsiColors bgColor, AnsiColors textColor, String message) {
     return bgColor.getCode() + textColor.getCode() + message + RESET;
   }
 

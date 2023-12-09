@@ -14,11 +14,11 @@ import no.ntnu.erbj.tds.model.departures.Departure;
 public class TablePrinter {
 
   private static final TdsLogger logger = TdsLogger.getInstance();
-  private static final String DEPARTURE_TABLE_FORMAT = "| %-8s | %-10s | %-10s | %-14s | %-40s |";
-  // Above and below are static to follow SonarLint's recommendation
+  private static final String DEPARTURE_TABLE_FORMAT =
+      "| %-10s | %-10s | %-10s | %-10s | %-10s | %-15s | %-20s |";
   private static final String DEPARTURE_TABLE_DIVIDER =
-      "+----------+------------+------------+----------------"
-          + "+------------------------------------------+";
+      "+------------+------------+------------+------------+------------+"
+          + "-----------------+----------------------+";
   private static final String BLUE_DEPARTURE_FORMAT =
       Colorize.colorizeText(AnsiColors.BLUE, DEPARTURE_TABLE_FORMAT);
   private static final String BLUE_DEPARTURE_DIVIDER =
@@ -55,7 +55,14 @@ public class TablePrinter {
     logger.info(BLUE_DEPARTURE_DIVIDER);
     logger.info(
         String.format(
-            BLUE_DEPARTURE_FORMAT, "Time", "Line", "Track", "Train number", "Destination"));
+            BLUE_DEPARTURE_FORMAT,
+            "Time",
+            "Delay",
+            "Arrival",
+            "Line",
+            "Track",
+            "Train number",
+            "Destination"));
     logger.info(BLUE_DEPARTURE_DIVIDER);
   }
 
@@ -76,8 +83,10 @@ public class TablePrinter {
           String.format(
               DEPARTURE_TABLE_FORMAT,
               departure.getDepartureTime(),
+              departure.getDelay().toString().equals("00:00") ? "" : departure.getDelay(),
+              departure.getEstimatedArrival(),
               departure.getLine(),
-              departure.getTrack(),
+              String.valueOf(departure.getTrack()).equals("-1") ? "" : departure.getTrack(),
               departure.getTrain().getTrainNumber(),
               departure.getDestination()));
     }
