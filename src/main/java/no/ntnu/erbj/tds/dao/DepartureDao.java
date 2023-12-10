@@ -88,7 +88,7 @@ public class DepartureDao implements Dao<Departure> {
         departure -> {
           if (departure.getEstimatedArrival().isBefore(localTime)) {
             em.remove(departure);
-            Printer.printRemovedTrainWithTrainNumber(departure.getTrain().getTrainNumber());
+            Printer.printRemovedDepartureWithTrainWithTrainNumber(departure.getTrain().getTrainNumber());
           }
         });
   }

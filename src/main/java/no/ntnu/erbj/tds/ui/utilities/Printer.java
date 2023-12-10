@@ -168,15 +168,15 @@ public class Printer {
   }
 
   /**
-   * Prints a message to the console informing the user that a train with the given train number has
-   * been removed from the database.
+   * Prints a message to the console informing the user that a departure with the given train number
+   * has been removed from the database.
    *
-   * @param trainNumber the train number of the train that was removed
+   * @param trainNumber the train number of the departure that was removed
    */
-  public static void printRemovedTrainWithTrainNumber(String trainNumber) {
+  public static void printRemovedDepartureWithTrainWithTrainNumber(String trainNumber) {
     logger.info(
         Colorize.colorizeText(
-            AnsiColors.RED, "Removed train with train number " + trainNumber + "."));
+            AnsiColors.RED, "Removed departure with train number " + trainNumber + "."));
   }
 
   /**
