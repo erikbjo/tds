@@ -5,9 +5,6 @@
 ![Spring boot shield](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot)
 ![IDE](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
 
-STUDENT NAME = Erik Bjørnsen  
-STUDENT ID = erbj
-
 ## Project description 📝
 
 <p>
@@ -17,11 +14,13 @@ The user-interface is made with Spring Shell.
 Exam project for the course IDATG1003 at NTNU Gjøvik.
 </p>
 
+_The project is finished and archived._
+
 ## How to run the project 🚀
 
 1. Clone the repository with:
 ```bash
-git clone git@github.com:NTNU-BIDATA-IDATG1003-2023/mappe-idatg1003-traindispatchsystem-erikbjo.git
+git clone git@github.com:erikbjo/tds.git
 ```
 
 2. Run the program with:
@@ -139,7 +138,3 @@ root
 ## Troubleshooting 🛠
 
 If you get any persistence errors, try to delete the tdsDB directory and run the program again.
-
-## Link to repository 🌐
-
-[GitHub Classroom](https://github.com/NTNU-BIDATA-IDATG1003-2023/mappe-idatg1003-traindispatchsystem-erikbjo)
